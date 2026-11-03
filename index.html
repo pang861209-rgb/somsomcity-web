@@ -16,8 +16,8 @@
 <style>
 :root{
   /* 1안 그림책 손선 + 로고 색 포인트. 흰 종이 위에 손그림 선으로 그린 부품, 포인트는 로고의 보라·분홍만 */
-  --paper:#FFFFFF;
-  --paper-2:#F7F5EF;
+  --paper:#FBF8F1;
+  --paper-2:#F3EEE2;
   --sky:#E6F1F7;
   --ink:#22231F;
   --ink-soft:#66655E;
@@ -29,7 +29,7 @@
   color-scheme:light;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.75;word-break:keep-all;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body{background:var(--paper) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .38 0 0 0 0 .28 0 0 0 .06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.75;word-break:keep-all;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:90;background:var(--paper)}
 img{max-width:100%;display:block}
 a{color:inherit}
@@ -39,17 +39,30 @@ h1,h2,h3{font-family:var(--font-hand);font-weight:700;line-height:1.2;text-wrap:
 .wrap{max-width:1120px;margin:0 auto;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
 .temp{display:inline-block;font-family:var(--font-body);font-size:11px;color:#8a6200;background:#FFF1C2;border-radius:4px;padding:0 6px;margin-left:6px;vertical-align:middle;line-height:1.7}
 .empty{color:#a7a59c}
+.divider{height:46px;margin-block:8px}
+.divider svg{width:100%;height:100%;display:block;overflow:visible}
+.divider path{fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.divider path.g{stroke:#7FA36A}
+/* 구간마다 이웃 한 명이 한마디 (말풍선 = 솜솜시티 대표 모양) */
+.secsay{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+.closing .secsay{justify-content:center}
+.secsay .face{width:58px;height:58px;border-radius:50%;flex:none;display:block;background:#fff}
+.secsay .face img{width:100%;height:100%}
+.secsay .sb{position:relative;isolation:isolate;padding:9px 16px 10px;font-family:var(--font-hand);font-weight:700;font-size:20px;line-height:1.3;max-width:calc(100% - 80px)}
+html:not(.review) .temp,html:not(.review) .ex,html:not(.review) .how{display:none!important}
 
 /* 손그림 선 부품: 테두리만 살짝 흔들리게 (글자는 흔들리지 않음) */
-.hand{position:relative;isolation:isolate;background-clip:content-box}
-/* 손선 테두리는 흔들리고 바탕은 반듯하면, 선 밖으로 바탕이 삐져나와 지저분해 보임 → 바탕은 테두리 안쪽(여백 안)에만. 여백 없는 것들은 4px 여백 */
-.post.hand,.short.hand,.soon .hand{padding:4px}
-.hand::before{content:"";position:absolute;inset:0;border:2px solid var(--ink);border-radius:inherit;background:inherit;filter:url(#wobble);z-index:-1}
+/* 손선 테두리 (11/3 다시 만듦): 화면 효과(필터)로 흔들면 선 밖에 흰 점·흰 테두리가 생겨서,
+   요소마다 손으로 그은 듯한 선을 직접 그리고 바탕도 그 선 모양대로 잘라 냄 → 선 밖으로 아무것도 안 나옴 */
+.hand{position:relative}
+.hand>svg.hl{position:absolute;left:0;top:0;width:100%!important;height:100%!important;pointer-events:none;overflow:visible;z-index:1}
+.hl path{fill:none;stroke:var(--ink);stroke-width:4.6;stroke-linejoin:round}
+.soon .hand .hl path{stroke-dasharray:7 8;stroke:#9a968a}
+.hand:focus-visible{outline:none}.hand:focus-visible .hl path{stroke:var(--purple);stroke-width:6}
 .btn{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:10px 20px;font-family:var(--font-hand);font-weight:700;font-size:19px;text-decoration:none;background:#fff;color:var(--ink);min-height:44px}
 .btn.fill{color:#fff}
-.btn.fill::before{background:var(--ink)}
-.btn.purple{color:#fff}.btn.purple::before{background:var(--purple)}
-.btn.pink{color:#fff}.btn.pink::before{background:var(--pink)}
+.btn.fill{background:var(--ink)}
+.btn.pink{color:#fff;background:var(--pink)}
 .btn svg{width:18px;height:18px}
 .btn:hover{transform:translateY(-1px)}
 
@@ -170,14 +183,14 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
 .rel-map{max-width:920px;width:100%;justify-self:center}
 .rel-map{border-radius:24px;background:var(--paper-2);padding:10px}
 .rel-map svg{width:100%;height:auto;display:block}
-.rel-map .edge path{fill:none;stroke:var(--ink);stroke-width:3;stroke-linecap:round;filter:url(#wobble);transition:opacity .25s,stroke .25s}
+.rel-map .edge path{fill:none;stroke:var(--ink);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;transition:opacity .25s,stroke .25s}
 .rel-map .edge.sug path{stroke-dasharray:8 9}
 .rel-map .edge text{font-family:var(--font-hand);font-weight:700;font-size:21px;fill:var(--ink)}
-.rel-map .edge rect{fill:#fff;stroke:var(--ink);stroke-width:2;filter:url(#wobble)}
+.rel-map .edge path.lab{fill:#fff;stroke:var(--ink);stroke-width:2.2;filter:none;stroke-dasharray:none}
 .rel-map .node{cursor:pointer}
-.rel-map .node circle.ring{fill:#fff;stroke:var(--ink);stroke-width:3;filter:url(#wobble)}
+.rel-map .node .ring{fill:#fff;stroke:var(--ink);stroke-width:3;stroke-linejoin:round}
 .rel-map .node text{font-family:var(--font-hand);font-weight:700;font-size:24px;fill:var(--ink);text-anchor:middle}
-.rel-map .node:focus-visible circle.ring{stroke:var(--purple);stroke-width:5}
+.rel-map .node:focus-visible .ring{stroke:var(--purple);stroke-width:5}
 .rel-map.focus .edge:not(.hot){opacity:.15}
 .rel-map.focus .node:not(.hot){opacity:.35}
 .rel-map .edge.hot path{stroke:var(--purple)}
@@ -189,7 +202,7 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
 .rel-list .item p{font-size:14px;color:var(--ink-soft)}
 .rel-list.focus .item:not(.hot){display:none}
 .rel-tip{font-size:13.5px;color:var(--ink-soft)}
-@media (max-width:819px){.rel{grid-template-columns:1fr}.rel-map .edge text,.rel-map .edge rect{display:none}}
+@media (max-width:819px){.rel{grid-template-columns:1fr}.rel-map .edge text,.rel-map .edge path.lab{display:none}}
 
 /* ---------- 3. 이웃 장면 ---------- */
 .scene{position:relative;scroll-margin-top:60px}
@@ -250,6 +263,7 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
 .ex{position:absolute;left:10px;top:8px;font-size:11px;background:#fff;border-radius:4px;padding:0 6px;color:var(--ink-soft);z-index:2}
 .yt{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
 .short{position:relative;aspect-ratio:9/16;border-radius:18px;background-size:cover;background-position:center;display:flex;align-items:flex-end;text-decoration:none}
+.short .who{position:absolute;left:50%;bottom:14%;height:58%;width:auto;max-width:none;translate:-50% 0;z-index:1}
 .short span.t{position:relative;z-index:2;margin:10px;background:#fff;border-radius:10px;padding:2px 10px;font-size:13.5px}
 .short .play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:52px;height:52px;border-radius:50%;background:#fff;display:grid;place-items:center;z-index:2}
 .short .play::after{content:"";border-left:15px solid var(--pink);border-top:10px solid transparent;border-bottom:10px solid transparent;margin-left:5px}
@@ -263,7 +277,7 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
 .goods p{color:var(--ink-soft)}
 .soon{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .soon div{aspect-ratio:1;border-radius:16px;background:#fff;display:grid;place-items:center;font-family:var(--font-hand);font-weight:700;font-size:19px;color:#b3afa3}
-.soon div::before{border-style:dashed}
+
 @media (max-width:819px){.goods .box{grid-template-columns:1fr;padding:22px}}
 
 /* ---------- 6. 마무리 ---------- */
@@ -337,6 +351,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justif
 
   <section class="wrap world" id="world">
     <div class="intro">
+      <div class="secsay" data-secsay="kkito" data-line="솜솜시티에 온 걸 환영해!"></div>
       <h2>동물들이 사람처럼 모여 사는 도시, 솜솜시티</h2>
       <p>겉보기엔 평범한 도시지만 종족마다 사는 방식이 조금씩 달라요. 나무늘보는 먹방을 해도 천천히 씹고, 다람쥐는 뭐든 주머니에 줍고, 거북이는 터틀넥을 입어요. 당근빌라와 대나무숲 빌라 이웃들의 소소한 다툼과 화해를 그립니다.</p>
       <p class="slogan">그런 너라서 좋아<span>Because you're you.</span></p>
@@ -349,21 +364,25 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justif
 
   <div data-scenes></div>
 
+  <div class="wrap divider" data-divider aria-hidden="true"></div>
   <section class="wrap news" id="news">
-    <div class="head2"><div><h2>솜솜시티 소식</h2><p>인스타그램과 유튜브에서 새 이야기를 만나요.</p></div><div class="btns" data-sns-btns></div></div>
+    <div class="head2"><div><div class="secsay" data-secsay="ramda" data-line="새 소식 주워 왔어!"></div><h2>솜솜시티 소식</h2><p>인스타그램과 유튜브에서 새 이야기를 만나요.</p></div><div class="btns" data-sns-btns></div></div>
     <div class="ig" data-ig></div>
     <div class="yt" data-yt></div>
     <p class="how">시안에서는 예시 그림으로 채웠습니다. 실제 사이트에서는 인스타 게시물 주소를 넣으면 그 게시물이 그대로 보이고, 쇼츠는 페이지 안에서 재생됩니다.</p>
   </section>
 
+  <div class="wrap divider" data-divider aria-hidden="true"></div>
   <section class="wrap goods" id="goods">
     <div class="box hand">
-      <div style="display:grid;gap:12px"><h2>솜솜시티 굿즈, 준비하고 있어요</h2><p>이웃들을 곁에 둘 수 있는 물건을 만들고 있어요. 소식은 인스타그램에서 가장 먼저 알려 드릴게요.</p><div data-goods-btn></div></div>
+      <div style="display:grid;gap:12px"><div class="secsay" data-secsay="boneul" data-line="굿즈는… 천천히 만들고 있어."></div><h2>솜솜시티 굿즈, 준비하고 있어요</h2><p>이웃들을 곁에 둘 수 있는 물건을 만들고 있어요. 소식은 인스타그램에서 가장 먼저 알려 드릴게요.</p><div data-goods-btn></div></div>
       <div class="soon" aria-hidden="true"><div class="hand">준비 중</div><div class="hand">준비 중</div><div class="hand">준비 중</div></div>
     </div>
   </section>
 
+  <div class="wrap divider" data-divider aria-hidden="true"></div>
   <section class="wrap closing">
+    <div class="secsay" data-secsay="lachilchin" data-line="또 놀러 오렴~"></div>
     <img src="img/logo_cloud.png" alt="솜솜시티 로고">
     <p class="ko">그래서 우리가 널 좋아해</p>
     <p class="en">That's why we love you.</p>
@@ -380,6 +399,31 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justif
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
 <script>
+/* ---------- 손선: 둥근 사각형·동그라미를 손으로 그은 듯 살짝 울퉁불퉁하게 ---------- */
+const jit=(seed,k)=>{const v=Math.sin(seed*127.1+k*311.7)*43758.5453;return (v-Math.floor(v))*2-1;};
+function wobPath(W,H,r,seed=1){r=Math.min(r,W/2,H/2);const amp=Math.min(1.3,Math.min(W,H)/26);let k=0;
+  const ed=(x1,y1,x2,y2)=>{const L=Math.hypot(x2-x1,y2-y1);if(L<1)return ` L ${x2} ${y2}`;const n=Math.max(1,Math.round(L/44)),nx=(y2-y1)/L,ny=-(x2-x1)/L;let o="";
+    for(let q=1;q<=n;q++){const ax=x1+(x2-x1)*(q-1)/n,ay=y1+(y2-y1)*(q-1)/n,bx=x1+(x2-x1)*q/n,by=y1+(y2-y1)*q/n,j=jit(seed,k++)*amp;o+=` Q ${((ax+bx)/2+nx*j).toFixed(1)} ${((ay+by)/2+ny*j).toFixed(1)} ${bx.toFixed(1)} ${by.toFixed(1)}`;}return o;};
+  const c=jit(seed,99)*.6;
+  return `M ${r} 0`+ed(r,0,W-r,0)+` Q ${W+c} ${-c} ${W} ${r}`+ed(W,r,W,H-r)+` Q ${W-c} ${H+c} ${W-r} ${H}`+ed(W-r,H,r,H)+` Q ${c} ${H-c} 0 ${H-r}`+ed(0,H-r,0,r)+` Q ${-c} ${c} ${r} 0 Z`;}
+function wobQuad(x1,y1,mx,my,x2,y2,seed=1){const n=14,P=[];for(let i=0;i<=n;i++){const t=i/n,u=1-t;let x=u*u*x1+2*u*t*mx+t*t*x2,y=u*u*y1+2*u*t*my+t*t*y2;
+    if(i>0&&i<n){const dx=2*u*(mx-x1)+2*t*(x2-mx),dy=2*u*(my-y1)+2*t*(y2-my),L=Math.hypot(dx,dy)||1,j=jit(seed,i)*1.6;x+=-dy/L*j;y+=dx/L*j;}P.push([x,y]);}
+  let d=`M ${P[0][0].toFixed(1)} ${P[0][1].toFixed(1)}`;for(let i=1;i<n;i++){const q=[(P[i][0]+P[i+1][0])/2,(P[i][1]+P[i+1][1])/2];d+=` Q ${P[i][0].toFixed(1)} ${P[i][1].toFixed(1)} ${i===n-1?P[n][0].toFixed(1):q[0].toFixed(1)} ${i===n-1?P[n][1].toFixed(1):q[1].toFixed(1)}`;}return d;}
+function wobCircle(cx,cy,R,seed=1){const n=18,pts=[];for(let k=0;k<n;k++){const a=k/n*Math.PI*2,rr=R+jit(seed,k)*1.3;pts.push([cx+Math.cos(a)*rr,cy+Math.sin(a)*rr]);}
+  const m=(a,b)=>[(a[0]+b[0])/2,(a[1]+b[1])/2];let s0=m(pts[n-1],pts[0]),d=`M ${s0[0].toFixed(1)} ${s0[1].toFixed(1)}`;
+  pts.forEach((p,k)=>{const q=m(p,pts[(k+1)%n]);d+=` Q ${p[0].toFixed(1)} ${p[1].toFixed(1)} ${q[0].toFixed(1)} ${q[1].toFixed(1)}`;});return d+" Z";}
+let handSeed=1;
+function handify(el){const W=el.offsetWidth,H=el.offsetHeight;if(!W||!H)return;
+  if(!el.dataset.hs)el.dataset.hs=handSeed++;const cs=getComputedStyle(el),br=cs.borderTopLeftRadius;
+  const r=br.includes("%")?Math.min(W,H)*parseFloat(br)/100:parseFloat(br)||0;const d=wobPath(W,H,r,+el.dataset.hs);
+  el.style.clipPath=`path("${d}")`;
+  let svg=el.querySelector(":scope > svg.hl");if(!svg){svg=document.createElementNS("http://www.w3.org/2000/svg","svg");svg.setAttribute("class","hl");svg.setAttribute("aria-hidden","true");svg.appendChild(document.createElementNS("http://www.w3.org/2000/svg","path"));el.prepend(svg);}
+  svg.setAttribute("viewBox",`0 0 ${W} ${H}`);svg.firstChild.setAttribute("d",d);}
+const handRO=new ResizeObserver(es=>es.forEach(e=>handify(e.target)));
+function handAll(root=document){(root.matches&&root.matches(".hand")?[root]:[]).concat([...root.querySelectorAll(".hand")]).forEach(el=>{if(!el.dataset.hro){el.dataset.hro=1;handRO.observe(el);}handify(el);});}
+new MutationObserver(ms=>ms.forEach(m=>m.addedNodes.forEach(n=>{if(n.nodeType===1&&!n.classList.contains("hl"))handAll(n);}))).observe(document.body,{childList:true,subtree:true});
+/* 검토 표시(임시 문구·예시)는 시안 페이지에서만. 시험·실제 주소에서는 주소 끝에 ?review 를 붙이면 보임 */
+if(!/github\.io$|somsomcity\.com$/.test(location.hostname)||/review/.test(location.search+location.hash))document.documentElement.classList.add("review");
 const IG="https://www.instagram.com/somsomcity.official/", YT="https://www.youtube.com/@somsomcity.official";
 const igSvg='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-3.3-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8C2.4 3.9 3.9 2.4 7.2 2.3 8.4 2.2 8.8 2.2 12 2.2zm0 4.7a5.1 5.1 0 100 10.2 5.1 5.1 0 000-10.2zm0 8.4a3.3 3.3 0 110-6.6 3.3 3.3 0 010 6.6zm5.3-9.8a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4z"/></svg>';
 const ytSvg='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M23 7.2a3 3 0 00-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 001 7.2 31 31 0 00.5 12a31 31 0 00.5 4.8 3 3 0 002.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 002.1-2.1 31 31 0 00.5-4.8 31 31 0 00-.5-4.8zM9.7 15.1V8.9l5.8 3.1-5.8 3.1z"/></svg>';
@@ -415,7 +459,7 @@ const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /* 공통 버튼 */
 document.querySelectorAll("[data-sns-btns]").forEach(e=>e.innerHTML=`<a class="btn fill hand" href="${IG}">${igSvg}인스타그램 팔로우</a><a class="btn pink hand" href="${YT}">${ytSvg}유튜브 구독</a>`);
-document.querySelector("[data-goods-btn]").innerHTML=`<a class="btn purple hand" href="${IG}">${igSvg}굿즈 소식 받기</a>`;
+document.querySelector("[data-goods-btn]").innerHTML=`<a class="btn fill hand" href="${IG}">${igSvg}굿즈 소식 받기</a>`;
 document.querySelectorAll("[data-faces]").forEach(n=>n.innerHTML=ORDER.map(id=>`<a class="face" href="#s-${id}" data-face="${id}" aria-label="${by[id].ko} 장면으로"><img src="img/face_${id}.png" alt=""></a>`).join(""));
 
 /* ---------- 1. 동네 입구: PC는 한 줄로, 휴대폰은 한 칸씩 넘기기 ---------- */
@@ -531,9 +575,9 @@ const svgNS="http://www.w3.org/2000/svg", relsvg=document.getElementById("relsvg
 let svgH="";
 REL.forEach(([a,b,lab,,sug,off],k)=>{const [x1,y1]=NODE[a],[x2,y2]=NODE[b];const mx=(x1+x2)/2+(k%2?18:-18),my=(y1+y2)/2+(k%2?-14:14);
   const lx=(x1+x2)/2+(off?off[0]:0), ly=(y1+y2)/2+(off?off[1]:0);   /* 이름표가 겹치는 선은 글자 위치만 옮김 */
-  svgH+=`<g class="edge ${sug?"sug":""}" data-a="${a}" data-b="${b}"><path d="M${x1} ${y1} Q${mx} ${my} ${x2} ${y2}"/>${lab?`<rect x="${lx-lab.length*11-14}" y="${ly-20}" width="${lab.length*22+28}" height="38" rx="19"/><text x="${lx}" y="${ly+8}" text-anchor="middle">${lab}</text>`:""}</g>`;});
+  svgH+=`<g class="edge ${sug?"sug":""}" data-a="${a}" data-b="${b}"><path d="${wobQuad(x1,y1,mx,my,x2,y2,k+11)}"/>${lab?`<path class="lab" transform="translate(${lx-lab.length*11-14} ${ly-20})" d="${wobPath(lab.length*22+28,38,19,k+3)}"/><text x="${lx}" y="${ly+8}" text-anchor="middle">${lab}</text>`:""}</g>`;});
 Object.entries(NODE).forEach(([id,[x,y]])=>{const r=id==="kkito"||id==="boneul"?66:56;
-  svgH+=`<g class="node" data-id="${id}" tabindex="0" role="button" aria-label="${by[id].ko}의 관계 보기"><circle class="ring" cx="${x}" cy="${y}" r="${r+5}"/><clipPath id="c-${id}"><circle cx="${x}" cy="${y}" r="${r}"/></clipPath><image href="img/face_${id}.png" x="${x-r}" y="${y-r}" width="${r*2}" height="${r*2}" clip-path="url(#c-${id})"/><text x="${x}" y="${y+r+34}">${by[id].ko}</text></g>`;});
+  svgH+=`<g class="node" data-id="${id}" tabindex="0" role="button" aria-label="${by[id].ko}의 관계 보기"><path class="ring" d="${wobCircle(x,y,r+5,x+y)}"/><clipPath id="c-${id}"><circle cx="${x}" cy="${y}" r="${r}"/></clipPath><image href="img/face_${id}.png" x="${x-r}" y="${y-r}" width="${r*2}" height="${r*2}" clip-path="url(#c-${id})"/><text x="${x}" y="${y+r+34}">${by[id].ko}</text></g>`;});
 relsvg.innerHTML=svgH;
 const rellist=document.getElementById("rellist"), relmap=document.getElementById("relmap");
 rellist.innerHTML=REL.filter(r=>r[3]).map(([a,b,lab,txt,sug])=>`<div class="item hand" data-a="${a}" data-b="${b}"><b>${by[a].ko} · ${by[b].ko}<small>${lab}</small>${sug?'<span class="temp">제안 설정</span>':''}</b><p>${txt}${a==="lachilchin"?" (보늘·람다 등 모두에게)":""}</p></div>`).join("");
@@ -566,8 +610,8 @@ function placeBubs(){document.querySelectorAll("[data-scene]").forEach(sc=>{cons
   let left=right?ax-bw-22:ax+aw+22;left=Math.min(Math.max(left,16),PW-bw-16);
   const top=Math.min(Math.max(head-bh*.35,PH*.06),PH-bh-16);
   b.style.left=left+"px";b.style.top=top+"px";drawBub({side:right?"r":"l",at:head-top},b);b.classList.add("ready");});}
-if(document.fonts)document.fonts.ready.then(placeBubs);
-let pbT;addEventListener("resize",()=>{clearTimeout(pbT);pbT=setTimeout(placeBubs,120);});
+if(document.fonts)document.fonts.ready.then(()=>{placeBubs();typeof drawSecsay==="function"&&drawSecsay();});
+let pbT;addEventListener("resize",()=>{clearTimeout(pbT);pbT=setTimeout(()=>{placeBubs();drawSecsay();drawDividers();},120);});
 /* 상세 카드: 버튼을 누르면 열림. 이전·다음 이웃으로 넘겨 볼 수 있음 */
 const dlg=document.getElementById("detail"),dtBody=document.getElementById("dtBody");let dtId=null,dtFrom=null;
 function fillDetail(id){const p=by[id];dtId=id;
@@ -597,8 +641,8 @@ document.querySelectorAll("canvas[data-act]").forEach(cv=>{const id=cv.dataset.a
 });
 
 /* ---------- 4. 소식 (예시) ---------- */
-document.querySelector("[data-ig]").innerHTML=ORDER.map(id=>`<a class="post hand" href="${IG}" style="background:${by[id].tint}"><span class="ex">예시</span><img src="img/pose_${id}_${by[id].pose}.png" alt="${by[id].ko} 예시 게시물"></a>`).join("");
-document.querySelector("[data-yt]").innerHTML=[["901","끼토의 외출 준비"],["sofa","보늘의 소파 생활"],["acorn","도토리 상점 나이테존"],["granny","할머니의 티타임"]].map(([b,t])=>`<a class="short hand" href="${YT}" style="background-image:url(img/bg_${b}.jpg)"><span class="ex">쇼츠 예시</span><span class="play" aria-hidden="true"></span><span class="t">${t}</span></a>`).join("");
+document.querySelector("[data-ig]").innerHTML=ORDER.map(id=>`<a class="post hand" href="${IG}" style="background:${by[id].tint} url(img/bg_${by[id].bg}.jpg) center/cover"><span class="ex">예시</span><img src="img/pose_${id}_${by[id].pose}.png" alt="${by[id].ko} 예시 게시물"></a>`).join("");
+document.querySelector("[data-yt]").innerHTML=[["901","kkito","끼토의 외출 준비"],["sofa","boneul","보늘의 소파 생활"],["acorn","ramda","도토리 상점 나이테존"],["granny","lachilchin","할머니의 티타임"]].map(([b,id,t])=>`<a class="short hand" href="${YT}" style="background-image:url(img/bg_${b}.jpg)"><span class="ex">쇼츠 예시</span><img class="who" src="img/pose_${id}_${by[id].pose}.png" alt=""><span class="play" aria-hidden="true"></span><span class="t">${t}</span></a>`).join("");
 
 /* 메일 복사 */
 document.getElementById("copy").addEventListener("click",async e=>{try{await navigator.clipboard.writeText("kkito@somsomcity.com");e.currentTarget.textContent="복사했어요";}catch{const r=document.createRange();r.selectNodeContents(document.getElementById("mail"));const s=getSelection();s.removeAllRanges();s.addRange(r);e.currentTarget.textContent="주소를 선택했어요";}});
@@ -661,7 +705,16 @@ document.querySelectorAll("[data-scene]").forEach(sc=>ScrollTrigger.create({trig
   const tick=()=>{n++;bar.style.width=Math.max(8,n/ims.length*100)+"%";if(n>=ims.length)close();};
   ims.forEach(im=>{if(im.complete&&im.naturalWidth)tick();else{im.addEventListener("load",tick,{once:true});im.addEventListener("error",tick,{once:true});}});
   setTimeout(close,8000);})();
-function init(){placeBubs();layout();P.forEach((p,i)=>draw(i,0));if(isMob())pick(2,false);}
+/* 구간 한마디 (임시 문구, 은녕 확인 전) */
+document.querySelectorAll("[data-secsay]").forEach(el=>{const id=el.dataset.secsay;
+  el.innerHTML=`<span class="face hand"><img src="img/face_${id}.png" alt="${esc(by[id].ko)}"></span><div class="sb"><svg class="bub" aria-hidden="true"><path/></svg>${esc(el.dataset.line)}<span class="temp">임시 문구</span></div>`;});
+function drawSecsay(){document.querySelectorAll("[data-secsay] .sb").forEach(b=>{if(b.offsetWidth)drawBub({side:"l",at:b.offsetHeight/2},b);});}
+/* 구간 사이 손그림 땅선: 살짝 울퉁불퉁한 선 + 풀 몇 포기 */
+function drawDividers(){document.querySelectorAll("[data-divider]").forEach((el,n)=>{const W=el.clientWidth-36,H=46,y=30;if(W<=0)return;let d=`M 0 ${y}`,g="";
+  for(let x=24;x<=W;x+=24)d+=` Q ${x-12} ${y+jit(n+7,x)*2.2} ${x} ${y+jit(n+3,x)*1.2}`;
+  [.18,.52,.83].forEach((f,i)=>{const x=W*f+jit(n,i)*30;g+=`M ${x-6} ${y} q -2 -9 -6 -13 M ${x} ${y} q 0 -12 2 -17 M ${x+6} ${y} q 3 -8 7 -11 `;});
+  el.innerHTML=`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"><path d="${d}"/><path class="g" d="${g}"/></svg>`;});}
+function init(){drawDividers();handAll();placeBubs();drawSecsay();layout();P.forEach((p,i)=>draw(i,0));if(isMob())pick(2,false);}
 addEventListener("load",()=>{init();if(window.ScrollTrigger)ScrollTrigger.refresh();});
 init();
 </script>
