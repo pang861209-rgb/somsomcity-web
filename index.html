@@ -6,7 +6,21 @@
 <!-- 공개 전 시험 기간: 검색에 노출되지 않게 (11/30 공개 때 삭제) -->
 <meta name="robots" content="noindex, nofollow">
 <meta name="description" content="소심한 완벽주의자와 태평한 귀차니스트, 그리고 그들을 둘러싼 솜솜시티 이웃들의 우당탕탕 일상">
-<link rel="icon" href="img/face_kkito.png">
+<link rel="icon" href="img/face_kkito.webp">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<meta name="theme-color" content="#FBF8F1">
+<!-- 링크 공유 미리보기 (카카오톡·인스타·페이스북·X). 주소는 도메인 연결(somsomcity.com) 후 바꿔야 함 -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="솜솜시티">
+<meta property="og:title" content="솜솜시티 Somsom City">
+<meta property="og:description" content="소심한 완벽주의자와 태평한 귀차니스트, 그리고 그들을 둘러싼 솜솜시티 이웃들의 우당탕탕 일상">
+<meta property="og:url" content="https://pang861209-rgb.github.io/somsomcity-web/">
+<meta property="og:image" content="https://pang861209-rgb.github.io/somsomcity-web/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="솜솜시티 로고와 거리에 선 이웃 여섯">
+<meta name="twitter:card" content="summary_large_image">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}</style>
 <title>솜솜시티 Somsom City</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -167,8 +181,10 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
   .track{bottom:46px;height:58%}
   .arrow{display:grid;position:absolute;bottom:40%;z-index:6;width:40px;height:40px;border-radius:50%;background:#fff;place-items:center;font-size:20px}
   .arrow.l{left:max(8px,env(safe-area-inset-left,0px))}.arrow.r{right:max(8px,env(safe-area-inset-right,0px))}
-  .say{left:50%!important;bottom:12px!important;top:auto!important;transform:translate(-50%,20px);transform-origin:50% 100%!important}
+  .say{left:50%!important;top:72px!important;bottom:auto!important;transform:translate(-50%,-12px) scale(.94);transform-origin:50% 100%!important}
   .say.show{transform:translate(-50%,0)}
+  .stage .logo{transition:opacity .25s}
+  .stage:has(.say.show) .logo{opacity:0!important}
 }
 
 /* ---------- 2. 세계관 ---------- */
@@ -296,8 +312,8 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justif
 <body>
 
 <div class="loader" id="loader" role="status" aria-live="polite" aria-label="솜솜시티를 불러오는 중">
-  <img class="lg" src="img/logo_cloud.png" alt="">
-  <div class="faces" aria-hidden="true"><img src="img/face_kkito.png" alt=""><img src="img/face_boneul.png" alt=""><img src="img/face_migae.png" alt=""><img src="img/face_ramda.png" alt=""><img src="img/face_lachilchin.png" alt=""><img src="img/face_bookgeo.png" alt=""></div>
+  <img class="lg" src="img/logo_cloud.webp" alt="">
+  <div class="faces" aria-hidden="true"><img src="img/face_kkito.webp" alt=""><img src="img/face_boneul.webp" alt=""><img src="img/face_migae.webp" alt=""><img src="img/face_ramda.webp" alt=""><img src="img/face_lachilchin.webp" alt=""><img src="img/face_bookgeo.webp" alt=""></div>
   <div class="bar" aria-hidden="true"><i id="ldbar"></i></div>
   <p>솜솜시티로 가는 중…</p>
 </div>
@@ -308,7 +324,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justif
 </svg>
 
 <header class="top" id="top"><div class="wrap">
-  <a href="#stage" aria-label="처음으로"><img class="mark" src="img/logo_cloud.png" alt="솜솜시티"></a>
+  <a href="#stage" aria-label="처음으로"><img class="mark" src="img/logo_cloud.webp" alt="솜솜시티"></a>
   <nav aria-label="주 메뉴"><ul class="menu" id="menu">
     <li><a class="m" href="#world" data-sec="world">솜솜시티</a></li>
     <li><button class="m" type="button" id="whoBtn" data-sec="who" aria-expanded="false" aria-controls="drop">이웃들 ▾</button><div class="drop hand" id="drop" data-drop></div></li>
@@ -322,7 +338,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justif
 <nav class="tabbar" id="tabbar" aria-label="이웃 바로 가기" data-faces></nav>
 <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="메뉴">
   <div class="sheet-in">
-    <div class="sheet-head"><img src="img/logo_cloud.png" alt="솜솜시티"><button class="close hand" type="button" id="closeSheet">닫기 ✕</button></div>
+    <div class="sheet-head"><img src="img/logo_cloud.webp" alt="솜솜시티"><button class="close hand" type="button" id="closeSheet">닫기 ✕</button></div>
     <nav aria-label="주 메뉴"><ol>
       <li><a href="#world" data-close>솜솜시티 <small>세계관 · 이웃 관계도</small></a></li>
       <li><a href="#s-kkito" data-close>이웃들 <small>여섯 이웃의 집에 놀러 가기</small></a></li>
@@ -340,7 +356,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justif
   <section class="stage" id="stage" aria-label="솜솜시티 동네 입구">
     <button class="float-menu hand" type="button" data-open-sheet aria-controls="sheet" aria-expanded="false">메뉴</button>
     <img class="bg" id="bg" src="img/street2_a.jpg" alt="당근빌라, 도토리 상점, 대나무숲 빌라가 있는 솜솜시티 거리 (AI 시안)">
-    <img class="logo" src="img/logo_cloud.png" alt="솜솜시티">
+    <img class="logo" src="img/logo_cloud.webp" alt="솜솜시티">
     <p class="lead">소심한 완벽주의자와 태평한 귀차니스트, 그리고 그들을 둘러싼 솜솜시티 이웃들의 우당탕탕 일상</p>
     <div class="track" id="track" role="listbox" aria-label="이웃 고르기"></div>
     <button class="arrow l hand" id="prev" type="button" aria-label="이전 이웃">‹</button>
@@ -383,7 +399,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justif
   <div class="wrap divider" data-divider aria-hidden="true"></div>
   <section class="wrap closing">
     <div class="secsay" data-secsay="lachilchin" data-line="또 놀러 오렴~"></div>
-    <img src="img/logo_cloud.png" alt="솜솜시티 로고">
+    <img src="img/logo_cloud.webp" alt="솜솜시티 로고">
     <p class="ko">그래서 우리가 널 좋아해</p>
     <p class="en">That's why we love you.</p>
     <div class="btns" style="justify-content:center" data-sns-btns></div>
@@ -460,29 +476,38 @@ const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
 /* 공통 버튼 */
 document.querySelectorAll("[data-sns-btns]").forEach(e=>e.innerHTML=`<a class="btn fill hand" href="${IG}">${igSvg}인스타그램 팔로우</a><a class="btn pink hand" href="${YT}">${ytSvg}유튜브 구독</a>`);
 document.querySelector("[data-goods-btn]").innerHTML=`<a class="btn fill hand" href="${IG}">${igSvg}굿즈 소식 받기</a>`;
-document.querySelectorAll("[data-faces]").forEach(n=>n.innerHTML=ORDER.map(id=>`<a class="face" href="#s-${id}" data-face="${id}" aria-label="${by[id].ko} 장면으로"><img src="img/face_${id}.png" alt=""></a>`).join(""));
+document.querySelectorAll("[data-faces]").forEach(n=>n.innerHTML=ORDER.map(id=>`<a class="face" href="#s-${id}" data-face="${id}" aria-label="${by[id].ko} 장면으로"><img src="img/face_${id}.webp" alt=""></a>`).join(""));
 
 /* ---------- 1. 동네 입구: PC는 한 줄로, 휴대폰은 한 칸씩 넘기기 ---------- */
 const stage=document.getElementById("stage"),track=document.getElementById("track"),bg=document.getElementById("bg"),say=document.getElementById("say"),hint=document.getElementById("hint");
-const sprite={};P.forEach(p=>{const im=new Image();im.src=`img/anim_${p.id}.webp`;sprite[p.id]=im;});
+/* 첫 화면은 이웃 정지 그림(6장, 약 150KB)부터 띄우고, 움직임 그림(약 4.5MB)은 화면이 뜬 다음 뒤에서 받음 */
+const still={},sprite={};P.forEach(p=>{const im=new Image();im.src=`img/still_${p.id}.webp`;still[p.id]=im;});
+const sheetOK=id=>{const im=sprite[id];return !!(im&&im.complete&&im.naturalWidth);};
+function loadSheets(){P.forEach((p,i)=>{if(sprite[p.id])return;const im=new Image();im.decoding="async";im.src=`img/anim_${p.id}.webp`;sprite[p.id]=im;});}
 track.innerHTML=P.map((p,i)=>`<button class="slot" type="button" role="option" data-i="${i}" aria-label="${p.ko}에게 인사하기"><span class="fig">${shdH(FOOT[p.id])}<canvas width="${ANIM[p.id].w}" height="${ANIM[p.id].h}"></canvas></span></button>`).join("");
 const slots=[...track.children], cvs=slots.map(s=>s.querySelector("canvas"));
-function draw(i,f){const id=P[i].id,a=ANIM[id],im=sprite[id],c=cvs[i].getContext("2d");if(!im.complete||!im.naturalWidth)return;c.clearRect(0,0,a.w,a.h);c.drawImage(im,(f%a.cols)*a.w,Math.floor(f/a.cols)*a.h,a.w,a.h,0,0,a.w,a.h);}
-P.forEach((p,i)=>sprite[p.id].addEventListener("load",()=>draw(i,0)));
+function draw(i,f){const id=P[i].id,a=ANIM[id],c=cvs[i].getContext("2d");
+  if(sheetOK(id)){c.clearRect(0,0,a.w,a.h);c.drawImage(sprite[id],(f%a.cols)*a.w,Math.floor(f/a.cols)*a.h,a.w,a.h,0,0,a.w,a.h);return;}
+  const st=still[id];if(st.complete&&st.naturalWidth){c.clearRect(0,0,a.w,a.h);c.drawImage(st,0,0,a.w,a.h);}}
+P.forEach((p,i)=>still[p.id].addEventListener("load",()=>draw(i,0)));
 let cur=isMob()?2:-1, raf=null, dragX=0;
 /* 가운데(선택) 크기 보정: 은녕 의견 반영 (11/3) */
 const ZM={kkito:1.18,boneul:1.08,ramda:1,bookgeo:1,lachilchin:.85,migae:.54}, WC={boneul:1.3};
 function layout(){
   const W=stage.clientWidth,H=track.clientHeight,mob=isMob();
-  const SW=mob?W*.5:Math.min(W*.86,1500)/P.length;
-  slots.forEach((s,i)=>{const p=P[i],ar=ANIM[p.id].w/ANIM[p.id].h;s.style.width=SW+"px";let hh;
-    if(mob){hh=i===cur?Math.min(H*.92*ZM[p.id],W*(WC[p.id]||1)/ar):H*.42*p.h/108;}
-    else{hh=H*.9*p.h/108*(i===cur?1.12:1);hh=Math.max(hh,H*.16);}
-    s.querySelector(".fig").style.height=hh+"px";});
+  const SW=W*.5;
+  if(mob){slots.forEach((s,i)=>{const p=P[i],ar=ANIM[p.id].w/ANIM[p.id].h;s.style.width=SW+"px";
+    s.querySelector(".fig").style.height=(i===cur?Math.min(H*.92*ZM[p.id],W*(WC[p.id]||1)/ar):H*.42*p.h/108)+"px";});}
+  else{/* PC·태블릿: 이웃마다 그림 폭만큼 자리를 주고, 다 합쳐 화면보다 넓으면 모두 같은 비율로 줄임 → 서로 가리지 않음 (11/3) */
+    const avail=Math.min(W*.94,1500),gap=Math.max(12,W*.014);
+    const hs=P.map((p,i)=>Math.max(H*.9*p.h/108*(i===cur?1.12:1),H*.16)),ws=hs.map((h,i)=>h*ANIM[P[i].id].w/ANIM[P[i].id].h);
+    const k=Math.min(1,avail/(ws.reduce((a,b)=>a+b,0)+gap*P.length));let tot=0;
+    slots.forEach((s,i)=>{const sw=(ws[i]+gap)*k;tot+=sw;s.style.width=sw+"px";s.querySelector(".fig").style.height=hs[i]*k+"px";s.style.zIndex=i===cur?3:String(2+(P[i].h<60?1:0));});
+    track.dataset.tot=tot;}
   if(mob){track.style.transform=`translateX(${W/2-(Math.max(cur,0)+.5)*SW+dragX}px)`;const room=bg.offsetWidth-W;bg.style.transform=`translateX(${-(Math.max(cur,0)/(P.length-1))*Math.max(0,room)-dragX*.3}px)`;}
-  else{track.style.transform=`translateX(${(W-SW*P.length)/2}px)`;bg.style.transform="";}
+  else{track.style.transform=`translateX(${(W-(+track.dataset.tot||0))/2}px)`;bg.style.transform="";}
 }
-function play(i){cancelAnimationFrame(raf);if(typeof idleStopOne==="function"){idleStopOne(i);}const n=ANIM[P[i].id].n;let f=0,last=0;
+function play(i){cancelAnimationFrame(raf);if(!sheetOK(P[i].id)){draw(i,0);return;}if(typeof idleStopOne==="function"){idleStopOne(i);}const n=ANIM[P[i].id].n;let f=0,last=0;
   const step=t=>{if(t-last>=83){draw(i,f);f++;last=t;}if(f<n)raf=requestAnimationFrame(step);else{draw(i,0);raf=null;if(typeof idleSched==="function")idleSched(i);}};raf=requestAnimationFrame(step);}
 /* 말풍선 모양: 둥근 몸통과 꼬리를 끊김 없는 선 하나로. 변마다 아주 살짝 휘게 해서 손으로 그린 느낌 */
 function drawBub(tail,box=say){const svg=box.querySelector(".bub"),W=box.offsetWidth,H=box.offsetHeight,r=22;
@@ -494,24 +519,34 @@ function drawBub(tail,box=say){const svg=box.querySelector(".bub"),W=box.offsetW
   let d=`M ${r} 0`+(t.side==="t"?bend(r,0,a-w,0)+` Q ${a-3} -5 ${a+3} -17 Q ${a+4} -5 ${a+w} 0`+bend(a+w,0,W-r,0):bend(r,0,W-r,0))+` Q ${W} 0 ${W} ${r}`;
   if(t.side==="r")d+=bend(W,r,W,a-w)+` Q ${W+5} ${a-2} ${W+17} ${a+3} Q ${W+5} ${a+5} ${W} ${a+w}`+bend(W,a+w,W,H-r);else d+=bend(W,r,W,H-r);
   d+=` Q ${W} ${H} ${W-r} ${H}`;
-  if(t.side==="b")d+=bend(W-r,H,a+w,H)+` Q ${a+3} ${H+5} ${a-3} ${H+17} Q ${a-4} ${H+5} ${a-w} ${H}`+bend(a-w,H,r,H);else d+=bend(W-r,H,r,H);
+  const TL=t.len||17;if(t.side==="b")d+=bend(W-r,H,a+w,H)+` Q ${a+3} ${H+TL*.35} ${a-3} ${H+TL} Q ${a-4} ${H+TL*.35} ${a-w} ${H}`+bend(a-w,H,r,H);else d+=bend(W-r,H,r,H);
   d+=` Q 0 ${H} 0 ${H-r}`;
   if(t.side==="l")d+=bend(0,H-r,0,a+w)+` Q -5 ${a+5} -17 ${a+3} Q -5 ${a-2} 0 ${a-w}`+bend(0,a-w,0,r);else d+=bend(0,H-r,0,r);
   d+=` Q 0 0 ${r} 0 Z`;
   svg.setAttribute("width",W);svg.setAttribute("height",H);svg.querySelector("path").setAttribute("d",d);
-  if(box!==say||!isMob())box.style.transformOrigin=t.side==="b"?`${a}px ${H+16}px`:t.side==="t"?`${a}px -16px`:t.side==="l"?`-16px ${a}px`:t.side==="r"?`${W+16}px ${a}px`:"50% 100%";}
+  if(box!==say||!isMob())box.style.transformOrigin=t.side==="b"?`${a}px ${H+(t.len||17)}px`:t.side==="t"?`${a}px -16px`:t.side==="l"?`-16px ${a}px`:t.side==="r"?`${W+16}px ${a}px`:"50% 100%";}
 function showSay(i){const p=P[i];
   say.innerHTML=`<svg class="bub" aria-hidden="true"><path/></svg><p class="nm">${esc(p.ko)}<small>${modH(p)}</small></p><p class="line">${hiH(p)}</p><a class="btn fill hand" href="#s-${p.id}" data-go>우리 집 놀러 가기 →</a>`;let tail=null;
-  if(!isMob()){const r=slots[i].querySelector(".fig").getBoundingClientRect(),sr=stage.getBoundingClientRect();
-    const x=Math.min(Math.max(r.left+r.width/2-sr.left,190),sr.width-190);say.classList.remove("side","flip");say.style.left=(x-170)+"px";say.style.top=Math.max(12,r.top-sr.top-150)+"px";
-    tail={side:"b",at:r.left+r.width/2-sr.left-(x-170)};
-    const lg=stage.querySelector(".logo").getBoundingClientRect(),sy=say.getBoundingClientRect(),top=Math.max(12,r.top-sr.top-150);
-    const hit=!(sr.left+x+170<lg.left||sr.left+x-170>lg.right||sr.top+top+sy.height<lg.top||sr.top+top>lg.bottom);
-    if(hit){const flip=r.right-sr.left+360>sr.width;say.classList.add("side");say.classList.toggle("flip",flip);
-      say.style.left=(flip?r.left-sr.left-340-14:r.right-sr.left+14)+"px";const nb=cvs[i+(flip?-1:1)],nt=nb?nb.getBoundingClientRect().top-sr.top-sy.height-10:1e9;
-      const tp=Math.max(lg.bottom-sr.top+8,Math.min(r.top-sr.top+r.height*.08,nt));say.style.top=tp+"px";
-      tail={side:flip?"r":"l",at:r.top-sr.top+Math.min(r.height*.16,60)-tp};}}
+  /* PC: 말풍선 자리 후보(위·위 왼쪽·위 오른쪽·옆) 중 다른 이웃과 로고를 가장 덜 가리는 곳을 고름 (11/3) */
+  if(!isMob()){const SWt=stage.clientWidth,SHt=stage.clientHeight,tot=+track.dataset.tot||0,base=track.offsetTop+track.offsetHeight;
+    const rect=k=>{let x=(SWt-tot)/2;for(let j=0;j<k;j++)x+=parseFloat(slots[j].style.width);const sw=parseFloat(slots[k].style.width),h=parseFloat(slots[k].querySelector(".fig").style.height),w=h*ANIM[P[k].id].w/ANIM[P[k].id].h,l=x+(sw-w)/2;return {l,r:l+w,t:base-h,b:base,w,h,cx:l+w/2};};
+    const me=rect(i),others=P.map((_,k)=>k).filter(k=>k!==i).map(k=>{const q=rect(k);return {l:q.l+q.w*.15,r:q.r-q.w*.15,t:q.t+q.h*.05,b:q.b};});
+    const sr=stage.getBoundingClientRect(),lr=stage.querySelector(".logo").getBoundingClientRect(),logo={l:lr.left-sr.left,r:lr.right-sr.left,t:lr.top-sr.top,b:lr.bottom-sr.top};
+    const bw=say.offsetWidth,bh=say.offsetHeight,head=me.t+Math.min(me.h*.16,60);
+    const ov=(a,b)=>Math.max(0,Math.min(a.r,b.r)-Math.max(a.l,b.l))*Math.max(0,Math.min(a.b,b.b)-Math.max(a.t,b.t));
+    const cand=[["b",me.cx-bw/2,me.t-bh-22,0],["b",me.cx-bw*.18,me.t-bh-22,60],["b",me.cx-bw*.82,me.t-bh-22,60],["l",me.r+12,head-bh*.4,250],["r",me.l-bw-12,head-bh*.4,250]];
+    const hiTop=Math.min(...others.map(o=>o.t))-bh-14;if(hiTop>10)[.5,.18,.82].forEach(f=>cand.push(["b",me.cx-bw*f,hiTop,120,Math.min(140,me.t-(hiTop+bh)-4)]));
+    let best=null;cand.forEach(([sd,x,y,bias,len])=>{x=Math.min(Math.max(x,10),SWt-bw-10);y=Math.min(Math.max(y,10),SHt-bh-10);
+      const at=sd==="b"?me.cx-x:head-y,rng=sd==="b"?[34,bw-34]:[30,bh-30];const box={l:x,r:x+bw,t:y,b:y+bh};
+      let sc=bias+ov(box,logo)*4+ov(box,{l:me.l+me.w*.1,r:me.r-me.w*.1,t:me.t,b:me.b})*2+others.reduce((a,o)=>a+ov(box,o),0);
+      if(at<rng[0]||at>rng[1])sc+=1e7;if(sd==="b"&&y+bh>me.t+8)sc+=1e6;
+      if(len&&(len<17||y+bh+len>me.t+4))sc+=1e6;
+      if(!best||sc<best.sc)best={sd,x,y,at,sc,len};});
+    say.style.left=best.x+"px";say.style.top=best.y+"px";tail={side:best.sd,at:best.at,len:best.len};}
+  if(isMob()){tail={side:"b",at:say.offsetWidth/2};}
   drawBub(tail);
+  /* 휴대폰: 키 큰 이웃 머리가 말풍선에 닿으면 그만큼만 살짝 줄임 */
+  if(isMob()){const fig=slots[i].querySelector(".fig"),h=parseFloat(fig.style.height),top=fig.getBoundingClientRect().bottom-h,sb=say.getBoundingClientRect().bottom+18;if(top<sb)fig.style.height=Math.max(h*.6,h-(sb-top))+"px";}
   say.classList.add("show");hint.style.opacity=0;
   say.querySelector("[data-go]").addEventListener("click",e=>{e.preventDefault();visit(p.id);});}
 function pick(i,greet=true){cur=Math.max(0,Math.min(P.length-1,i));stage.classList.add("picked");
@@ -543,7 +578,7 @@ const rnd=(a,b)=>a+Math.random()*(b-a);
 function idleSched(i,first){clearTimeout(idleT[i]);idleT[i]=setTimeout(()=>idlePlay(i),first?rnd(300,2600):rnd(900,3800));}
 function idlePlay(i){if(reduce||!stageVis)return;
   const sr=stage.getBoundingClientRect(),r=cvs[i].getBoundingClientRect();
-  if((raf&&i===cur)||r.right<sr.left||r.left>sr.right){idleSched(i);return;}
+  if((raf&&i===cur)||!sheetOK(P[i].id)||r.right<sr.left||r.left>sr.right){idleSched(i);return;}
   const n=ANIM[P[i].id].n;let f=0,last=0;
   const step=t=>{if(raf&&i===cur){idleRaf[i]=null;idleSched(i);return;}
     if(t-last>=83){draw(i,f);f++;last=t;}
@@ -577,7 +612,7 @@ REL.forEach(([a,b,lab,,sug,off],k)=>{const [x1,y1]=NODE[a],[x2,y2]=NODE[b];const
   const lx=(x1+x2)/2+(off?off[0]:0), ly=(y1+y2)/2+(off?off[1]:0);   /* 이름표가 겹치는 선은 글자 위치만 옮김 */
   svgH+=`<g class="edge ${sug?"sug":""}" data-a="${a}" data-b="${b}"><path d="${wobQuad(x1,y1,mx,my,x2,y2,k+11)}"/>${lab?`<path class="lab" transform="translate(${lx-lab.length*11-14} ${ly-20})" d="${wobPath(lab.length*22+28,38,19,k+3)}"/><text x="${lx}" y="${ly+8}" text-anchor="middle">${lab}</text>`:""}</g>`;});
 Object.entries(NODE).forEach(([id,[x,y]])=>{const r=id==="kkito"||id==="boneul"?66:56;
-  svgH+=`<g class="node" data-id="${id}" tabindex="0" role="button" aria-label="${by[id].ko}의 관계 보기"><path class="ring" d="${wobCircle(x,y,r+5,x+y)}"/><clipPath id="c-${id}"><circle cx="${x}" cy="${y}" r="${r}"/></clipPath><image href="img/face_${id}.png" x="${x-r}" y="${y-r}" width="${r*2}" height="${r*2}" clip-path="url(#c-${id})"/><text x="${x}" y="${y+r+34}">${by[id].ko}</text></g>`;});
+  svgH+=`<g class="node" data-id="${id}" tabindex="0" role="button" aria-label="${by[id].ko}의 관계 보기"><path class="ring" d="${wobCircle(x,y,r+5,x+y)}"/><clipPath id="c-${id}"><circle cx="${x}" cy="${y}" r="${r}"/></clipPath><image href="img/face_${id}.webp" x="${x-r}" y="${y-r}" width="${r*2}" height="${r*2}" clip-path="url(#c-${id})"/><text x="${x}" y="${y+r+34}">${by[id].ko}</text></g>`;});
 relsvg.innerHTML=svgH;
 const rellist=document.getElementById("rellist"), relmap=document.getElementById("relmap");
 rellist.innerHTML=REL.filter(r=>r[3]).map(([a,b,lab,txt,sug])=>`<div class="item hand" data-a="${a}" data-b="${b}"><b>${by[a].ko} · ${by[b].ko}<small>${lab}</small>${sug?'<span class="temp">제안 설정</span>':''}</b><p>${txt}${a==="lachilchin"?" (보늘·람다 등 모두에게)":""}</p></div>`).join("");
@@ -593,7 +628,7 @@ document.querySelector("[data-scenes]").innerHTML=ORDER.map(id=>{const p=by[id];
   /* 장면 속 키 (11/3 은녕 의견: 끼토·보늘 크게, 람다 살짝 크게, 미개 조금 작게) */
   const ah={kkito:68,boneul:64,ramda:46,lachilchin:37,bookgeo:44,migae:25}[id];
   return `<section class="scene ${p.side==="R"?"L":"R"}" id="s-${id}" data-scene="${id}">
-   <div class="pic"><div class="bg" style="background-image:url(img/bg_${p.bg}.jpg)"></div>
+   <div class="pic"><div class="bg" data-bgsrc="img/bg_${p.bg}.jpg"></div>
      <div class="actor" style="height:${ah}%;${actorSide}">${shdH(FOOT2[id])}<canvas data-act="${id}" width="${ANIM2[id].w}" height="${ANIM2[id].h}" role="img" aria-label="${esc(p.ko)}"></canvas></div></div>
    <div class="sbub" data-sbub><svg class="bub" aria-hidden="true"><path/></svg>
      <p class="nm">${esc(p.ko)}<small>${modH(p)}</small></p>
@@ -615,7 +650,7 @@ let pbT;addEventListener("resize",()=>{clearTimeout(pbT);pbT=setTimeout(()=>{pla
 /* 상세 카드: 버튼을 누르면 열림. 이전·다음 이웃으로 넘겨 볼 수 있음 */
 const dlg=document.getElementById("detail"),dtBody=document.getElementById("dtBody");let dtId=null,dtFrom=null;
 function fillDetail(id){const p=by[id];dtId=id;
-  dtBody.innerHTML=`<div class="dt-top"><img class="face" src="img/face_${id}.png" alt=""><div><p class="where">${esc(p.where)}${p.wt?'<span class="temp">제안 설정</span>':''}</p><h3 class="nm" id="dtNm">${esc(p.ko)}<small>${modH(p)}</small></h3></div></div>
+  dtBody.innerHTML=`<div class="dt-top"><img class="face" src="img/face_${id}.webp" alt=""><div><p class="where">${esc(p.where)}${p.wt?'<span class="temp">제안 설정</span>':''}</p><h3 class="nm" id="dtNm">${esc(p.ko)}<small>${modH(p)}</small></h3></div></div>
   <p class="desc">${esc(p.desc)}</p><p class="story"><b>오늘의 장면</b>${esc(p.story)}<span class="temp">문구 은녕 확인</span></p>
   <div class="dt-nav"><button class="btn hand" type="button" data-dstep="-1">← 이전 이웃</button><button class="btn hand" type="button" data-dstep="1">다음 이웃 →</button></div>`;}
 function openDetail(id,from){fillDetail(id);dtFrom=from||null;dlg.classList.remove("closing");if(!dlg.open)dlg.showModal();if(lenis)lenis.stop();}
@@ -628,7 +663,11 @@ document.querySelectorAll("[data-more]").forEach(b=>b.addEventListener("click",(
 
 /* ---------- 이웃 장면: 보이면 대표 동작 한 번, 그다음엔 5초쯤 쉬었다 다시. 누르면 바로 ---------- */
 const sp2={};
-document.querySelectorAll("canvas[data-act]").forEach(cv=>{const id=cv.dataset.act,a=ANIM2[id],im=new Image();im.src=`img/anim2_${id}.webp`;sp2[id]=im;
+/* 장면 그림·배경은 화면에 가까워졌을 때(약 한 화면 앞) 받기 시작 */
+const near=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;const el=e.target;near.unobserve(el);
+  if(el.dataset.bgsrc){el.style.backgroundImage=`url(${el.dataset.bgsrc})`;}
+  if(el.dataset.act&&!el.dataset.loaded){el.dataset.loaded=1;sp2[el.dataset.act].src=`img/anim2_${el.dataset.act}.webp`;}}),{rootMargin:"900px 0px"});
+document.querySelectorAll("canvas[data-act]").forEach(cv=>{const id=cv.dataset.act,a=ANIM2[id],im=new Image();sp2[id]=im;near.observe(cv);
   const ctx=cv.getContext("2d");let f=0,last=0,rest=0,vis=false,run=false;
   const drawF=k=>{if(!im.complete||!im.naturalWidth)return;ctx.clearRect(0,0,a.w,a.h);ctx.drawImage(im,(k%a.cols)*a.w,Math.floor(k/a.cols)*a.h,a.w,a.h,0,0,a.w,a.h);};
   im.addEventListener("load",()=>drawF(0));
@@ -641,16 +680,17 @@ document.querySelectorAll("canvas[data-act]").forEach(cv=>{const id=cv.dataset.a
 });
 
 /* ---------- 4. 소식 (예시) ---------- */
-document.querySelector("[data-ig]").innerHTML=ORDER.map(id=>`<a class="post hand" href="${IG}" style="background:${by[id].tint} url(img/bg_${by[id].bg}.jpg) center/cover"><span class="ex">예시</span><img src="img/pose_${id}_${by[id].pose}.png" alt="${by[id].ko} 예시 게시물"></a>`).join("");
-document.querySelector("[data-yt]").innerHTML=[["901","kkito","끼토의 외출 준비"],["sofa","boneul","보늘의 소파 생활"],["acorn","ramda","도토리 상점 나이테존"],["granny","lachilchin","할머니의 티타임"]].map(([b,id,t])=>`<a class="short hand" href="${YT}" style="background-image:url(img/bg_${b}.jpg)"><span class="ex">쇼츠 예시</span><img class="who" src="img/pose_${id}_${by[id].pose}.png" alt=""><span class="play" aria-hidden="true"></span><span class="t">${t}</span></a>`).join("");
+document.querySelector("[data-ig]").innerHTML=ORDER.map(id=>`<a class="post hand" href="${IG}" style="background:${by[id].tint} center/cover" data-bgsrc="img/bg_${by[id].bg}.jpg"><span class="ex">예시</span><img src="img/pose_${id}_${by[id].pose}.webp" alt="${by[id].ko} 예시 게시물" loading="lazy" decoding="async"></a>`).join("");
+document.querySelector("[data-yt]").innerHTML=[["901","kkito","끼토의 외출 준비"],["sofa","boneul","보늘의 소파 생활"],["acorn","ramda","도토리 상점 나이테존"],["granny","lachilchin","할머니의 티타임"]].map(([b,id,t])=>`<a class="short hand" href="${YT}" data-bgsrc="img/bg_${b}.jpg"><span class="ex">쇼츠 예시</span><img class="who" src="img/pose_${id}_${by[id].pose}.webp" alt="" loading="lazy" decoding="async"><span class="play" aria-hidden="true"></span><span class="t">${t}</span></a>`).join("");
 
+document.querySelectorAll("[data-bgsrc]").forEach(el=>near.observe(el));
 /* 메일 복사 */
 document.getElementById("copy").addEventListener("click",async e=>{try{await navigator.clipboard.writeText("kkito@somsomcity.com");e.currentTarget.textContent="복사했어요";}catch{const r=document.createRange();r.selectNodeContents(document.getElementById("mail"));const s=getSelection();s.removeAllRanges();s.addRange(r);e.currentTarget.textContent="주소를 선택했어요";}});
 
 /* ---------- 메뉴 ---------- */
 document.querySelector("[data-ico]").innerHTML=`<a class="ico hand" href="${IG}" aria-label="인스타그램">${igSvg}</a><a class="ico hand" href="${YT}" aria-label="유튜브" style="color:var(--pink)">${ytSvg}</a>`;
-document.querySelector("[data-drop]").innerHTML=ORDER.map(id=>`<a href="#s-${id}" data-face="${id}"><img src="img/face_${id}.png" alt="">${by[id].ko}</a>`).join("");
-document.querySelector("[data-who6]").innerHTML=ORDER.map(id=>`<a href="#s-${id}" data-close><img src="img/face_${id}.png" alt="">${by[id].ko}</a>`).join("");
+document.querySelector("[data-drop]").innerHTML=ORDER.map(id=>`<a href="#s-${id}" data-face="${id}"><img src="img/face_${id}.webp" alt="">${by[id].ko}</a>`).join("");
+document.querySelector("[data-who6]").innerHTML=ORDER.map(id=>`<a href="#s-${id}" data-close><img src="img/face_${id}.webp" alt="">${by[id].ko}</a>`).join("");
 document.querySelector("[data-sheet-sns]").innerHTML=`<a class="btn fill hand" href="${IG}">${igSvg}인스타그램</a><a class="btn pink hand" href="${YT}">${ytSvg}유튜브</a>`;
 const whoBtn=document.getElementById("whoBtn"),drop=document.getElementById("drop"),sheet=document.getElementById("sheet");
 whoBtn.addEventListener("click",e=>{e.stopPropagation();const o=drop.classList.toggle("open");whoBtn.setAttribute("aria-expanded",String(o));});
@@ -698,16 +738,16 @@ if(!reduce){
 }
 document.querySelectorAll("[data-scene]").forEach(sc=>ScrollTrigger.create({trigger:sc,start:"top 55%",end:"bottom 55%",onToggle:s=>{if(s.isActive)document.querySelectorAll("[data-face]").forEach(f=>f.setAttribute("aria-current",String(f.dataset.face===sc.dataset.scene)));}}));
 }else{const tb=document.getElementById("top");addEventListener("scroll",()=>tb.classList.toggle("show",scrollY>stage.offsetHeight-80),{passive:true});}
-/* 로딩: 첫 화면 배경과 이웃 그림 7장이 다 오면(또는 8초가 지나면) 닫힘 */
+/* 로딩: 첫 화면 배경과 이웃 정지 그림 6장이 다 오면(또는 8초가 지나면) 닫힘 */
 (function(){const ld=document.getElementById("loader"),bar=document.getElementById("ldbar");if(!ld)return;
-  const ims=[bg,...P.map(p=>sprite[p.id])];let n=0,closed=false;
+  const ims=[bg,...P.map(p=>still[p.id])];let n=0,closed=false;
   const close=()=>{if(closed)return;closed=true;bar.style.width="100%";setTimeout(()=>{ld.classList.add("done");ld.setAttribute("aria-hidden","true");},250);};
   const tick=()=>{n++;bar.style.width=Math.max(8,n/ims.length*100)+"%";if(n>=ims.length)close();};
   ims.forEach(im=>{if(im.complete&&im.naturalWidth)tick();else{im.addEventListener("load",tick,{once:true});im.addEventListener("error",tick,{once:true});}});
   setTimeout(close,8000);})();
 /* 구간 한마디 (임시 문구, 은녕 확인 전) */
 document.querySelectorAll("[data-secsay]").forEach(el=>{const id=el.dataset.secsay;
-  el.innerHTML=`<span class="face hand"><img src="img/face_${id}.png" alt="${esc(by[id].ko)}"></span><div class="sb"><svg class="bub" aria-hidden="true"><path/></svg>${esc(el.dataset.line)}<span class="temp">임시 문구</span></div>`;});
+  el.innerHTML=`<span class="face hand"><img src="img/face_${id}.webp" alt="${esc(by[id].ko)}"></span><div class="sb"><svg class="bub" aria-hidden="true"><path/></svg>${esc(el.dataset.line)}<span class="temp">임시 문구</span></div>`;});
 function drawSecsay(){document.querySelectorAll("[data-secsay] .sb").forEach(b=>{if(b.offsetWidth)drawBub({side:"l",at:b.offsetHeight/2},b);});}
 /* 구간 사이 손그림 땅선: 살짝 울퉁불퉁한 선 + 풀 몇 포기 */
 function drawDividers(){document.querySelectorAll("[data-divider]").forEach((el,n)=>{const W=el.clientWidth-36,H=46,y=30;if(W<=0)return;let d=`M 0 ${y}`,g="";
@@ -715,7 +755,8 @@ function drawDividers(){document.querySelectorAll("[data-divider]").forEach((el,
   [.18,.52,.83].forEach((f,i)=>{const x=W*f+jit(n,i)*30;g+=`M ${x-6} ${y} q -2 -9 -6 -13 M ${x} ${y} q 0 -12 2 -17 M ${x+6} ${y} q 3 -8 7 -11 `;});
   el.innerHTML=`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"><path d="${d}"/><path class="g" d="${g}"/></svg>`;});}
 function init(){drawDividers();handAll();placeBubs();drawSecsay();layout();P.forEach((p,i)=>draw(i,0));if(isMob())pick(2,false);}
-addEventListener("load",()=>{init();if(window.ScrollTrigger)ScrollTrigger.refresh();});
+addEventListener("load",()=>{init();if(window.ScrollTrigger)ScrollTrigger.refresh();setTimeout(loadSheets,300);});
+setTimeout(loadSheets,4000);
 init();
 </script>
 </body>
