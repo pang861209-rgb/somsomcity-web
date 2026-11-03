@@ -138,8 +138,8 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
 @keyframes ld-hop{0%,40%,100%{transform:translateY(0)}20%{transform:translateY(-10px)}}
 @media (prefers-reduced-motion:reduce){.loader .faces img{animation:none}}
 .nojs{position:relative;z-index:101;margin:0;padding:12px 16px;background:#FFF4D6;text-align:center;font-size:14.5px}
-.say .bub{position:absolute;left:0;top:0;overflow:visible;z-index:-1;pointer-events:none;filter:drop-shadow(0 4px 0 rgba(34,35,31,.10))}
-.say .bub path{fill:#fff;stroke:var(--ink);stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round;filter:url(#wobble)}
+.bub{position:absolute;left:0;top:0;overflow:visible;z-index:-1;pointer-events:none;filter:drop-shadow(0 4px 0 rgba(34,35,31,.10))}
+.bub path{fill:#fff;stroke:var(--ink);stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round}
 .stage .lead{transition:opacity .25s}
 .stage:has(.say.show) .lead{opacity:0}
 .say .nm{font-family:var(--font-hand);font-weight:700;font-size:24px;line-height:1.1}
@@ -197,19 +197,46 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
 .scene .bg{position:absolute;inset:-6% 0;background-size:cover;background-position:center;will-change:transform}
 .scene .actor{position:absolute;bottom:7%;z-index:2}
 .scene .actor canvas{height:100%;width:auto;max-width:none;display:block;position:relative;z-index:1}
-.scene .card{position:absolute;top:8%;z-index:3;width:min(400px,40%);border-radius:22px;background:#fff;padding:22px 24px;display:grid;gap:8px}
-.scene.L .card{left:max(18px,5%)}.scene.R .card{right:max(18px,5%)}
-.card .where{font-size:13px;color:var(--ink-soft)}
-.card .nm{font-size:40px;line-height:1}
-.card .nm small{font-family:var(--font-body);font-weight:400;font-size:14px;color:var(--purple);margin-left:8px;vertical-align:middle}
-.card .line{font-size:16.5px}
-.card .desc{font-size:14.5px;color:var(--ink-soft)}
-.card .story{font-size:13.5px;border-top:2px dashed #E3E0D6;padding-top:8px;color:var(--ink-soft)}
+/* 장면에는 말풍선만. 자세한 소개는 버튼을 눌러 카드로 (11/3) */
+.sbub{position:absolute;z-index:3;width:min(340px,36%);padding:16px 20px 18px;display:grid;gap:6px;isolation:isolate;visibility:hidden}
+.sbub.ready{visibility:visible}
+.sbub .nm{font-family:var(--font-hand);font-weight:700;font-size:30px;line-height:1.05;margin:0}
+.sbub .nm small{font-family:var(--font-body);font-weight:400;font-size:13.5px;color:var(--purple);margin-left:8px;vertical-align:middle}
+.sbub .line{font-size:16.5px;margin:0}
+.sbub .more{justify-self:start;margin-top:4px;font-size:17px;padding:6px 16px;min-height:40px}
+/* 상세 카드 */
+.detail{border:0;padding:0;margin:auto;inset:0;background:transparent;width:min(520px,calc(100vw - 32px));max-width:none;max-height:calc(100svh - 32px);overflow:visible;color:var(--ink)}
+.detail::backdrop{background:rgba(34,35,31,.38)}
+.detail .dt{background:#fff;border-radius:26px;padding:26px 26px 22px;display:grid;gap:10px;max-height:calc(100svh - 32px);overflow:auto;overscroll-behavior:contain}
+.detail[open] .dt{animation:dt-in .38s cubic-bezier(.3,1.35,.5,1)}
+.detail.closing .dt{animation:dt-out .2s ease-in forwards}
+.detail[open]::backdrop{animation:fade .3s}
+.detail.closing::backdrop{animation:fade .2s reverse forwards}
+@keyframes dt-in{from{opacity:0;transform:translateY(18px) scale(.94)}}
+@keyframes dt-out{to{opacity:0;transform:translateY(12px) scale(.96)}}
+@keyframes fade{from{opacity:0}}
+.dt-top{display:flex;align-items:center;gap:14px}
+.dt-top .face{width:64px;height:64px;border-radius:50%;flex:none;box-shadow:0 0 0 2.4px var(--ink);background:#fff}
+.dt .where{font-size:13px;color:var(--ink-soft);margin:0}
+.dt .nm{font-family:var(--font-hand);font-weight:700;font-size:36px;line-height:1;margin:2px 0 0}
+.dt .nm small{font-family:var(--font-body);font-weight:400;font-size:14px;color:var(--purple);margin-left:8px;vertical-align:middle}
+.dt .desc{font-size:15.5px;margin:6px 0 0}
+.dt .story{font-size:14px;border-top:2px dashed #E3E0D6;padding-top:10px;color:var(--ink-soft);margin:4px 0 0}
+.dt .story b{display:block;font-family:var(--font-hand);font-size:19px;color:var(--ink);margin-bottom:2px}
+.dt-x{position:absolute;top:12px;right:12px;width:40px;height:40px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:18px;line-height:1;z-index:2}
+.dt-nav{display:flex;justify-content:space-between;gap:10px;margin-top:8px}
+.dt-nav .btn{font-size:16px;padding:6px 14px;min-height:40px}
+.dt-in{position:relative}
 @media (max-width:819px){
   .scene .pic{aspect-ratio:4/5;max-height:none}
   .scene .actor{left:50%!important;right:auto!important;translate:-50% 0}
-  .scene .card{position:relative;top:auto;left:auto!important;right:auto!important;width:auto;margin:-28px 14px 0}
+  .sbub{position:relative;width:auto;margin:26px 14px 0;left:auto!important;top:auto!important}
+  .detail{margin:auto auto 0;width:100vw;max-height:88svh}
+  .detail .dt{border-radius:26px 26px 0 0;max-height:88svh;padding-bottom:max(22px,env(safe-area-inset-bottom,0px))}
+  @keyframes dt-in{from{transform:translateY(100%)}}
+  @keyframes dt-out{to{transform:translateY(100%)}}
 }
+@media (prefers-reduced-motion:reduce){.detail[open] .dt,.detail.closing .dt,.detail::backdrop{animation:none!important}}
 
 /* ---------- 4. 소식 ---------- */
 .news{padding-block:88px 30px;display:grid;gap:22px}
@@ -260,9 +287,10 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justif
   <div class="bar" aria-hidden="true"><i id="ldbar"></i></div>
   <p>솜솜시티로 가는 중…</p>
 </div>
+<dialog class="detail" id="detail" aria-labelledby="dtNm"><div class="dt-in"><button class="dt-x hand" type="button" data-dclose aria-label="닫기">✕</button><div class="dt hand" id="dtBody"></div></div></dialog>
 <noscript><style>.loader{display:none}</style><p class="nojs">이 페이지는 자바스크립트가 켜져 있어야 이웃들이 움직이고 메뉴가 열려요. 브라우저 설정에서 자바스크립트를 켜 주세요.</p></noscript>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
-  <filter id="wobble"><feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves="2" seed="5"/><feDisplacementMap in="SourceGraphic" scale="3.2"/></filter>
+  <filter id="wobble"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="1" seed="5"/><feDisplacementMap in="SourceGraphic" scale="3"/></filter>
 </svg>
 
 <header class="top" id="top"><div class="wrap">
@@ -413,11 +441,13 @@ function layout(){
 function play(i){cancelAnimationFrame(raf);if(typeof idleStopOne==="function"){idleStopOne(i);}const n=ANIM[P[i].id].n;let f=0,last=0;
   const step=t=>{if(t-last>=83){draw(i,f);f++;last=t;}if(f<n)raf=requestAnimationFrame(step);else{draw(i,0);raf=null;if(typeof idleSched==="function")idleSched(i);}};raf=requestAnimationFrame(step);}
 /* 말풍선 모양: 둥근 몸통과 꼬리를 끊김 없는 선 하나로. 변마다 아주 살짝 휘게 해서 손으로 그린 느낌 */
-function drawBub(tail){const svg=say.querySelector(".bub"),W=say.offsetWidth,H=say.offsetHeight,r=22;
-  let k=0;const J=[.9,-.7,1.1,-.5,.6,-1,.8,-.6];const bend=(x1,y1,x2,y2)=>{const mx=(x1+x2)/2,my=(y1+y2)/2,L=Math.hypot(x2-x1,y2-y1)||1,o=J[k++%J.length]*Math.min(1.6,L/120);return ` Q ${mx+(y2-y1)/L*o} ${my-(x2-x1)/L*o} ${x2} ${y2}`;};
+function drawBub(tail,box=say){const svg=box.querySelector(".bub"),W=box.offsetWidth,H=box.offsetHeight,r=22;
+  /* 손으로 그은 선처럼: 변을 40px 남짓씩 나눠 조금씩 다르게 휘게 (필터를 안 써서 선이 끊기거나 바탕이 삐져나오지 않음) */
+  let k=0;const J=[1.3,-.8,.5,-1.4,1,-.4,.9,-1.1,.3,1.2,-.7,.6];const bend=(x1,y1,x2,y2)=>{const L=Math.hypot(x2-x1,y2-y1)||1,n=Math.max(1,Math.round(L/42)),nx=(y2-y1)/L,ny=-(x2-x1)/L;let o="";
+    for(let q=1;q<=n;q++){const ax=x1+(x2-x1)*(q-1)/n,ay=y1+(y2-y1)*(q-1)/n,bx=x1+(x2-x1)*q/n,by=y1+(y2-y1)*q/n,j=J[k++%J.length]*Math.min(1.5,L/n/22);o+=` Q ${(ax+bx)/2+nx*j} ${(ay+by)/2+ny*j} ${bx} ${by}`;}return o;};
   const t=tail||{},w=11;let a=t.at;
-  if(t.side==="b")a=Math.min(Math.max(a,r+w+6),W-r-w-6);else if(t.side)a=Math.min(Math.max(a,r+w+4),H-r-w-4);
-  let d=`M ${r} 0`+bend(r,0,W-r,0)+` Q ${W} 0 ${W} ${r}`;
+  if(t.side==="b"||t.side==="t")a=Math.min(Math.max(a,r+w+6),W-r-w-6);else if(t.side)a=Math.min(Math.max(a,r+w+4),H-r-w-4);
+  let d=`M ${r} 0`+(t.side==="t"?bend(r,0,a-w,0)+` Q ${a-3} -5 ${a+3} -17 Q ${a+4} -5 ${a+w} 0`+bend(a+w,0,W-r,0):bend(r,0,W-r,0))+` Q ${W} 0 ${W} ${r}`;
   if(t.side==="r")d+=bend(W,r,W,a-w)+` Q ${W+5} ${a-2} ${W+17} ${a+3} Q ${W+5} ${a+5} ${W} ${a+w}`+bend(W,a+w,W,H-r);else d+=bend(W,r,W,H-r);
   d+=` Q ${W} ${H} ${W-r} ${H}`;
   if(t.side==="b")d+=bend(W-r,H,a+w,H)+` Q ${a+3} ${H+5} ${a-3} ${H+17} Q ${a-4} ${H+5} ${a-w} ${H}`+bend(a-w,H,r,H);else d+=bend(W-r,H,r,H);
@@ -425,7 +455,7 @@ function drawBub(tail){const svg=say.querySelector(".bub"),W=say.offsetWidth,H=s
   if(t.side==="l")d+=bend(0,H-r,0,a+w)+` Q -5 ${a+5} -17 ${a+3} Q -5 ${a-2} 0 ${a-w}`+bend(0,a-w,0,r);else d+=bend(0,H-r,0,r);
   d+=` Q 0 0 ${r} 0 Z`;
   svg.setAttribute("width",W);svg.setAttribute("height",H);svg.querySelector("path").setAttribute("d",d);
-  if(!isMob())say.style.transformOrigin=t.side==="b"?`${a}px ${H+16}px`:t.side==="l"?`-16px ${a}px`:t.side==="r"?`${W+16}px ${a}px`:"50% 100%";}
+  if(box!==say||!isMob())box.style.transformOrigin=t.side==="b"?`${a}px ${H+16}px`:t.side==="t"?`${a}px -16px`:t.side==="l"?`-16px ${a}px`:t.side==="r"?`${W+16}px ${a}px`:"50% 100%";}
 function showSay(i){const p=P[i];
   say.innerHTML=`<svg class="bub" aria-hidden="true"><path/></svg><p class="nm">${esc(p.ko)}<small>${modH(p)}</small></p><p class="line">${hiH(p)}</p><a class="btn fill hand" href="#s-${p.id}" data-go>우리 집 놀러 가기 →</a>`;let tail=null;
   if(!isMob()){const r=slots[i].querySelector(".fig").getBoundingClientRect(),sr=stage.getBoundingClientRect();
@@ -521,12 +551,36 @@ document.querySelector("[data-scenes]").innerHTML=ORDER.map(id=>{const p=by[id];
   return `<section class="scene ${p.side==="R"?"L":"R"}" id="s-${id}" data-scene="${id}">
    <div class="pic"><div class="bg" style="background-image:url(img/bg_${p.bg}.jpg)"></div>
      <div class="actor" style="height:${ah}%;${actorSide}">${shdH(FOOT2[id])}<canvas data-act="${id}" width="${ANIM2[id].w}" height="${ANIM2[id].h}" role="img" aria-label="${esc(p.ko)}"></canvas></div></div>
-   <div class="card hand"><p class="where">${esc(p.where)}${p.wt?'<span class="temp">제안 설정</span>':''}</p>
-     <h3 class="nm">${esc(p.ko)}<small>${modH(p)}</small></h3>
-     <p class="line">${hiH(p)}</p><p class="desc">${esc(p.desc)}</p>
-     <p class="story">오늘의 장면 · ${esc(p.story)}<span class="temp">문구 은녕 확인</span></p></div>
+   <div class="sbub" data-sbub><svg class="bub" aria-hidden="true"><path/></svg>
+     <p class="nm">${esc(p.ko)}<small>${modH(p)}</small></p>
+     <p class="line">${hiH(p)}</p>
+     <button class="btn fill hand more" type="button" data-more="${id}" aria-haspopup="dialog">${esc(p.ko)} 더 알아보기 +</button></div>
   </section>`;}).join("");
 
+
+/* 장면 말풍선: PC는 이웃 머리 옆(가운데 쪽), 휴대폰은 그림 아래에서 꼬리가 위로 */
+function placeBubs(){document.querySelectorAll("[data-scene]").forEach(sc=>{const b=sc.querySelector("[data-sbub]"),pic=sc.querySelector(".pic"),ac=sc.querySelector(".actor");
+  const PW=pic.offsetWidth,PH=pic.offsetHeight,ax=ac.offsetLeft,ay=ac.offsetTop,aw=ac.offsetWidth,ah=ac.offsetHeight;
+  if(isMob()){b.style.left=b.style.top="";drawBub({side:"t",at:PW/2-b.offsetLeft},b);b.classList.add("ready");return;}
+  const right=sc.classList.contains("L"),bw=b.offsetWidth,bh=b.offsetHeight,head=ay+Math.min(ah*.14,60);
+  let left=right?ax-bw-22:ax+aw+22;left=Math.min(Math.max(left,16),PW-bw-16);
+  const top=Math.min(Math.max(head-bh*.35,PH*.06),PH-bh-16);
+  b.style.left=left+"px";b.style.top=top+"px";drawBub({side:right?"r":"l",at:head-top},b);b.classList.add("ready");});}
+if(document.fonts)document.fonts.ready.then(placeBubs);
+let pbT;addEventListener("resize",()=>{clearTimeout(pbT);pbT=setTimeout(placeBubs,120);});
+/* 상세 카드: 버튼을 누르면 열림. 이전·다음 이웃으로 넘겨 볼 수 있음 */
+const dlg=document.getElementById("detail"),dtBody=document.getElementById("dtBody");let dtId=null,dtFrom=null;
+function fillDetail(id){const p=by[id];dtId=id;
+  dtBody.innerHTML=`<div class="dt-top"><img class="face" src="img/face_${id}.png" alt=""><div><p class="where">${esc(p.where)}${p.wt?'<span class="temp">제안 설정</span>':''}</p><h3 class="nm" id="dtNm">${esc(p.ko)}<small>${modH(p)}</small></h3></div></div>
+  <p class="desc">${esc(p.desc)}</p><p class="story"><b>오늘의 장면</b>${esc(p.story)}<span class="temp">문구 은녕 확인</span></p>
+  <div class="dt-nav"><button class="btn hand" type="button" data-dstep="-1">← 이전 이웃</button><button class="btn hand" type="button" data-dstep="1">다음 이웃 →</button></div>`;}
+function openDetail(id,from){fillDetail(id);dtFrom=from||null;dlg.classList.remove("closing");if(!dlg.open)dlg.showModal();if(lenis)lenis.stop();}
+function closeDetail(){if(!dlg.open||dlg.classList.contains("closing"))return;if(reduce){dlg.close();return;}dlg.classList.add("closing");setTimeout(()=>{dlg.classList.remove("closing");dlg.close();},200);}
+dlg.addEventListener("close",()=>{if(lenis)lenis.start();if(dtFrom&&document.contains(dtFrom))dtFrom.focus({preventScroll:true});});
+dlg.addEventListener("cancel",e=>{e.preventDefault();closeDetail();});
+dlg.addEventListener("click",e=>{if(e.target===dlg||e.target.closest("[data-dclose]")){closeDetail();return;}
+  const st=e.target.closest("[data-dstep]");if(st){const k=(ORDER.indexOf(dtId)+Number(st.dataset.dstep)+ORDER.length)%ORDER.length;fillDetail(ORDER[k]);dtBody.scrollTop=0;}});
+document.querySelectorAll("[data-more]").forEach(b=>b.addEventListener("click",()=>openDetail(b.dataset.more,b)));
 
 /* ---------- 이웃 장면: 보이면 대표 동작 한 번, 그다음엔 5초쯤 쉬었다 다시. 누르면 바로 ---------- */
 const sp2={};
@@ -592,10 +646,10 @@ if(!reduce){
   document.querySelectorAll("[data-scene]").forEach(sc=>{
     /* 장면 그림이 그림책 펼치듯 가장자리에서 열림 */
     gsap.fromTo(sc.querySelector(".pic"),{clipPath:"inset(7% 5% 7% 5% round 28px)"},{clipPath:"inset(0% 0% 0% 0% round 0px)",ease:"none",scrollTrigger:{trigger:sc,start:"top bottom",end:"top 25%",scrub:true}});
-    const card=sc.querySelector(".card");gsap.set(card,{autoAlpha:0,x:sc.classList.contains("L")?-40:40});
-    ScrollTrigger.create({trigger:sc,start:"top 60%",once:true,onEnter:()=>gsap.to(card,{autoAlpha:1,x:0,duration:1,ease:"power3.out"})});
+    /* 말풍선은 장면이 화면 가운데쯤 오면 꼬리 쪽에서 톡 하고 나타남 */
+    const sb=sc.querySelector("[data-sbub]");gsap.set(sb,{autoAlpha:0,scale:.82});
+    ScrollTrigger.create({trigger:sc,start:"top 55%",once:true,onEnter:()=>gsap.to(sb,{autoAlpha:1,scale:1,duration:.6,ease:"back.out(1.7)"})});
     gsap.fromTo(sc.querySelector(".bg"),{yPercent:-5,scale:1.08},{yPercent:5,scale:1,ease:"none",scrollTrigger:{trigger:sc,start:"top bottom",end:"bottom top",scrub:true}});
-    gsap.from(sc.querySelector(".actor canvas"),{x:sc.classList.contains("L")?60:-60,ease:"none",scrollTrigger:{trigger:sc,start:"top 85%",end:"top 35%",scrub:true}});
   });
 }
 document.querySelectorAll("[data-scene]").forEach(sc=>ScrollTrigger.create({trigger:sc,start:"top 55%",end:"bottom 55%",onToggle:s=>{if(s.isActive)document.querySelectorAll("[data-face]").forEach(f=>f.setAttribute("aria-current",String(f.dataset.face===sc.dataset.scene)));}}));
@@ -607,7 +661,7 @@ document.querySelectorAll("[data-scene]").forEach(sc=>ScrollTrigger.create({trig
   const tick=()=>{n++;bar.style.width=Math.max(8,n/ims.length*100)+"%";if(n>=ims.length)close();};
   ims.forEach(im=>{if(im.complete&&im.naturalWidth)tick();else{im.addEventListener("load",tick,{once:true});im.addEventListener("error",tick,{once:true});}});
   setTimeout(close,8000);})();
-function init(){layout();P.forEach((p,i)=>draw(i,0));if(isMob())pick(2,false);}
+function init(){placeBubs();layout();P.forEach((p,i)=>draw(i,0));if(isMob())pick(2,false);}
 addEventListener("load",()=>{init();if(window.ScrollTrigger)ScrollTrigger.refresh();});
 init();
 </script>
