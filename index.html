@@ -258,7 +258,9 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
 .dt-in{position:relative}
 @media (max-width:819px){
   .scene .pic{aspect-ratio:4/5;max-height:none}
-  .scene .actor{left:50%!important;right:auto!important;translate:-50% 0}
+  /* 휴대폰은 그림 가운데만 보이므로, 이웃이 설 빈 쪽이 가운데 오게 배경을 옮김 */
+  .scene .bg{background-position:var(--bpx,50%) center}
+  .scene .actor{left:var(--ax,50%)!important;right:auto!important;translate:-50% 0}
   .sbub{position:relative;width:auto;margin:26px 14px 0;left:auto!important;top:auto!important}
   .detail{margin:auto auto 0;width:100vw;max-height:88svh}
   .detail .dt{border-radius:26px 26px 0 0;max-height:88svh;padding-bottom:max(22px,env(safe-area-inset-bottom,0px))}
@@ -355,7 +357,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justif
 <main>
   <section class="stage" id="stage" aria-label="솜솜시티 동네 입구">
     <button class="float-menu hand" type="button" data-open-sheet aria-controls="sheet" aria-expanded="false">메뉴</button>
-    <img class="bg" id="bg" src="img/street2_a.jpg" alt="당근빌라, 도토리 상점, 대나무숲 빌라가 있는 솜솜시티 거리 (AI 시안)">
+    <img class="bg" id="bg" src="img/street2.webp" alt="당근빌라, 도토리 상점, 대나무숲 빌라가 있는 솜솜시티 거리 (AI 시안)">
     <img class="logo" src="img/logo_cloud.webp" alt="솜솜시티">
     <p class="lead">소심한 완벽주의자와 태평한 귀차니스트, 그리고 그들을 둘러싼 솜솜시티 이웃들의 우당탕탕 일상</p>
     <div class="track" id="track" role="listbox" aria-label="이웃 고르기"></div>
@@ -627,8 +629,8 @@ relsvg.querySelectorAll(".node").forEach(n=>{n.addEventListener("click",()=>relF
 document.querySelector("[data-scenes]").innerHTML=ORDER.map(id=>{const p=by[id];const actorSide=p.side==="R"?"right:14%":"left:14%";
   /* 장면 속 키 (11/3 은녕 의견: 끼토·보늘 크게, 람다 살짝 크게, 미개 조금 작게) */
   const ah={kkito:68,boneul:64,ramda:46,lachilchin:37,bookgeo:44,migae:25}[id];
-  return `<section class="scene ${p.side==="R"?"L":"R"}" id="s-${id}" data-scene="${id}">
-   <div class="pic"><div class="bg" data-bgsrc="img/bg_${p.bg}.jpg"></div>
+  return `<section class="scene ${p.side==="R"?"L":"R"}" id="s-${id}" data-scene="${id}" style="--ax:${p.side==="R"?"68%":"32%"}">
+   <div class="pic"><div class="bg" data-bgsrc="img/scene_${p.bg}.webp" style="--bpx:${p.side==="R"?"64%":"36%"}"></div>
      <div class="actor" style="height:${ah}%;${actorSide}">${shdH(FOOT2[id])}<canvas data-act="${id}" width="${ANIM2[id].w}" height="${ANIM2[id].h}" role="img" aria-label="${esc(p.ko)}"></canvas></div></div>
    <div class="sbub" data-sbub><svg class="bub" aria-hidden="true"><path/></svg>
      <p class="nm">${esc(p.ko)}<small>${modH(p)}</small></p>
@@ -640,7 +642,7 @@ document.querySelector("[data-scenes]").innerHTML=ORDER.map(id=>{const p=by[id];
 /* 장면 말풍선: PC는 이웃 머리 옆(가운데 쪽), 휴대폰은 그림 아래에서 꼬리가 위로 */
 function placeBubs(){document.querySelectorAll("[data-scene]").forEach(sc=>{const b=sc.querySelector("[data-sbub]"),pic=sc.querySelector(".pic"),ac=sc.querySelector(".actor");
   const PW=pic.offsetWidth,PH=pic.offsetHeight,ax=ac.offsetLeft,ay=ac.offsetTop,aw=ac.offsetWidth,ah=ac.offsetHeight;
-  if(isMob()){b.style.left=b.style.top="";drawBub({side:"t",at:PW/2-b.offsetLeft},b);b.classList.add("ready");return;}
+  if(isMob()){b.style.left=b.style.top="";drawBub({side:"t",at:PW*parseFloat(getComputedStyle(sc).getPropertyValue("--ax")||"50")/100-b.offsetLeft},b);b.classList.add("ready");return;}
   const right=sc.classList.contains("L"),bw=b.offsetWidth,bh=b.offsetHeight,head=ay+Math.min(ah*.14,60);
   let left=right?ax-bw-22:ax+aw+22;left=Math.min(Math.max(left,16),PW-bw-16);
   const top=Math.min(Math.max(head-bh*.35,PH*.06),PH-bh-16);
@@ -680,8 +682,8 @@ document.querySelectorAll("canvas[data-act]").forEach(cv=>{const id=cv.dataset.a
 });
 
 /* ---------- 4. 소식 (예시) ---------- */
-document.querySelector("[data-ig]").innerHTML=ORDER.map(id=>`<a class="post hand" href="${IG}" style="background:${by[id].tint} center/cover" data-bgsrc="img/bg_${by[id].bg}.jpg"><span class="ex">예시</span><img src="img/pose_${id}_${by[id].pose}.webp" alt="${by[id].ko} 예시 게시물" loading="lazy" decoding="async"></a>`).join("");
-document.querySelector("[data-yt]").innerHTML=[["901","kkito","끼토의 외출 준비"],["sofa","boneul","보늘의 소파 생활"],["acorn","ramda","도토리 상점 나이테존"],["granny","lachilchin","할머니의 티타임"]].map(([b,id,t])=>`<a class="short hand" href="${YT}" data-bgsrc="img/bg_${b}.jpg"><span class="ex">쇼츠 예시</span><img class="who" src="img/pose_${id}_${by[id].pose}.webp" alt="" loading="lazy" decoding="async"><span class="play" aria-hidden="true"></span><span class="t">${t}</span></a>`).join("");
+document.querySelector("[data-ig]").innerHTML=ORDER.map(id=>`<a class="post hand" href="${IG}" style="background:${by[id].tint} center/cover" data-bgsrc="img/scene_${by[id].bg}.webp"><span class="ex">예시</span><img src="img/pose_${id}_${by[id].pose}.webp" alt="${by[id].ko} 예시 게시물" loading="lazy" decoding="async"></a>`).join("");
+document.querySelector("[data-yt]").innerHTML=[["901","kkito","끼토의 외출 준비"],["sofa","boneul","보늘의 소파 생활"],["acorn","ramda","도토리 상점 나이테존"],["granny","lachilchin","할머니의 티타임"]].map(([b,id,t])=>`<a class="short hand" href="${YT}" data-bgsrc="img/scene_${b}.webp"><span class="ex">쇼츠 예시</span><img class="who" src="img/pose_${id}_${by[id].pose}.webp" alt="" loading="lazy" decoding="async"><span class="play" aria-hidden="true"></span><span class="t">${t}</span></a>`).join("");
 
 document.querySelectorAll("[data-bgsrc]").forEach(el=>near.observe(el));
 /* 메일 복사 */
