@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- 공개 전 시험 기간: 검색에 노출되지 않게 (11/30 공개 때 삭제) -->
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="소심한 완벽주의자와 태평한 귀차니스트, 그리고 그들을 둘러싼 솜솜시티 이웃들의 우당탕탕 일상">
+<link rel="icon" href="img/face_kkito.png">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}</style>
+<title>솜솜시티 Somsom City</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Gowun+Dodum&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* 1안 그림책 손선 + 로고 색 포인트. 흰 종이 위에 손그림 선으로 그린 부품, 포인트는 로고의 보라·분홍만 */
+  --paper:#FFFFFF;
+  --paper-2:#F7F5EF;
+  --sky:#E6F1F7;
+  --ink:#22231F;
+  --ink-soft:#66655E;
+  --purple:#8B6BB8;
+  --pink:#F28B8E;
+  --star:#F6D365;
+  --font-hand:"Gaegu","Gowun Dodum",sans-serif;
+  --font-body:"Gowun Dodum","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.75;word-break:keep-all;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:90;background:var(--paper)}
+img{max-width:100%;display:block}
+a{color:inherit}
+button{font:inherit;color:inherit;cursor:pointer;background:none;border:0}
+:focus-visible{outline:3px solid var(--purple);outline-offset:3px;border-radius:8px}
+h1,h2,h3{font-family:var(--font-hand);font-weight:700;line-height:1.2;text-wrap:balance}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
+.temp{display:inline-block;font-family:var(--font-body);font-size:11px;color:#8a6200;background:#FFF1C2;border-radius:4px;padding:0 6px;margin-left:6px;vertical-align:middle;line-height:1.7}
+.empty{color:#a7a59c}
+
+/* 손그림 선 부품: 테두리만 살짝 흔들리게 (글자는 흔들리지 않음) */
+.hand{position:relative;isolation:isolate}
+.hand::before{content:"";position:absolute;inset:0;border:2px solid var(--ink);border-radius:inherit;background:inherit;filter:url(#wobble);z-index:-1}
+.btn{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:10px 20px;font-family:var(--font-hand);font-weight:700;font-size:19px;text-decoration:none;background:#fff;color:var(--ink);min-height:44px}
+.btn.fill{color:#fff}
+.btn.fill::before{background:var(--ink)}
+.btn.purple{color:#fff}.btn.purple::before{background:var(--purple)}
+.btn.pink{color:#fff}.btn.pink::before{background:var(--pink)}
+.btn svg{width:18px;height:18px}
+.btn:hover{transform:translateY(-1px)}
+
+/* 메뉴: PC는 위쪽 막대(글자 메뉴 + 이웃 펼침), 휴대폰은 메뉴 버튼 → 전체 화면 메뉴. 얼굴 탭은 이웃 장면 구간에서만 */
+.top{position:fixed;left:0;right:0;top:env(safe-area-inset-top,0px);z-index:80;background:rgba(255,255,255,.96);border-bottom:2px solid var(--ink);transform:translateY(-110%);transition:transform .35s}
+.top.show{transform:none}
+.top .wrap{display:flex;align-items:center;gap:18px;padding-block:6px}
+.top .mark{height:36px;width:auto}
+.menu{display:flex;align-items:center;gap:4px;margin-left:auto;list-style:none}
+.menu>li{position:relative}
+.menu a.m,.menu button.m{display:inline-flex;align-items:center;gap:4px;font-family:var(--font-hand);font-weight:700;font-size:20px;padding:6px 12px;border-radius:999px;text-decoration:none;min-height:44px}
+.menu a.m[aria-current="true"],.menu button.m[aria-current="true"]{background:var(--ink);color:#fff}
+.menu a.m:hover,.menu button.m:hover{background:var(--paper-2)}
+.menu a.m[aria-current="true"]:hover{background:var(--ink)}
+.drop{position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#fff;border-radius:20px;padding:12px;display:none;grid-template-columns:repeat(3,96px);gap:8px;z-index:2}
+.drop.open{display:grid}
+.drop a{display:grid;justify-items:center;gap:2px;text-decoration:none;font-family:var(--font-hand);font-weight:700;font-size:16px;padding:6px;border-radius:14px}
+.drop a:hover{background:var(--paper-2)}
+.drop img{width:54px;height:54px;border-radius:50%}
+.top .sns{display:flex;gap:6px}
+.ico{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;text-decoration:none}
+.ico svg{width:18px;height:18px}
+.menu-btn{display:none;margin-left:auto;font-family:var(--font-hand);font-weight:700;font-size:19px;border-radius:999px;padding:6px 16px;background:#fff;min-height:44px}
+/* 첫 화면에서도 메뉴를 열 수 있게 (머리가 숨어 있을 때) */
+.float-menu{position:absolute;top:max(14px,env(safe-area-inset-top,0px));right:max(14px,env(safe-area-inset-right,0px));z-index:8;font-family:var(--font-hand);font-weight:700;font-size:19px;border-radius:999px;padding:6px 16px;background:#fff;min-height:44px}
+.face{width:40px;height:40px;border-radius:50%;padding:0;transition:transform .2s}
+.face img{width:100%;height:100%;border-radius:50%;border:2px solid transparent}
+.face[aria-current="true"] img{border-color:var(--ink)}
+.face:hover{transform:translateY(-2px)}
+/* 전체 화면 메뉴 */
+.sheet{position:fixed;inset:0;z-index:95;background:var(--paper);display:none;overflow-y:auto;padding:calc(18px + env(safe-area-inset-top,0px)) max(22px,env(safe-area-inset-right,0px)) calc(28px + env(safe-area-inset-bottom,0px)) max(22px,env(safe-area-inset-left,0px))}
+.sheet.open{display:block}
+.sheet-in{max-width:520px;margin:0 auto;display:grid;gap:22px}
+.sheet-head{display:flex;align-items:center;justify-content:space-between}
+.sheet-head img{height:42px;width:auto}
+.close{font-family:var(--font-hand);font-weight:700;font-size:19px;border-radius:999px;padding:6px 16px;background:#fff;min-height:44px}
+.sheet nav ol{list-style:none;display:grid;gap:4px}
+.sheet nav a{display:flex;align-items:baseline;gap:10px;font-family:var(--font-hand);font-weight:700;font-size:34px;text-decoration:none;padding:4px 0}
+.sheet nav a small{font-family:var(--font-body);font-weight:400;font-size:14px;color:var(--ink-soft)}
+.sheet .who6{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.sheet .who6 a{display:grid;justify-items:center;gap:4px;text-decoration:none;font-family:var(--font-hand);font-weight:700;font-size:17px;border-radius:16px;background:#fff;padding:10px 4px}
+.sheet .who6 img{width:64px;height:64px;border-radius:50%}
+.sheet .row{display:flex;flex-wrap:wrap;gap:10px}
+.sheet .mailline{font-size:14px;color:var(--ink-soft)}
+/* 휴대폰: 얼굴 탭은 이웃 장면 구간에서만 아래에 */
+.tabbar{display:none}
+@media (max-width:819px){
+  .menu,.top .sns{display:none}
+  .menu-btn{display:inline-flex}
+  .tabbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:80;justify-content:space-around;background:rgba(255,255,255,.96);border-top:2px solid var(--ink);padding:6px max(10px,env(safe-area-inset-left,0px)) calc(6px + env(safe-area-inset-bottom,0px));transform:translateY(110%);transition:transform .35s}
+  .tabbar.show{transform:none}
+  .tabbar .face{width:42px;height:42px}
+}
+@media (min-width:820px){.float-menu{display:none}}
+
+/* ---------- 1. 동네 입구 ---------- */
+.stage{position:relative;overflow:hidden;background:var(--sky);height:min(calc(100svh - 0px),760px);min-height:560px;touch-action:pan-y}
+.stage .bg{position:absolute;top:0;left:0;height:100%;width:auto;min-width:100%;max-width:none;object-fit:cover;transition:transform .7s cubic-bezier(.25,.8,.3,1)}
+.stage .logo{position:absolute;left:50%;top:4.5%;transform:translateX(-50%);width:min(430px,80vw);z-index:6;pointer-events:none}
+.stage .lead{position:absolute;left:50%;transform:translateX(-50%);top:calc(4.5% + min(160px,30vw));z-index:6;width:min(560px,86vw);text-align:center;font-size:14.5px;background:rgba(255,255,255,.88);border-radius:999px;padding:4px 16px}
+.track{position:absolute;left:0;right:0;bottom:6%;height:52%;display:flex;align-items:flex-end;z-index:4;transition:transform .6s cubic-bezier(.25,.8,.3,1)}
+.track.drag{transition:none}
+.slot{position:relative;flex:none;height:100%;display:flex;align-items:flex-end;justify-content:center;padding:0;pointer-events:none}
+.slot:focus-visible .fig{outline:3px solid var(--purple);outline-offset:4px;border-radius:12px}
+.fig{position:relative;display:flex;align-items:flex-end;justify-content:center;transition:height .55s cubic-bezier(.3,1.25,.45,1),opacity .35s}
+.fig canvas{height:100%;width:auto;display:block;position:relative;z-index:1;transform-origin:50% 100%;animation:breathe 2.8s ease-in-out infinite}
+.fig::after{content:"";position:absolute;left:50%;bottom:-10px;width:110%;height:24px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(closest-side,rgba(60,50,35,.38),rgba(60,50,35,.14) 60%,rgba(60,50,35,0))}
+.slot.on .fig canvas{animation:none}
+.stage.picked .slot:not(.on) .fig{opacity:.55}
+.slot.on{z-index:3}
+@keyframes breathe{0%,100%{transform:translateY(0) scale(1,1)}50%{transform:translateY(-1%) scale(.992,1.014)}}
+.say{position:absolute;z-index:7;width:min(340px,88vw);border-radius:22px;background:#fff;padding:14px 18px 16px;display:grid;gap:6px;opacity:0;transform:translateY(10px);transition:opacity .25s,transform .3s;pointer-events:none}
+.say.show{opacity:1;transform:none;pointer-events:auto}
+.say .nm{font-family:var(--font-hand);font-weight:700;font-size:24px;line-height:1.1}
+.say .nm small{font-family:var(--font-body);font-weight:400;font-size:13px;color:var(--ink-soft);margin-left:6px}
+.say .line{font-size:15px}
+.say .btn{justify-self:start;margin-top:4px;font-size:17px;padding:6px 16px}
+.say .tail{position:absolute;bottom:-14px;width:24px;height:16px}
+.hint{position:absolute;left:50%;bottom:2%;transform:translateX(-50%);z-index:6;font-family:var(--font-hand);font-weight:700;font-size:18px;background:#fff;border-radius:999px;padding:2px 16px;transition:opacity .3s;white-space:nowrap}
+.arrow{display:none}
+@media (max-width:819px){
+  .stage{height:min(100svh,760px)}
+  .track{bottom:46px;height:58%}
+  .arrow{display:grid;position:absolute;bottom:40%;z-index:6;width:40px;height:40px;border-radius:50%;background:#fff;place-items:center;font-size:20px}
+  .arrow.l{left:max(8px,env(safe-area-inset-left,0px))}.arrow.r{right:max(8px,env(safe-area-inset-right,0px))}
+  .say{left:50%!important;bottom:12px!important;top:auto!important;transform:translate(-50%,20px)}
+  .say.show{transform:translate(-50%,0)}
+  .say .tail{display:none}
+}
+
+/* ---------- 2. 세계관 ---------- */
+.world{padding-block:84px 64px;display:grid;gap:34px}
+.world h2{font-size:clamp(30px,5vw,46px)}
+.world .intro{display:grid;gap:14px;max-width:62ch}
+.world .intro p{color:var(--ink-soft)}
+.slogan{font-family:var(--font-hand);font-weight:700;font-size:clamp(26px,4vw,34px);color:var(--purple)}
+.slogan span{display:block;font-family:var(--font-body);font-weight:400;font-size:14px;color:var(--ink-soft)}
+/* 관계도: 얼굴 동그라미 + 손그림 선. 누르면 그 이웃의 관계만 또렷하게 */
+.rel{display:grid;grid-template-columns:minmax(0,1fr);gap:22px;align-items:start}
+.rel-map{max-width:920px;width:100%;justify-self:center}
+.rel-map{border-radius:24px;background:var(--paper-2);padding:10px}
+.rel-map svg{width:100%;height:auto;display:block}
+.rel-map .edge path{fill:none;stroke:var(--ink);stroke-width:3;stroke-linecap:round;filter:url(#wobble);transition:opacity .25s,stroke .25s}
+.rel-map .edge.sug path{stroke-dasharray:8 9}
+.rel-map .edge text{font-family:var(--font-hand);font-weight:700;font-size:21px;fill:var(--ink)}
+.rel-map .edge rect{fill:#fff;stroke:var(--ink);stroke-width:2;filter:url(#wobble)}
+.rel-map .node{cursor:pointer}
+.rel-map .node circle.ring{fill:#fff;stroke:var(--ink);stroke-width:3;filter:url(#wobble)}
+.rel-map .node text{font-family:var(--font-hand);font-weight:700;font-size:24px;fill:var(--ink);text-anchor:middle}
+.rel-map .node:focus-visible circle.ring{stroke:var(--purple);stroke-width:5}
+.rel-map.focus .edge:not(.hot){opacity:.15}
+.rel-map.focus .node:not(.hot){opacity:.35}
+.rel-map .edge.hot path{stroke:var(--purple)}
+.rel-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:819px){.rel-list{grid-template-columns:1fr}}
+.rel-list .item{border-radius:16px;background:#fff;padding:12px 16px;display:grid;gap:2px;transition:opacity .25s}
+.rel-list .item b{font-family:var(--font-hand);font-size:20px}
+.rel-list .item b small{font-family:var(--font-body);font-weight:400;font-size:13px;color:var(--purple);margin-left:6px}
+.rel-list .item p{font-size:14px;color:var(--ink-soft)}
+.rel-list.focus .item:not(.hot){display:none}
+.rel-tip{font-size:13.5px;color:var(--ink-soft)}
+@media (max-width:819px){.rel{grid-template-columns:1fr}.rel-map .edge text,.rel-map .edge rect{display:none}}
+
+/* ---------- 3. 이웃 장면 ---------- */
+.scene{position:relative;scroll-margin-top:60px}
+.scene .pic{position:relative;overflow:hidden;aspect-ratio:16/9;max-height:84svh;width:100%}
+.scene .bg{position:absolute;inset:-6% 0;background-size:cover;background-position:center;will-change:transform}
+.scene .actor{position:absolute;bottom:7%;z-index:2;transform-origin:50% 100%;animation:breathe 3s ease-in-out infinite}
+.scene .actor canvas{height:100%;width:auto;max-width:none;display:block;position:relative;z-index:1}
+.scene .actor::after{content:"";position:absolute;left:50%;bottom:-9px;width:100%;height:22px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(closest-side,rgba(80,60,35,.32),rgba(80,60,35,0))}
+.scene .card{position:absolute;top:8%;z-index:3;width:min(400px,40%);border-radius:22px;background:#fff;padding:22px 24px;display:grid;gap:8px}
+.scene.L .card{left:max(18px,5%)}.scene.R .card{right:max(18px,5%)}
+.card .where{font-size:13px;color:var(--ink-soft)}
+.card .nm{font-size:40px;line-height:1}
+.card .nm small{font-family:var(--font-body);font-weight:400;font-size:14px;color:var(--purple);margin-left:8px;vertical-align:middle}
+.card .line{font-size:16.5px}
+.card .desc{font-size:14.5px;color:var(--ink-soft)}
+.card .story{font-size:13.5px;border-top:2px dashed #E3E0D6;padding-top:8px;color:var(--ink-soft)}
+@media (max-width:819px){
+  .scene .pic{aspect-ratio:4/5;max-height:none}
+  .scene .actor{left:50%!important;right:auto!important;translate:-50% 0}
+  .scene .card{position:relative;top:auto;left:auto!important;right:auto!important;width:auto;margin:-28px 14px 0}
+}
+
+/* ---------- 4. 소식 ---------- */
+.news{padding-block:88px 30px;display:grid;gap:22px}
+.head2{display:flex;flex-wrap:wrap;gap:12px 16px;align-items:end;justify-content:space-between}
+.head2 h2{font-size:clamp(28px,4.4vw,42px)}
+.head2 p{color:var(--ink-soft);font-size:14.5px}
+.btns{display:flex;flex-wrap:wrap;gap:10px}
+.ig{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.post{position:relative;aspect-ratio:1;border-radius:16px;display:block;text-decoration:none;min-width:0}
+.post img{position:absolute;left:12%;top:10%;width:76%;height:82%;object-fit:contain;object-position:50% 100%}
+.ex{position:absolute;left:10px;top:8px;font-size:11px;background:#fff;border-radius:4px;padding:0 6px;color:var(--ink-soft);z-index:2}
+.yt{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.short{position:relative;aspect-ratio:9/16;border-radius:18px;background-size:cover;background-position:center;display:flex;align-items:flex-end;text-decoration:none;overflow:hidden}
+.short span.t{position:relative;z-index:2;margin:10px;background:#fff;border-radius:10px;padding:2px 10px;font-size:13.5px}
+.short .play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:52px;height:52px;border-radius:50%;background:#fff;display:grid;place-items:center;z-index:2}
+.short .play::after{content:"";border-left:15px solid var(--pink);border-top:10px solid transparent;border-bottom:10px solid transparent;margin-left:5px}
+.how{font-size:13px;color:var(--ink-soft)}
+@media (max-width:819px){.ig{gap:6px}.post{border-radius:10px}.yt{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin-inline:calc(-1 * max(18px,env(safe-area-inset-left,0px)));padding:4px max(18px,env(safe-area-inset-left,0px)) 10px;scrollbar-width:none}.short{flex:0 0 46%;scroll-snap-align:start}}
+
+/* ---------- 5. 굿즈 ---------- */
+.goods{padding-block:56px}
+.goods .box{border-radius:26px;background:var(--paper-2);padding:30px;display:grid;grid-template-columns:1.2fr 1fr;gap:26px;align-items:center}
+.goods h2{font-size:clamp(26px,4vw,38px)}
+.goods p{color:var(--ink-soft)}
+.soon{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.soon div{aspect-ratio:1;border-radius:16px;background:#fff;display:grid;place-items:center;font-family:var(--font-hand);font-weight:700;font-size:19px;color:#b3afa3}
+.soon div::before{border-style:dashed}
+@media (max-width:819px){.goods .box{grid-template-columns:1fr;padding:22px}}
+
+/* ---------- 6. 마무리 ---------- */
+.closing{padding-block:64px 56px;text-align:center;display:grid;gap:14px;justify-items:center}
+.closing img{width:min(300px,70vw)}
+.closing .ko{font-family:var(--font-hand);font-weight:700;font-size:clamp(28px,4.4vw,38px)}
+.closing .en{color:var(--ink-soft);margin-top:-10px}
+footer{border-top:2px solid var(--ink);padding-block:26px 34px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:space-between;font-size:14px;color:var(--ink-soft)}
+.mail{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.mail a{color:var(--ink);font-weight:700;text-decoration:none;user-select:all}
+.copy{font-size:14px;padding:2px 12px;border-radius:999px;background:#fff;min-height:32px}
+
+@media (prefers-reduced-motion:reduce){.fig canvas,.scene .actor{animation:none}}
+</style>
+</head>
+<body>
+
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <filter id="wobble"><feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves="2" seed="5"/><feDisplacementMap in="SourceGraphic" scale="3.2"/></filter>
+</svg>
+
+<header class="top" id="top"><div class="wrap">
+  <a href="#stage" aria-label="처음으로"><img class="mark" src="img/logo_cloud.png" alt="솜솜시티"></a>
+  <nav aria-label="주 메뉴"><ul class="menu" id="menu">
+    <li><a class="m" href="#world" data-sec="world">솜솜시티</a></li>
+    <li><button class="m" type="button" id="whoBtn" data-sec="who" aria-expanded="false" aria-controls="drop">이웃들 ▾</button><div class="drop hand" id="drop" data-drop></div></li>
+    <li><a class="m" href="#news" data-sec="news">소식</a></li>
+    <li><a class="m" href="#goods" data-sec="goods">굿즈</a></li>
+    <li><a class="m" href="#contact" data-sec="contact">문의</a></li>
+  </ul></nav>
+  <div class="sns" data-ico></div>
+  <button class="menu-btn hand" type="button" data-open-sheet aria-controls="sheet" aria-expanded="false">메뉴</button>
+</div></header>
+<nav class="tabbar" id="tabbar" aria-label="이웃 바로 가기" data-faces></nav>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="메뉴">
+  <div class="sheet-in">
+    <div class="sheet-head"><img src="img/logo_cloud.png" alt="솜솜시티"><button class="close hand" type="button" id="closeSheet">닫기 ✕</button></div>
+    <nav aria-label="주 메뉴"><ol>
+      <li><a href="#world" data-close>솜솜시티 <small>세계관 · 이웃 관계도</small></a></li>
+      <li><a href="#s-kkito" data-close>이웃들 <small>여섯 이웃의 집에 놀러 가기</small></a></li>
+      <li><a href="#news" data-close>소식 <small>인스타그램 · 유튜브</small></a></li>
+      <li><a href="#goods" data-close>굿즈 <small>준비 중</small></a></li>
+      <li><a href="#contact" data-close>문의 <small>협업 · 제안</small></a></li>
+    </ol></nav>
+    <div class="who6" data-who6></div>
+    <div class="row" data-sheet-sns></div>
+    <p class="mailline">문의 kkito@somsomcity.com</p>
+  </div>
+</div>
+
+<main>
+  <section class="stage" id="stage" aria-label="솜솜시티 동네 입구">
+    <button class="float-menu hand" type="button" data-open-sheet aria-controls="sheet" aria-expanded="false">메뉴</button>
+    <img class="bg" id="bg" src="img/street2_a.jpg" alt="당근빌라, 도토리 상점, 대나무숲 빌라가 있는 솜솜시티 거리 (AI 시안)">
+    <img class="logo" src="img/logo_cloud.png" alt="솜솜시티">
+    <p class="lead">소심한 완벽주의자와 태평한 귀차니스트, 그리고 그들을 둘러싼 솜솜시티 이웃들의 우당탕탕 일상</p>
+    <div class="track" id="track" role="listbox" aria-label="이웃 고르기"></div>
+    <button class="arrow l hand" id="prev" type="button" aria-label="이전 이웃">‹</button>
+    <button class="arrow r hand" id="next" type="button" aria-label="다음 이웃">›</button>
+    <p class="hint hand" id="hint">이웃을 눌러 인사해 보세요</p>
+    <div class="say hand" id="say" role="dialog" aria-live="polite"></div>
+  </section>
+
+  <section class="wrap world" id="world">
+    <div class="intro">
+      <h2>동물들이 사람처럼 모여 사는 도시, 솜솜시티</h2>
+      <p>겉보기엔 평범한 도시지만 종족마다 사는 방식이 조금씩 달라요. 나무늘보는 먹방을 해도 천천히 씹고, 다람쥐는 뭐든 주머니에 줍고, 거북이는 터틀넥을 입어요. 당근빌라와 대나무숲 빌라 이웃들의 소소한 다툼과 화해를 그립니다.</p>
+      <p class="slogan">그런 너라서 좋아<span>Because you're you.</span></p>
+    </div>
+    <div class="rel">
+      <div class="rel-map" id="relmap"><svg viewBox="0 0 1000 660" role="img" aria-label="솜솜시티 이웃 관계도" id="relsvg"></svg></div>
+      <div style="display:grid;gap:10px"><h3 style="font-size:28px">이웃들은 이런 사이예요</h3><p class="rel-tip">관계도에서 이웃을 누르면 그 이웃의 관계만 볼 수 있어요. <span class="temp">관계도 v0.1 · 은녕 확인</span></p><div class="rel-list" id="rellist"></div></div>
+    </div>
+  </section>
+
+  <div data-scenes></div>
+
+  <section class="wrap news" id="news">
+    <div class="head2"><div><h2>솜솜시티 소식</h2><p>인스타그램과 유튜브에서 새 이야기를 만나요.</p></div><div class="btns" data-sns-btns></div></div>
+    <div class="ig" data-ig></div>
+    <div class="yt" data-yt></div>
+    <p class="how">시안에서는 예시 그림으로 채웠습니다. 실제 사이트에서는 인스타 게시물 주소를 넣으면 그 게시물이 그대로 보이고, 쇼츠는 페이지 안에서 재생됩니다.</p>
+  </section>
+
+  <section class="wrap goods" id="goods">
+    <div class="box hand">
+      <div style="display:grid;gap:12px"><h2>솜솜시티 굿즈, 준비하고 있어요</h2><p>이웃들을 곁에 둘 수 있는 물건을 만들고 있어요. 소식은 인스타그램에서 가장 먼저 알려 드릴게요.</p><div data-goods-btn></div></div>
+      <div class="soon" aria-hidden="true"><div class="hand">준비 중</div><div class="hand">준비 중</div><div class="hand">준비 중</div></div>
+    </div>
+  </section>
+
+  <section class="wrap closing">
+    <img src="img/logo_cloud.png" alt="솜솜시티 로고">
+    <p class="ko">그래서 우리가 널 좋아해</p>
+    <p class="en">That's why we love you.</p>
+    <div class="btns" style="justify-content:center" data-sns-btns></div>
+  </section>
+</main>
+
+<footer id="contact"><div class="wrap">
+  <div class="mail">문의 <a href="mailto:kkito@somsomcity.com" id="mail">kkito@somsomcity.com</a><button class="copy hand" id="copy" type="button">주소 복사</button></div>
+  <span>© 2026 Somsom City</span>
+</div></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+const IG="https://www.instagram.com/somsomcity.official/", YT="https://www.youtube.com/@somsomcity.official";
+const igSvg='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-3.3-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8C2.4 3.9 3.9 2.4 7.2 2.3 8.4 2.2 8.8 2.2 12 2.2zm0 4.7a5.1 5.1 0 100 10.2 5.1 5.1 0 000-10.2zm0 8.4a3.3 3.3 0 110-6.6 3.3 3.3 0 010 6.6zm5.3-9.8a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4z"/></svg>';
+const ytSvg='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M23 7.2a3 3 0 00-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 001 7.2 31 31 0 00.5 12a31 31 0 00.5 4.8 3 3 0 002.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 002.1-2.1 31 31 0 00.5-4.8 31 31 0 00-.5-4.8zM9.7 15.1V8.9l5.8 3.1-5.8 3.1z"/></svg>';
+const ANIM2={"kkito": {"n": 36, "w": 136, "h": 520, "cols": 6}, "boneul": {"n": 36, "w": 274, "h": 520, "cols": 6}, "migae": {"n": 36, "w": 678, "h": 520, "cols": 6}, "ramda": {"n": 36, "w": 312, "h": 520, "cols": 6}, "lachilchin": {"n": 36, "w": 303, "h": 520, "cols": 6}, "bookgeo": {"n": 36, "w": 494, "h": 520, "cols": 6}};
+const ANIM={"kkito": {"n": 36, "w": 231, "h": 520, "cols": 6}, "boneul": {"n": 36, "w": 488, "h": 520, "cols": 6}, "migae": {"n": 36, "w": 509, "h": 520, "cols": 6}, "ramda": {"n": 36, "w": 347, "h": 520, "cols": 6}, "lachilchin": {"n": 36, "w": 317, "h": 520, "cols": 6}, "bookgeo": {"n": 36, "w": 577, "h": 520, "cols": 6}};
+/* 캐논·확정 보드 기준. 임시 = 은녕 확인 필요 */
+const P=[
+ {id:"lachilchin",ko:"라칠친할머니",en:"LACHILCHIN",mod:"동네 어른",t:1,h:53,hi:"그래~",pose:"tea",bg:"granny",side:"R",where:"당근빌라, 할머니 집",
+  desc:"당근빌라에 사는 친칠라 할머니. 동네 아이들에게 간식을 만들어 나눠 줘요.",story:"찻잔을 들고 \"그래~\" 하며 미소 짓는 할머니. 오늘도 아이들 간식을 만들어요.",tint:"#F0EBF3"},
+ {id:"boneul",ko:"보늘",en:"BONEUL",mod:"태평한 귀차니스트",h:100,hi:"",pose:"snack",bg:"sofa",side:"L",where:"대나무숲 빌라",
+  desc:"대나무숲 빌라 반장인 나무늘보. 끼토가 멘붕에 빠지면 무심한 척 해결책을 툭 던져요.",story:"소파에 녹아내리듯 앉아 과자 봉지를 탈탈. 부스러기는 미개가 치워 줘요.",tint:"#EEF1E8"},
+ {id:"kkito",ko:"끼토",en:"KKITO",mod:"소심한 완벽주의자",h:108,hi:"가스 불 잠갔나? 미개 밥은 줬나?",pose:"worry",bg:"901",side:"R",where:"당근빌라 301호",
+  desc:"당근빌라 301호에 사는 분홍 토끼. 당근빌라 반장이에요.",story:"외출하려다 멈춰 선 끼토. 가스 불, 미개 밥, 창문… 걱정이 끝나지 않아요.",tint:"#F6ECEF"},
+ {id:"ramda",ko:"람다",en:"RAMDA",mod:"도토리 상점 주인",t:1,h:76,hi:"",pose:"treasure",bg:"acorn",side:"L",where:"도토리 상점",
+  desc:"빈티지 소품샵 '도토리 상점'을 운영하는 다람쥐. 뭐든 주머니에 줍줍해요.",story:"3년 넘게 안 팔린 물건은 나무 밑동 가판대 '나이테존'으로. 나이만큼 할인해요.",tint:"#F3EBE3"},
+ {id:"bookgeo",ko:"북거씨",en:"BOOKGEO",mod:"향수 공방 조향사",t:1,h:52,hi:"",pose:"sniff",bg:"perfume",side:"L",where:"북거 향수 공방",wt:1,
+  desc:"검정 터틀넥에 네모난 검은 안경을 쓴 거북. 북거 향수 공방에서 향을 만들어요.",story:"시향지를 코에 대고 눈을 지그시. 베스트 1위 '바다향'의 비밀은 아직 몰라요.",tint:"#F1F1E8"},
+ {id:"migae",ko:"미개",en:"MIGAE",mod:"끼토의 반려개미",t:1,h:20,hi:"",pose:"belly",bg:"floor",side:"R",where:"당근빌라 301호 바닥",
+  desc:"끼토를 닮아 겁이 많아요. 가는 더듬이 두 개로 기분을 다 말해요.",story:"보늘이 흘린 과자 부스러기는 미개 담당. 기분이 좋으면 배를 보이며 벌러덩.",tint:"#FBEDED"}
+];
+const ORDER=["kkito","boneul","migae","ramda","lachilchin","bookgeo"];
+const by=Object.fromEntries(P.map(p=>[p.id,p]));
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const modH=p=>esc(p.mod)+(p.t?'<span class="temp">임시 문구</span>':'');
+const hiH=p=>p.hi?"“"+esc(p.hi)+"”":'<span class="empty">[인사 대사 — 은녕 작성]</span>';
+const isMob=()=>matchMedia("(max-width:819px)").matches;
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* 공통 버튼 */
+document.querySelectorAll("[data-sns-btns]").forEach(e=>e.innerHTML=`<a class="btn fill hand" href="${IG}">${igSvg}인스타그램 팔로우</a><a class="btn pink hand" href="${YT}">${ytSvg}유튜브 구독</a>`);
+document.querySelector("[data-goods-btn]").innerHTML=`<a class="btn purple hand" href="${IG}">${igSvg}굿즈 소식 받기</a>`;
+document.querySelectorAll("[data-faces]").forEach(n=>n.innerHTML=ORDER.map(id=>`<a class="face" href="#s-${id}" data-face="${id}" aria-label="${by[id].ko} 장면으로"><img src="img/face_${id}.png" alt=""></a>`).join(""));
+
+/* ---------- 1. 동네 입구: PC는 한 줄로, 휴대폰은 한 칸씩 넘기기 ---------- */
+const stage=document.getElementById("stage"),track=document.getElementById("track"),bg=document.getElementById("bg"),say=document.getElementById("say"),hint=document.getElementById("hint");
+const sprite={};P.forEach(p=>{const im=new Image();im.src=`img/anim_${p.id}.webp`;sprite[p.id]=im;});
+track.innerHTML=P.map((p,i)=>`<button class="slot" type="button" role="option" data-i="${i}" aria-label="${p.ko}에게 인사하기"><span class="fig"><canvas width="${ANIM[p.id].w}" height="${ANIM[p.id].h}"></canvas></span></button>`).join("");
+const slots=[...track.children], cvs=slots.map(s=>s.querySelector("canvas"));
+function draw(i,f){const id=P[i].id,a=ANIM[id],im=sprite[id],c=cvs[i].getContext("2d");if(!im.complete||!im.naturalWidth)return;c.clearRect(0,0,a.w,a.h);c.drawImage(im,(f%a.cols)*a.w,Math.floor(f/a.cols)*a.h,a.w,a.h,0,0,a.w,a.h);}
+P.forEach((p,i)=>sprite[p.id].addEventListener("load",()=>draw(i,0)));
+let cur=isMob()?2:-1, raf=null, dragX=0;
+/* 가운데(선택) 크기 보정: 은녕 의견 반영 (11/3) */
+const ZM={kkito:1.18,boneul:1.08,ramda:1,bookgeo:1,lachilchin:.85,migae:.54}, WC={boneul:1.3};
+function layout(){
+  const W=stage.clientWidth,H=track.clientHeight,mob=isMob();
+  const SW=mob?W*.5:Math.min(W,1180)/P.length;
+  slots.forEach((s,i)=>{const p=P[i],ar=ANIM[p.id].w/ANIM[p.id].h;s.style.width=SW+"px";let hh;
+    if(mob){hh=i===cur?Math.min(H*.92*ZM[p.id],W*(WC[p.id]||1)/ar):H*.42*p.h/108;}
+    else{hh=H*.9*p.h/108*(i===cur?1.12:1);hh=Math.max(hh,H*.16);}
+    s.querySelector(".fig").style.height=hh+"px";});
+  if(mob){track.style.transform=`translateX(${W/2-(Math.max(cur,0)+.5)*SW+dragX}px)`;const room=bg.offsetWidth-W;bg.style.transform=`translateX(${-(Math.max(cur,0)/(P.length-1))*Math.max(0,room)-dragX*.3}px)`;}
+  else{track.style.transform=`translateX(${(W-SW*P.length)/2}px)`;bg.style.transform="";}
+}
+function play(i){cancelAnimationFrame(raf);const n=ANIM[P[i].id].n;let f=0,last=0;
+  const step=t=>{if(t-last>=83){draw(i,f);f++;last=t;}if(f<n)raf=requestAnimationFrame(step);else{draw(i,0);raf=null;}};raf=requestAnimationFrame(step);}
+function showSay(i){const p=P[i];
+  say.innerHTML=`<p class="nm">${esc(p.ko)}<small>${modH(p)}</small></p><p class="line">${hiH(p)}</p><a class="btn fill hand" href="#s-${p.id}" data-go>우리 집 놀러 가기 →</a><svg class="tail" viewBox="0 0 24 16" aria-hidden="true"><path d="M2 0 L12 15 L22 0" fill="#fff" stroke="#22231F" stroke-width="2" stroke-linejoin="round"/></svg>`;
+  if(!isMob()){const r=slots[i].querySelector(".fig").getBoundingClientRect(),sr=stage.getBoundingClientRect();
+    const x=Math.min(Math.max(r.left+r.width/2-sr.left,190),sr.width-190);say.style.left=(x-170)+"px";say.style.top=Math.max(12,r.top-sr.top-150)+"px";
+    say.querySelector(".tail").style.left=(r.left+r.width/2-sr.left-(x-170)-12)+"px";}
+  say.classList.add("show");hint.style.opacity=0;
+  say.querySelector("[data-go]").addEventListener("click",e=>{e.preventDefault();visit(p.id);});}
+function pick(i,greet=true){cur=Math.max(0,Math.min(P.length-1,i));stage.classList.add("picked");
+  slots.forEach((s,k)=>{s.classList.toggle("on",k===cur);s.setAttribute("aria-selected",String(k===cur));draw(k,0);});
+  layout();if(greet){setTimeout(()=>{play(cur);showSay(cur);},isMob()?450:200);}}
+function visit(id){const t=document.getElementById("s-"+id);t.scrollIntoView({behavior:reduce?"auto":"smooth"});}
+/* 끌어서 넘기기 (휴대폰) */
+let sx=null,moved=false;
+stage.addEventListener("pointerdown",e=>{if(!isMob()||e.target.closest(".arrow,.say"))return;sx=e.clientX;moved=false;track.classList.add("drag");bg.style.transition="none";});
+addEventListener("pointermove",e=>{if(sx===null)return;dragX=e.clientX-sx;if(Math.abs(dragX)>6){moved=true;say.classList.remove("show");}layout();});
+addEventListener("pointerup",()=>{if(sx===null)return;track.classList.remove("drag");bg.style.transition="";const SW=stage.clientWidth*.5,d=dragX;dragX=0;sx=null;
+  if(Math.abs(d)>SW*.25)pick(cur+(d<0?1:-1)*Math.max(1,Math.round(Math.abs(d)/SW)));else layout();});
+/* 누른 자리의 그림을 직접 확인해서 고름 (칸이 겹쳐도 엉뚱한 이웃이 눌리지 않게). 가운데 이웃을 먼저 확인 */
+function hitTest(x,y){
+  const order=slots.map((_,i)=>i).sort((a,b)=>(b===cur)-(a===cur));
+  for(const i of order){const cv=cvs[i],r=cv.getBoundingClientRect();if(x<r.left||x>r.right||y<r.top||y>r.bottom)continue;
+    const px=Math.floor((x-r.left)/r.width*cv.width),py=Math.floor((y-r.top)/r.height*cv.height);
+    try{if(cv.getContext("2d").getImageData(px,py,1,1).data[3]>30)return i;}catch(e){return i;}}
+  let best=-1,bd=1e9;slots.forEach((_,i)=>{const r=cvs[i].getBoundingClientRect();if(y<r.top-24||y>r.bottom+24)return;const d=Math.abs(x-(r.left+r.width/2));if(d<bd&&d<Math.max(30,r.width*.45)){bd=d;best=i;}});
+  return best;}
+function choose(i){if(i<0)return;if(i===cur){play(i);showSay(i);}else pick(i);}
+stage.addEventListener("click",e=>{if(moved||e.target.closest(".say,.arrow,.float-menu,a"))return;choose(hitTest(e.clientX,e.clientY));});
+slots.forEach((s,i)=>s.addEventListener("keydown",ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();choose(i);}}));
+document.getElementById("prev").addEventListener("click",()=>pick(cur-1));
+document.getElementById("next").addEventListener("click",()=>pick(cur+1));
+addEventListener("resize",()=>{say.classList.remove("show");layout();});
+bg.addEventListener("load",layout);
+
+/* ---------- 2. 관계도 (캐논 '관계도' 기준) ---------- */
+const NODE={kkito:[480,330],boneul:[800,330],migae:[650,545],ramda:[175,300],lachilchin:[480,72],bookgeo:[255,560]};
+const REL=[
+ ["kkito","boneul","절친","한때 당근빌라·대나무숲 빌라 두 반장으로 앙숙이었지만, 지금은 둘도 없는 절친. 끼토가 패닉에 빠지면 보늘이 무심한 척 해결책을 툭.",0],
+ ["kkito","migae","반려개미","끼토를 닮아 겁이 많은 미개. 끼토의 정신적 지주(?).",0],
+ ["kkito","ramda","취미 메이트","다꾸·문구 쇼핑을 같이 가면 3시간 동안 못 나와요.",0],
+ ["boneul","migae","부스러기 공생","보늘이 흘리는 과자 부스러기를 미개가 청소(먹기)해요.",0,[75,72]],
+ ["lachilchin","kkito","동네 어른","끼토와 친구들을 늘 챙겨 주고, 아이들 간식을 만들어 나눠 줘요.",0],
+ ["lachilchin","boneul","",null,0],["lachilchin","ramda","",null,0],
+ ["bookgeo","kkito","차분해지는 향","끼토가 멘붕인 날, 마음이 차분해지는 향을 조용히 건네요.",1,[70,40]],
+ ["bookgeo","ramda","향수병 단골","빈티지 향수병을 도토리 상점에서 거래하는 단골이에요.",1,[-40,40]]
+];
+const svgNS="http://www.w3.org/2000/svg", relsvg=document.getElementById("relsvg");
+let svgH="";
+REL.forEach(([a,b,lab,,sug,off],k)=>{const [x1,y1]=NODE[a],[x2,y2]=NODE[b];const mx=(x1+x2)/2+(k%2?18:-18),my=(y1+y2)/2+(k%2?-14:14);
+  const lx=(x1+x2)/2+(off?off[0]:0), ly=(y1+y2)/2+(off?off[1]:0);   /* 이름표가 겹치는 선은 글자 위치만 옮김 */
+  svgH+=`<g class="edge ${sug?"sug":""}" data-a="${a}" data-b="${b}"><path d="M${x1} ${y1} Q${mx} ${my} ${x2} ${y2}"/>${lab?`<rect x="${lx-lab.length*11-14}" y="${ly-20}" width="${lab.length*22+28}" height="38" rx="19"/><text x="${lx}" y="${ly+8}" text-anchor="middle">${lab}</text>`:""}</g>`;});
+Object.entries(NODE).forEach(([id,[x,y]])=>{const r=id==="kkito"||id==="boneul"?66:56;
+  svgH+=`<g class="node" data-id="${id}" tabindex="0" role="button" aria-label="${by[id].ko}의 관계 보기"><circle class="ring" cx="${x}" cy="${y}" r="${r+5}"/><clipPath id="c-${id}"><circle cx="${x}" cy="${y}" r="${r}"/></clipPath><image href="img/face_${id}.png" x="${x-r}" y="${y-r}" width="${r*2}" height="${r*2}" clip-path="url(#c-${id})"/><text x="${x}" y="${y+r+34}">${by[id].ko}</text></g>`;});
+relsvg.innerHTML=svgH;
+const rellist=document.getElementById("rellist"), relmap=document.getElementById("relmap");
+rellist.innerHTML=REL.filter(r=>r[3]).map(([a,b,lab,txt,sug])=>`<div class="item hand" data-a="${a}" data-b="${b}"><b>${by[a].ko} · ${by[b].ko}<small>${lab}</small>${sug?'<span class="temp">제안 설정</span>':''}</b><p>${txt}${a==="lachilchin"?" (보늘·람다 등 모두에게)":""}</p></div>`).join("");
+let relSel=null;
+function relFocus(id){relSel=relSel===id?null:id;const on=!!relSel;relmap.classList.toggle("focus",on);rellist.classList.toggle("focus",on);
+  relsvg.querySelectorAll(".edge").forEach(e=>e.classList.toggle("hot",on&&(e.dataset.a===relSel||e.dataset.b===relSel)));
+  relsvg.querySelectorAll(".node").forEach(n=>n.classList.toggle("hot",on&&(n.dataset.id===relSel||REL.some(r=>(r[0]===relSel&&r[1]===n.dataset.id)||(r[1]===relSel&&r[0]===n.dataset.id)))));
+  rellist.querySelectorAll(".item").forEach(i=>i.classList.toggle("hot",on&&(i.dataset.a===relSel||i.dataset.b===relSel)));}
+relsvg.querySelectorAll(".node").forEach(n=>{n.addEventListener("click",()=>relFocus(n.dataset.id));n.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();relFocus(n.dataset.id);}});});
+
+/* ---------- 3. 이웃 장면 ---------- */
+document.querySelector("[data-scenes]").innerHTML=ORDER.map(id=>{const p=by[id];const actorSide=p.side==="R"?"right:14%":"left:14%";
+  /* 장면 속 키 (11/3 은녕 의견: 끼토·보늘 크게, 람다 살짝 크게, 미개 조금 작게) */
+  const ah={kkito:68,boneul:64,ramda:46,lachilchin:37,bookgeo:44,migae:25}[id];
+  return `<section class="scene ${p.side==="R"?"L":"R"}" id="s-${id}" data-scene="${id}">
+   <div class="pic"><div class="bg" style="background-image:url(img/bg_${p.bg}.jpg)"></div>
+     <div class="actor" style="height:${ah}%;${actorSide}"><canvas data-act="${id}" width="${ANIM2[id].w}" height="${ANIM2[id].h}" role="img" aria-label="${esc(p.ko)}"></canvas></div></div>
+   <div class="card hand"><p class="where">${esc(p.where)}${p.wt?'<span class="temp">제안 설정</span>':''}</p>
+     <h3 class="nm">${esc(p.ko)}<small>${modH(p)}</small></h3>
+     <p class="line">${hiH(p)}</p><p class="desc">${esc(p.desc)}</p>
+     <p class="story">오늘의 장면 · ${esc(p.story)}<span class="temp">문구 은녕 확인</span></p></div>
+  </section>`;}).join("");
+
+
+/* ---------- 이웃 장면: 대표 동작 반복 (보일 때만, 한 번 하고 잠깐 쉬었다 다시) ---------- */
+const sp2={};
+document.querySelectorAll("canvas[data-act]").forEach(cv=>{const id=cv.dataset.act,a=ANIM2[id],im=new Image();im.src=`img/anim2_${id}.webp`;sp2[id]=im;
+  const ctx=cv.getContext("2d");let f=0,last=0,rest=0,vis=false,run=false;
+  const drawF=k=>{if(!im.complete||!im.naturalWidth)return;ctx.clearRect(0,0,a.w,a.h);ctx.drawImage(im,(k%a.cols)*a.w,Math.floor(k/a.cols)*a.h,a.w,a.h,0,0,a.w,a.h);};
+  im.addEventListener("load",()=>drawF(0));
+  const loop=t=>{if(!vis){run=false;return;}
+    if(t<rest){requestAnimationFrame(loop);return;}
+    if(t-last>=83){drawF(f);f++;last=t;if(f>=a.n){f=0;drawF(0);rest=t+1600;}}
+    requestAnimationFrame(loop);};
+  new IntersectionObserver(es=>es.forEach(e=>{vis=e.isIntersecting;if(vis&&!run&&!reduce){run=true;rest=performance.now()+400;requestAnimationFrame(loop);}}),{threshold:.35}).observe(cv);
+  cv.parentElement.addEventListener("click",()=>{f=0;rest=0;});
+});
+
+/* ---------- 4. 소식 (예시) ---------- */
+document.querySelector("[data-ig]").innerHTML=ORDER.map(id=>`<a class="post hand" href="${IG}" style="background:${by[id].tint}"><span class="ex">예시</span><img src="img/pose_${id}_${by[id].pose}.png" alt="${by[id].ko} 예시 게시물"></a>`).join("");
+document.querySelector("[data-yt]").innerHTML=[["901","끼토의 외출 준비"],["sofa","보늘의 소파 생활"],["acorn","도토리 상점 나이테존"],["granny","할머니의 티타임"]].map(([b,t])=>`<a class="short hand" href="${YT}" style="background-image:url(img/bg_${b}.jpg)"><span class="ex">쇼츠 예시</span><span class="play" aria-hidden="true"></span><span class="t">${t}</span></a>`).join("");
+
+/* 메일 복사 */
+document.getElementById("copy").addEventListener("click",async e=>{try{await navigator.clipboard.writeText("kkito@somsomcity.com");e.currentTarget.textContent="복사했어요";}catch{const r=document.createRange();r.selectNodeContents(document.getElementById("mail"));const s=getSelection();s.removeAllRanges();s.addRange(r);e.currentTarget.textContent="주소를 선택했어요";}});
+
+/* ---------- 메뉴 ---------- */
+document.querySelector("[data-ico]").innerHTML=`<a class="ico hand" href="${IG}" aria-label="인스타그램">${igSvg}</a><a class="ico hand" href="${YT}" aria-label="유튜브" style="color:var(--pink)">${ytSvg}</a>`;
+document.querySelector("[data-drop]").innerHTML=ORDER.map(id=>`<a href="#s-${id}" data-face="${id}"><img src="img/face_${id}.png" alt="">${by[id].ko}</a>`).join("");
+document.querySelector("[data-who6]").innerHTML=ORDER.map(id=>`<a href="#s-${id}" data-close><img src="img/face_${id}.png" alt="">${by[id].ko}</a>`).join("");
+document.querySelector("[data-sheet-sns]").innerHTML=`<a class="btn fill hand" href="${IG}">${igSvg}인스타그램</a><a class="btn pink hand" href="${YT}">${ytSvg}유튜브</a>`;
+const whoBtn=document.getElementById("whoBtn"),drop=document.getElementById("drop"),sheet=document.getElementById("sheet");
+whoBtn.addEventListener("click",e=>{e.stopPropagation();const o=drop.classList.toggle("open");whoBtn.setAttribute("aria-expanded",String(o));});
+drop.addEventListener("click",()=>{drop.classList.remove("open");whoBtn.setAttribute("aria-expanded","false");});
+document.addEventListener("click",e=>{if(!e.target.closest("#drop,#whoBtn")){drop.classList.remove("open");whoBtn.setAttribute("aria-expanded","false");}});
+function openSheet(){sheet.classList.add("open");document.body.style.overflow="hidden";document.querySelectorAll("[data-open-sheet]").forEach(b=>b.setAttribute("aria-expanded","true"));document.getElementById("closeSheet").focus();}
+function closeSheet(){sheet.classList.remove("open");document.body.style.overflow="";document.querySelectorAll("[data-open-sheet]").forEach(b=>b.setAttribute("aria-expanded","false"));}
+document.querySelectorAll("[data-open-sheet]").forEach(b=>b.addEventListener("click",e=>{e.stopPropagation();openSheet();}));
+document.getElementById("closeSheet").addEventListener("click",closeSheet);
+sheet.addEventListener("click",e=>{if(e.target.closest("[data-close]"))closeSheet();});
+addEventListener("keydown",e=>{if(e.key==="Escape"){closeSheet();drop.classList.remove("open");}});
+/* 지금 보는 구간을 메뉴에 표시 */
+function markSec(sec){document.querySelectorAll("#menu .m").forEach(m=>m.setAttribute("aria-current",String(m.dataset.sec===sec)));}
+
+/* ---------- 스크롤 연출: 머리·탭 나타남, 장면 배경 패럴렉스, 지금 보는 이웃 표시 ---------- */
+gsap.registerPlugin(ScrollTrigger);
+const topBar=document.getElementById("top"),tabBar=document.getElementById("tabbar");
+ScrollTrigger.create({trigger:stage,start:"bottom 80px",onEnter:()=>topBar.classList.add("show"),onLeaveBack:()=>topBar.classList.remove("show")});
+const scenesWrap=document.querySelector("[data-scenes]");
+ScrollTrigger.create({trigger:scenesWrap,start:"top 70%",end:"bottom 40%",onToggle:s=>tabBar.classList.toggle("show",s.isActive)});
+[["world","#world"],["who","[data-scenes]"],["news","#news"],["goods","#goods"],["contact","#contact"]].forEach(([k,sel])=>ScrollTrigger.create({trigger:sel,start:"top 50%",end:"bottom 50%",onToggle:t=>{if(t.isActive)markSec(k);}}));
+
+if(!reduce){
+  document.querySelectorAll("[data-scene]").forEach(sc=>{
+    gsap.fromTo(sc.querySelector(".bg"),{yPercent:-5},{yPercent:5,ease:"none",scrollTrigger:{trigger:sc,start:"top bottom",end:"bottom top",scrub:true}});
+    gsap.from(sc.querySelector(".actor canvas"),{x:sc.classList.contains("L")?60:-60,ease:"none",scrollTrigger:{trigger:sc,start:"top 85%",end:"top 35%",scrub:true}});
+  });
+}
+document.querySelectorAll("[data-scene]").forEach(sc=>ScrollTrigger.create({trigger:sc,start:"top 55%",end:"bottom 55%",onToggle:s=>{if(s.isActive)document.querySelectorAll("[data-face]").forEach(f=>f.setAttribute("aria-current",String(f.dataset.face===sc.dataset.scene)));}}));
+function init(){layout();P.forEach((p,i)=>draw(i,0));if(isMob())pick(2,false);}
+addEventListener("load",()=>{init();ScrollTrigger.refresh();});
+init();
+</script>
+
+</body>
+</html>
