@@ -142,6 +142,8 @@ html:not(.review) .temp,html:not(.review) .ex,html:not(.review) .how{display:non
   .tabbar .face{width:42px;height:42px}
 }
 @media (min-width:820px){.float-menu{display:none}}
+/* 휴대폰 첫 화면에서는 한 줄 소개를 뺌 (11/3 명석·은녕 회의) */
+@media (max-width:819px){.stage .lead{display:none}}
 
 /* ---------- 1. 동네 입구 ---------- */
 .stage{position:relative;overflow:hidden;background:var(--sky);height:min(calc(100svh - 0px),760px);min-height:560px;touch-action:pan-y}
@@ -478,12 +480,12 @@ const P=[
   desc:"대나무숲 빌라 반장인 나무늘보. 끼토가 멘붕에 빠지면 무심한 척 해결책을 툭 던져요.",story:"소파에 녹아내리듯 앉아 과자 봉지를 탈탈. 부스러기는 미개가 치워 줘요.",tint:"#EEF1E8"},
  {id:"kkito",ko:"끼토",en:"KKITO",mod:"소심한 완벽주의자",h:108,hi:"가스 불 잠갔나? 미개 밥은 줬나?",pose:"worry",bg:"901",side:"R",where:"당근빌라 301호",
   desc:"당근빌라 301호에 사는 분홍 토끼. 당근빌라 반장이에요.",story:"외출하려다 멈춰 선 끼토. 가스 불, 미개 밥, 창문… 걱정이 끝나지 않아요.",tint:"#F6ECEF"},
- {id:"ramda",ko:"람다",en:"RAMDA",mod:"도토리 상점 주인",t:1,h:76,hi:"어서 와! 오늘도 보물 많이 주워 왔어.",tmp:1,pose:"treasure",bg:"acorn",side:"L",where:"도토리 상점",
-  desc:"빈티지 소품샵 '도토리 상점'을 운영하는 다람쥐. 뭐든 주머니에 줍줍해요.",story:"3년 넘게 안 팔린 물건은 나무 밑동 가판대 '나이테존'으로. 나이만큼 할인해요.",tint:"#F3EBE3"},
+ {id:"ramda",ko:"람다",en:"RAMDA",mod:"도토리 상점 주인",t:1,h:76,hi:"어서 와! 오늘도 보물 많이 주워 왔어.",tmp:1,pose:"treasure",bg:"acorn",side:"L",where:"도토리 상점 · 집은 당근빌라 203호",
+  desc:"당근빌라 203호에 사는 다람쥐. 빈티지 소품샵 '도토리 상점'을 운영하고, 뭐든 주머니에 줍줍해요.",story:"3년 넘게 안 팔린 물건은 나무 밑동 가판대 '나이테존'으로. 나이만큼 할인해요.",tint:"#F3EBE3"},
  {id:"bookgeo",ko:"북거씨",en:"BOOKGEO",mod:"향수 공방 조향사",t:1,h:52,hi:"음… 오늘은 바다 향이 어울리겠군요.",tmp:1,pose:"sniff",bg:"perfume",side:"L",where:"북거 향수 공방",wt:1,
   desc:"검정 터틀넥에 네모난 검은 안경을 쓴 거북. 북거 향수 공방에서 향을 만들어요.",story:"시향지를 코에 대고 눈을 지그시. 베스트 1위 '바다향'의 비밀은 아직 몰라요.",tint:"#F1F1E8"},
- {id:"migae",ko:"미개",en:"MIGAE",mod:"끼토의 반려개미",t:1,h:20,hi:"(더듬이를 쫑긋쫑긋)",tmp:1,pose:"belly",bg:"floor",side:"R",where:"당근빌라 301호 바닥",
-  desc:"끼토를 닮아 겁이 많아요. 가는 더듬이 두 개로 기분을 다 말해요.",story:"보늘이 흘린 과자 부스러기는 미개 담당. 기분이 좋으면 배를 보이며 벌러덩.",tint:"#FBEDED"}
+ {id:"migae",ko:"미개",en:"MIGAE",mod:"끼토의 반려개미",t:1,h:20,hi:"(더듬이를 쫑긋쫑긋)",tmp:1,pose:"belly",bg:"floor",side:"R",where:"당근빌라 301호 · 끼토와 함께",
+  desc:"끼토와 함께 당근빌라 301호에 사는 반려개미. 끼토를 닮아 겁이 많고, 가는 더듬이 두 개로 기분을 다 말해요.",story:"보늘이 흘린 과자 부스러기는 미개 담당. 기분이 좋으면 배를 보이며 벌러덩.",tint:"#FBEDED"}
 ];
 const ORDER=["kkito","boneul","migae","ramda","lachilchin","bookgeo"];
 const by=Object.fromEntries(P.map(p=>[p.id,p]));
