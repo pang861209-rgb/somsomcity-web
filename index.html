@@ -165,7 +165,20 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
 @keyframes ld-hop{0%,40%,100%{transform:translateY(0)}20%{transform:translateY(-10px)}}
 @media (prefers-reduced-motion:reduce){.loader .faces img{animation:none}}
 .nojs{position:relative;z-index:101;margin:0;padding:12px 16px;background:#FFF4D6;text-align:center;font-size:14.5px}
-.bub{position:absolute;left:0;top:0;overflow:visible;z-index:-1;pointer-events:none;filter:drop-shadow(0 4px 0 rgba(34,35,31,.10))}
+/* 배경음악: 저절로 켜지지 않고, 버튼을 눌러야 나옴 (첫 화면 왼쪽 위 · 머리 막대 · 휴대폰 메뉴) */
+.music{display:inline-flex;align-items:center;gap:7px;border-radius:999px;background:#fff;padding:5px 14px 5px 11px;min-height:40px;font-family:var(--font-hand);font-weight:700;font-size:17px;white-space:nowrap}
+.music .nt{width:18px;height:18px;flex:none}
+.music .eq{display:none;align-items:flex-end;gap:2px;height:14px}
+.music .eq i{display:block;width:3px;height:4px;background:var(--purple);border-radius:2px;animation:eq 1s ease-in-out infinite}
+.music .eq i:nth-child(2){animation-delay:.2s}.music .eq i:nth-child(3){animation-delay:.4s}
+.music.on .eq{display:inline-flex}.music.on .nt{display:none}
+@keyframes eq{0%,100%{height:4px}50%{height:14px}}
+@media (prefers-reduced-motion:reduce){.music .eq i{animation:none;height:9px}}
+.stage-music{position:absolute;top:max(14px,env(safe-area-inset-top,0px));left:max(14px,env(safe-area-inset-left,0px));z-index:8}
+.top .music{margin-left:6px}
+.sheet-music{justify-self:center}
+@media (max-width:819px){.top .music .tx,.stage-music .tx{display:none}.top .music,.stage-music{padding:5px 11px}}
+.bub{position:absolute;left:0;top:0;overflow:visible;z-index:-1;pointer-events:none}
 .bub path{fill:#fff;stroke:var(--ink);stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round}
 .stage .lead{transition:opacity .25s}
 .stage:has(.say.show) .lead{opacity:0}
@@ -331,10 +344,10 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justif
     <li><a class="m" href="#world" data-sec="world">솜솜시티</a></li>
     <li><button class="m" type="button" id="whoBtn" data-sec="who" aria-expanded="false" aria-controls="drop">이웃들 ▾</button><div class="drop hand" id="drop" data-drop></div></li>
     <li><a class="m" href="#news" data-sec="news">소식</a></li>
-    <li><a class="m" href="#goods" data-sec="goods">굿즈</a></li>
     <li><a class="m" href="#contact" data-sec="contact">문의</a></li>
   </ul></nav>
   <div class="sns" data-ico></div>
+  <button class="music hand" type="button" data-music aria-pressed="false"></button>
   <button class="menu-btn hand" type="button" data-open-sheet aria-controls="sheet" aria-expanded="false">메뉴</button>
 </div></header>
 <nav class="tabbar" id="tabbar" aria-label="이웃 바로 가기" data-faces></nav>
@@ -345,11 +358,11 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justif
       <li><a href="#world" data-close>솜솜시티 <small>세계관 · 이웃 관계도</small></a></li>
       <li><a href="#s-kkito" data-close>이웃들 <small>여섯 이웃의 집에 놀러 가기</small></a></li>
       <li><a href="#news" data-close>소식 <small>인스타그램 · 유튜브</small></a></li>
-      <li><a href="#goods" data-close>굿즈 <small>준비 중</small></a></li>
       <li><a href="#contact" data-close>문의 <small>협업 · 제안</small></a></li>
     </ol></nav>
     <div class="who6" data-who6></div>
     <div class="row" data-sheet-sns></div>
+    <button class="music sheet-music hand" type="button" data-music aria-pressed="false"></button>
     <p class="mailline">문의 kkito@somsomcity.com</p>
   </div>
 </div>
@@ -357,6 +370,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justif
 <main>
   <section class="stage" id="stage" aria-label="솜솜시티 동네 입구">
     <button class="float-menu hand" type="button" data-open-sheet aria-controls="sheet" aria-expanded="false">메뉴</button>
+    <button class="music stage-music hand" type="button" data-music aria-pressed="false"></button>
     <img class="bg" id="bg" src="img/street2.webp" alt="당근빌라, 도토리 상점, 대나무숲 빌라가 있는 솜솜시티 거리 (AI 시안)">
     <img class="logo" src="img/logo_cloud.webp" alt="솜솜시티">
     <p class="lead">소심한 완벽주의자와 태평한 귀차니스트, 그리고 그들을 둘러싼 솜솜시티 이웃들의 우당탕탕 일상</p>
@@ -390,13 +404,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justif
     <p class="how">시안에서는 예시 그림으로 채웠습니다. 실제 사이트에서는 인스타 게시물 주소를 넣으면 그 게시물이 그대로 보이고, 쇼츠는 페이지 안에서 재생됩니다.</p>
   </section>
 
-  <div class="wrap divider" data-divider aria-hidden="true"></div>
-  <section class="wrap goods" id="goods">
-    <div class="box hand">
-      <div style="display:grid;gap:12px"><div class="secsay" data-secsay="boneul" data-line="굿즈는… 천천히 만들고 있어."></div><h2>솜솜시티 굿즈, 준비하고 있어요</h2><p>이웃들을 곁에 둘 수 있는 물건을 만들고 있어요. 소식은 인스타그램에서 가장 먼저 알려 드릴게요.</p><div data-goods-btn></div></div>
-      <div class="soon" aria-hidden="true"><div class="hand">준비 중</div><div class="hand">준비 중</div><div class="hand">준비 중</div></div>
-    </div>
-  </section>
+  <!-- 굿즈 구간: 11/3 명석 요청으로 뺌. 나중에 메뉴로 추가 -->
 
   <div class="wrap divider" data-divider aria-hidden="true"></div>
   <section class="wrap closing">
@@ -477,7 +485,6 @@ const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /* 공통 버튼 */
 document.querySelectorAll("[data-sns-btns]").forEach(e=>e.innerHTML=`<a class="btn fill hand" href="${IG}">${igSvg}인스타그램 팔로우</a><a class="btn pink hand" href="${YT}">${ytSvg}유튜브 구독</a>`);
-document.querySelector("[data-goods-btn]").innerHTML=`<a class="btn fill hand" href="${IG}">${igSvg}굿즈 소식 받기</a>`;
 document.querySelectorAll("[data-faces]").forEach(n=>n.innerHTML=ORDER.map(id=>`<a class="face" href="#s-${id}" data-face="${id}" aria-label="${by[id].ko} 장면으로"><img src="img/face_${id}.webp" alt=""></a>`).join(""));
 
 /* ---------- 1. 동네 입구: PC는 한 줄로, 휴대폰은 한 칸씩 넘기기 ---------- */
@@ -512,21 +519,25 @@ function layout(){
 function play(i){cancelAnimationFrame(raf);if(!sheetOK(P[i].id)){draw(i,0);return;}if(typeof idleStopOne==="function"){idleStopOne(i);}const n=ANIM[P[i].id].n;let f=0,last=0;
   const step=t=>{if(t-last>=83){draw(i,f);f++;last=t;}if(f<n)raf=requestAnimationFrame(step);else{draw(i,0);raf=null;if(typeof idleSched==="function")idleSched(i);}};raf=requestAnimationFrame(step);}
 /* 말풍선 모양: 둥근 몸통과 꼬리를 끊김 없는 선 하나로. 변마다 아주 살짝 휘게 해서 손으로 그린 느낌 */
-function drawBub(tail,box=say){const svg=box.querySelector(".bub"),W=box.offsetWidth,H=box.offsetHeight,r=22;
+function drawBub(tail,box=say){const svg=box.querySelector(".bub"),W=box.offsetWidth,H=box.offsetHeight,r=Math.min(22,H*.3,W*.2);
   /* 손으로 그은 선처럼: 변을 40px 남짓씩 나눠 조금씩 다르게 휘게 (필터를 안 써서 선이 끊기거나 바탕이 삐져나오지 않음) */
-  let k=0;const J=[1.3,-.8,.5,-1.4,1,-.4,.9,-1.1,.3,1.2,-.7,.6];const bend=(x1,y1,x2,y2)=>{const L=Math.hypot(x2-x1,y2-y1)||1,n=Math.max(1,Math.round(L/42)),nx=(y2-y1)/L,ny=-(x2-x1)/L;let o="";
-    for(let q=1;q<=n;q++){const ax=x1+(x2-x1)*(q-1)/n,ay=y1+(y2-y1)*(q-1)/n,bx=x1+(x2-x1)*q/n,by=y1+(y2-y1)*q/n,j=J[k++%J.length]*Math.min(1.5,L/n/22);o+=` Q ${(ax+bx)/2+nx*j} ${(ay+by)/2+ny*j} ${bx} ${by}`;}return o;};
-  const t=tail||{},w=11;let a=t.at;
-  if(t.side==="b"||t.side==="t")a=Math.min(Math.max(a,r+w+6),W-r-w-6);else if(t.side)a=Math.min(Math.max(a,r+w+4),H-r-w-4);
-  let d=`M ${r} 0`+(t.side==="t"?bend(r,0,a-w,0)+` Q ${a-3} -5 ${a+3} -17 Q ${a+4} -5 ${a+w} 0`+bend(a+w,0,W-r,0):bend(r,0,W-r,0))+` Q ${W} 0 ${W} ${r}`;
-  if(t.side==="r")d+=bend(W,r,W,a-w)+` Q ${W+5} ${a-2} ${W+17} ${a+3} Q ${W+5} ${a+5} ${W} ${a+w}`+bend(W,a+w,W,H-r);else d+=bend(W,r,W,H-r);
+  let k=0;const J=[1.3,-.8,.5,-1.4,1,-.4,.9,-1.1,.3,1.2,-.7,.6];const bend=(x1,y1,x2,y2)=>{const L=Math.hypot(x2-x1,y2-y1);if(L<6)return ` L ${x2} ${y2}`;const n=Math.max(1,Math.round(L/42)),nx=(y2-y1)/L,ny=-(x2-x1)/L;let o="";
+    for(let q=1;q<=n;q++){const ax=x1+(x2-x1)*(q-1)/n,ay=y1+(y2-y1)*(q-1)/n,bx=x1+(x2-x1)*q/n,by=y1+(y2-y1)*q/n,j=J[k++%J.length]*Math.min(1.3,L/n/26);o+=` Q ${(ax+bx)/2+nx*j} ${(ay+by)/2+ny*j} ${bx} ${by}`;}return o;};
+  const t=tail||{},side=t.side;
+  /* 꼬리: 밑동은 넉넉하게, 끝은 이웃 쪽으로 살짝 휘어 내려감 (11/3 다시 그림) */
+  const clampA=(a,lo,hi)=>lo>hi?(lo+hi)/2:Math.min(Math.max(a,lo),hi);
+  const w=side==="l"||side==="r"?Math.min(12,H*.18):13;let a=t.at;
+  if(side==="b"||side==="t")a=clampA(a,r+w+4,W-r-w-4);else if(side)a=clampA(a,r+w,H-r-w);
+  const TL=t.len||18;
+  let d=`M ${r} 0`+(side==="t"?bend(r,0,a-w,0)+` Q ${a-2} -3 ${a+4} -${TL} Q ${a+5} -4 ${a+w} 0`+bend(a+w,0,W-r,0):bend(r,0,W-r,0))+` Q ${W} 0 ${W} ${r}`;
+  if(side==="r")d+=bend(W,r,W,a-w)+` Q ${W+5} ${a} ${W+16} ${a+w+4} Q ${W+3} ${a+w-1} ${W} ${a+w}`+bend(W,a+w,W,H-r);else d+=bend(W,r,W,H-r);
   d+=` Q ${W} ${H} ${W-r} ${H}`;
-  const TL=t.len||17;if(t.side==="b")d+=bend(W-r,H,a+w,H)+` Q ${a+3} ${H+TL*.35} ${a-3} ${H+TL} Q ${a-4} ${H+TL*.35} ${a-w} ${H}`+bend(a-w,H,r,H);else d+=bend(W-r,H,r,H);
+  if(side==="b")d+=bend(W-r,H,a+w,H)+` Q ${a+2} ${H+3} ${a-5} ${H+TL} Q ${a-5} ${H+4} ${a-w} ${H}`+bend(a-w,H,r,H);else d+=bend(W-r,H,r,H);
   d+=` Q 0 ${H} 0 ${H-r}`;
-  if(t.side==="l")d+=bend(0,H-r,0,a+w)+` Q -5 ${a+5} -17 ${a+3} Q -5 ${a-2} 0 ${a-w}`+bend(0,a-w,0,r);else d+=bend(0,H-r,0,r);
+  if(side==="l")d+=bend(0,H-r,0,a+w)+` Q -3 ${a+w-1} -16 ${a+w+4} Q -5 ${a} 0 ${a-w}`+bend(0,a-w,0,r);else d+=bend(0,H-r,0,r);
   d+=` Q 0 0 ${r} 0 Z`;
   svg.setAttribute("width",W);svg.setAttribute("height",H);svg.querySelector("path").setAttribute("d",d);
-  if(box!==say||!isMob())box.style.transformOrigin=t.side==="b"?`${a}px ${H+(t.len||17)}px`:t.side==="t"?`${a}px -16px`:t.side==="l"?`-16px ${a}px`:t.side==="r"?`${W+16}px ${a}px`:"50% 100%";}
+  if(box!==say||!isMob())box.style.transformOrigin=side==="b"?`${a}px ${H+TL}px`:side==="t"?`${a}px -${TL}px`:side==="l"?`-16px ${a}px`:side==="r"?`${W+16}px ${a}px`:"50% 100%";}
 function showSay(i){const p=P[i];
   say.innerHTML=`<svg class="bub" aria-hidden="true"><path/></svg><p class="nm">${esc(p.ko)}<small>${modH(p)}</small></p><p class="line">${hiH(p)}</p><a class="btn fill hand" href="#s-${p.id}" data-go>우리 집 놀러 가기 →</a>`;let tail=null;
   /* PC: 말풍선 자리 후보(위·위 왼쪽·위 오른쪽·옆) 중 다른 이웃과 로고를 가장 덜 가리는 곳을 고름 (11/3) */
@@ -686,6 +697,19 @@ document.querySelector("[data-ig]").innerHTML=ORDER.map(id=>`<a class="post hand
 document.querySelector("[data-yt]").innerHTML=[["901","kkito","끼토의 외출 준비"],["sofa","boneul","보늘의 소파 생활"],["acorn","ramda","도토리 상점 나이테존"],["granny","lachilchin","할머니의 티타임"]].map(([b,id,t])=>`<a class="short hand" href="${YT}" data-bgsrc="img/scene_${b}.webp"><span class="ex">쇼츠 예시</span><img class="who" src="img/pose_${id}_${by[id].pose}.webp" alt="" loading="lazy" decoding="async"><span class="play" aria-hidden="true"></span><span class="t">${t}</span></a>`).join("");
 
 document.querySelectorAll("[data-bgsrc]").forEach(el=>near.observe(el));
+/* ---------- 배경음악 (솜솜시티 주제곡) ---------- */
+const bgm=new Audio();bgm.loop=true;bgm.preload="none";let bgmOn=false,bgmFade=null,bgmHidden=false;
+const noteSvg='<svg class="nt" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M9 18.5a3 3 0 11-2-2.83V5.5l12-2.5v12a3 3 0 11-2-2.83V6.9l-8 1.7z"/></svg>';
+function musicUI(){document.querySelectorAll("[data-music]").forEach(b=>{b.classList.toggle("on",bgmOn);b.setAttribute("aria-pressed",String(bgmOn));
+  b.innerHTML=`${noteSvg}<span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="tx">${bgmOn?"음악 끄기":"음악 듣기"}</span>`;b.setAttribute("aria-label",bgmOn?"배경음악 끄기":"배경음악 듣기");});}
+function fadeTo(v,ms,done){clearInterval(bgmFade);const st=bgm.volume,t0=performance.now();bgmFade=setInterval(()=>{const k=Math.min(1,(performance.now()-t0)/ms);bgm.volume=st+(v-st)*k;if(k>=1){clearInterval(bgmFade);done&&done();}},40);}
+function setMusic(on){bgmOn=on;musicUI();
+  if(on){if(!bgm.src)bgm.src="audio/somsom_theme.mp3";bgm.volume=0;bgm.play().then(()=>fadeTo(.5,1200)).catch(()=>{bgmOn=false;musicUI();});}
+  else fadeTo(0,500,()=>bgm.pause());}
+document.querySelectorAll("[data-music]").forEach(b=>b.addEventListener("click",e=>{e.stopPropagation();setMusic(!bgmOn);}));
+document.addEventListener("visibilitychange",()=>{if(document.hidden&&bgmOn){bgmHidden=true;bgm.pause();}else if(!document.hidden&&bgmHidden){bgmHidden=false;bgm.play().catch(()=>{});}});
+musicUI();
+
 /* 메일 복사 */
 document.getElementById("copy").addEventListener("click",async e=>{try{await navigator.clipboard.writeText("kkito@somsomcity.com");e.currentTarget.textContent="복사했어요";}catch{const r=document.createRange();r.selectNodeContents(document.getElementById("mail"));const s=getSelection();s.removeAllRanges();s.addRange(r);e.currentTarget.textContent="주소를 선택했어요";}});
 
@@ -714,7 +738,7 @@ const topBar=document.getElementById("top"),tabBar=document.getElementById("tabb
 ScrollTrigger.create({trigger:stage,start:"bottom 80px",onEnter:()=>topBar.classList.add("show"),onLeaveBack:()=>topBar.classList.remove("show")});
 const scenesWrap=document.querySelector("[data-scenes]");
 ScrollTrigger.create({trigger:scenesWrap,start:"top 70%",end:"bottom 40%",onToggle:s=>tabBar.classList.toggle("show",s.isActive)});
-[["world","#world"],["who","[data-scenes]"],["news","#news"],["goods","#goods"],["contact","#contact"]].forEach(([k,sel])=>ScrollTrigger.create({trigger:sel,start:"top 50%",end:"bottom 50%",onToggle:t=>{if(t.isActive)markSec(k);}}));
+[["world","#world"],["who","[data-scenes]"],["news","#news"],["contact","#contact"]].forEach(([k,sel])=>ScrollTrigger.create({trigger:sel,start:"top 50%",end:"bottom 50%",onToggle:t=>{if(t.isActive)markSec(k);}}));
 
 if(!reduce){
   /* 휠 스크롤을 부드럽게 (휴대폰 터치는 원래 그대로) */
