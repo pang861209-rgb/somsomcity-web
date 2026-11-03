@@ -83,6 +83,17 @@ html:not(.review) .temp,html:not(.review) .ex,html:not(.review) .how{display:non
 /* 메뉴: PC는 위쪽 막대(글자 메뉴 + 이웃 펼침), 휴대폰은 메뉴 버튼 → 전체 화면 메뉴. 얼굴 탭은 이웃 장면 구간에서만 */
 .top{position:fixed;left:0;right:0;top:env(safe-area-inset-top,0px);z-index:80;background:rgba(255,255,255,.96);border-bottom:2px solid var(--ink);transform:translateY(-110%);transition:transform .35s}
 .top.show{transform:none}
+/* PC 첫 화면: 메뉴가 처음부터 보이게, 하늘 위에 투명하게 얹음 (11/3) */
+.top{transition:transform .35s,background .3s,border-color .3s}
+.top.at-stage{background:transparent;border-bottom-color:transparent}
+.top.at-stage .mark{visibility:hidden}
+.top.at-stage .menu{background:rgba(255,255,255,.92);border-radius:999px;padding:3px 6px}
+@media (min-width:820px){
+  .stage .stage-music{display:none}
+  /* 메뉴 막대 자리만큼 로고·소개 문구를 내림 */
+  .stage img.logo{top:calc(64px + 2%);width:min(430px,80vw,40vh)}
+  .stage p.lead,.stage .lead.lead{top:calc(64px + 3% + min(430px,80vw,40vh) * .37)}}
+.burger{display:inline-block;width:16px;height:12px;margin-right:6px;vertical-align:-1px;background:linear-gradient(currentColor 0 0) 0 0/100% 2px no-repeat,linear-gradient(currentColor 0 0) 0 50%/100% 2px no-repeat,linear-gradient(currentColor 0 0) 0 100%/100% 2px no-repeat}
 .top .wrap{display:flex;align-items:center;gap:18px;padding-block:6px}
 .top .mark{height:36px;width:auto}
 .menu{display:flex;align-items:center;gap:4px;margin-left:auto;list-style:none}
@@ -348,7 +359,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justif
   </ul></nav>
   <div class="sns" data-ico></div>
   <button class="music hand" type="button" data-music aria-pressed="false"></button>
-  <button class="menu-btn hand" type="button" data-open-sheet aria-controls="sheet" aria-expanded="false">메뉴</button>
+  <button class="menu-btn hand" type="button" data-open-sheet aria-controls="sheet" aria-expanded="false"><span class="burger" aria-hidden="true"></span>메뉴</button>
 </div></header>
 <nav class="tabbar" id="tabbar" aria-label="이웃 바로 가기" data-faces></nav>
 <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="메뉴">
@@ -369,7 +380,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justif
 
 <main>
   <section class="stage" id="stage" aria-label="솜솜시티 동네 입구">
-    <button class="float-menu hand" type="button" data-open-sheet aria-controls="sheet" aria-expanded="false">메뉴</button>
+    <button class="float-menu hand" type="button" data-open-sheet aria-controls="sheet" aria-expanded="false"><span class="burger" aria-hidden="true"></span>메뉴</button>
     <button class="music stage-music hand" type="button" data-music aria-pressed="false"></button>
     <img class="bg" id="bg" src="img/street2.webp" alt="당근빌라, 도토리 상점, 대나무숲 빌라가 있는 솜솜시티 거리 (AI 시안)">
     <img class="logo" src="img/logo_cloud.webp" alt="솜솜시티">
@@ -735,7 +746,10 @@ function markSec(sec){document.querySelectorAll("#menu .m").forEach(m=>m.setAttr
 if(window.gsap&&window.ScrollTrigger){
 gsap.registerPlugin(ScrollTrigger);
 const topBar=document.getElementById("top"),tabBar=document.getElementById("tabbar");
-ScrollTrigger.create({trigger:stage,start:"bottom 80px",onEnter:()=>topBar.classList.add("show"),onLeaveBack:()=>topBar.classList.remove("show")});
+/* 첫 화면: PC는 투명 머리 막대(메뉴 보임), 휴대폰은 '메뉴' 버튼. 첫 화면을 지나면 둘 다 흰 머리 막대 */
+const topAtStage=()=>{if(isMob())topBar.classList.remove("show","at-stage");else topBar.classList.add("show","at-stage");};topAtStage();
+ScrollTrigger.create({trigger:stage,start:"bottom 80px",onEnter:()=>{topBar.classList.add("show");topBar.classList.remove("at-stage");},onLeaveBack:topAtStage});
+addEventListener("resize",()=>{if(scrollY<stage.offsetHeight-80)topAtStage();});
 const scenesWrap=document.querySelector("[data-scenes]");
 ScrollTrigger.create({trigger:scenesWrap,start:"top 70%",end:"bottom 40%",onToggle:s=>tabBar.classList.toggle("show",s.isActive)});
 [["world","#world"],["who","[data-scenes]"],["news","#news"],["contact","#contact"]].forEach(([k,sel])=>ScrollTrigger.create({trigger:sel,start:"top 50%",end:"bottom 50%",onToggle:t=>{if(t.isActive)markSec(k);}}));
@@ -763,7 +777,7 @@ if(!reduce){
   });
 }
 document.querySelectorAll("[data-scene]").forEach(sc=>ScrollTrigger.create({trigger:sc,start:"top 55%",end:"bottom 55%",onToggle:s=>{if(s.isActive)document.querySelectorAll("[data-face]").forEach(f=>f.setAttribute("aria-current",String(f.dataset.face===sc.dataset.scene)));}}));
-}else{const tb=document.getElementById("top");addEventListener("scroll",()=>tb.classList.toggle("show",scrollY>stage.offsetHeight-80),{passive:true});}
+}else{const tb=document.getElementById("top");const upd=()=>{const past=scrollY>stage.offsetHeight-80;tb.classList.toggle("show",past||!isMob());tb.classList.toggle("at-stage",!past&&!isMob());};addEventListener("scroll",upd,{passive:true});upd();}
 /* 로딩: 첫 화면 배경과 이웃 정지 그림 6장이 다 오면(또는 8초가 지나면) 닫힘 */
 (function(){const ld=document.getElementById("loader"),bar=document.getElementById("ldbar");if(!ld)return;
   const ims=[bg,...P.map(p=>still[p.id])];let n=0,closed=false;
