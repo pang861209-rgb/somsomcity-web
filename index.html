@@ -41,7 +41,9 @@ h1,h2,h3{font-family:var(--font-hand);font-weight:700;line-height:1.2;text-wrap:
 .empty{color:#a7a59c}
 
 /* 손그림 선 부품: 테두리만 살짝 흔들리게 (글자는 흔들리지 않음) */
-.hand{position:relative;isolation:isolate}
+.hand{position:relative;isolation:isolate;background-clip:content-box}
+/* 손선 테두리는 흔들리고 바탕은 반듯하면, 선 밖으로 바탕이 삐져나와 지저분해 보임 → 바탕은 테두리 안쪽(여백 안)에만. 여백 없는 것들은 4px 여백 */
+.post.hand,.short.hand,.soon .hand{padding:4px}
 .hand::before{content:"";position:absolute;inset:0;border:2px solid var(--ink);border-radius:inherit;background:inherit;filter:url(#wobble);z-index:-1}
 .btn{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:10px 20px;font-family:var(--font-hand);font-weight:700;font-size:19px;text-decoration:none;background:#fff;color:var(--ink);min-height:44px}
 .btn.fill{color:#fff}
@@ -117,28 +119,43 @@ h1,h2,h3{font-family:var(--font-hand);font-weight:700;line-height:1.2;text-wrap:
 /* 그림자: 캐릭터마다 실제 발 위치·폭에 맞춰 발밑에만 (11/3) */
 .shd{position:absolute;bottom:0;aspect-ratio:5/1;transform:translate(-50%,42%);border-radius:50%;background:radial-gradient(closest-side,rgba(72,58,44,.44),rgba(72,58,44,.32) 60%,rgba(72,58,44,.12) 82%,rgba(72,58,44,0));mix-blend-mode:multiply;pointer-events:none;z-index:0}
 .slot.on{z-index:3}
-.say{position:absolute;z-index:7;width:min(340px,88vw);border-radius:22px;background:#fff;padding:14px 18px 16px;display:grid;gap:6px;opacity:0;transform:translateY(10px);transition:opacity .25s,transform .3s;pointer-events:none}
+.say{position:absolute;z-index:7;width:min(340px,88vw);padding:16px 20px 18px;display:grid;gap:6px;isolation:isolate;opacity:0;transform:scale(.9);transition:opacity .2s,transform .42s cubic-bezier(.3,1.45,.5,1);pointer-events:none}
 .say.show{opacity:1;transform:none;pointer-events:auto}
+/* 말풍선 몸통+꼬리를 선 하나로 그림 (11/3) */
+html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!important}.lenis.lenis-stopped{overflow:hidden}
+[data-scenes]{overflow-x:clip}
+/* ---------- 로딩 화면: 이웃 얼굴이 차례로 폴짝, 아래 선이 차오름. 0.25초 안에 끝나면 안 보임 ---------- */
+.loader{position:fixed;inset:0;z-index:100;display:grid;place-items:center;align-content:center;gap:22px;background:var(--paper-2);opacity:0;animation:ld-in .3s .25s forwards;transition:opacity .5s,visibility .5s}
+.loader.done{opacity:0!important;visibility:hidden;animation:none}
+.loader img.lg{width:min(260px,62vw);height:auto}
+.loader .faces{display:flex;gap:10px}
+.loader .faces img{width:38px;height:38px;border-radius:50%;background:#fff;box-shadow:0 0 0 2px var(--ink);animation:ld-hop 1.5s ease-in-out infinite}
+.loader .faces img:nth-child(2){animation-delay:.12s}.loader .faces img:nth-child(3){animation-delay:.24s}.loader .faces img:nth-child(4){animation-delay:.36s}.loader .faces img:nth-child(5){animation-delay:.48s}.loader .faces img:nth-child(6){animation-delay:.6s}
+.loader .bar{width:min(220px,56vw);height:8px;border-radius:99px;box-shadow:inset 0 0 0 2px var(--ink);overflow:hidden;background:#fff}
+.loader .bar i{display:block;height:100%;width:8%;background:var(--purple);border-radius:99px;transition:width .35s ease-out}
+.loader p{font-family:var(--font-hand);font-weight:700;font-size:20px;margin:0}
+@keyframes ld-in{to{opacity:1}}
+@keyframes ld-hop{0%,40%,100%{transform:translateY(0)}20%{transform:translateY(-10px)}}
+@media (prefers-reduced-motion:reduce){.loader .faces img{animation:none}}
+.nojs{position:relative;z-index:101;margin:0;padding:12px 16px;background:#FFF4D6;text-align:center;font-size:14.5px}
+.say .bub{position:absolute;left:0;top:0;overflow:visible;z-index:-1;pointer-events:none;filter:drop-shadow(0 4px 0 rgba(34,35,31,.10))}
+.say .bub path{fill:#fff;stroke:var(--ink);stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round;filter:url(#wobble)}
 .stage .lead{transition:opacity .25s}
 .stage:has(.say.show) .lead{opacity:0}
 .say .nm{font-family:var(--font-hand);font-weight:700;font-size:24px;line-height:1.1}
 .say .nm small{font-family:var(--font-body);font-weight:400;font-size:13px;color:var(--ink-soft);margin-left:6px}
 .say .line{font-size:15px}
 .say .btn{justify-self:start;margin-top:4px;font-size:17px;padding:6px 16px}
-.say .tail{position:absolute;bottom:-14px;width:24px;height:16px}
-/* 위에 자리가 없으면(로고와 겹치면) 캐릭터 옆에 */
-.say.side .tail{bottom:auto;top:34px;left:-19px!important;transform:rotate(90deg)}
-.say.side.flip .tail{left:auto!important;right:-19px;transform:rotate(-90deg)}
-.hint{position:absolute;left:50%;bottom:2%;transform:translateX(-50%);z-index:6;font-family:var(--font-hand);font-weight:700;font-size:18px;background:#fff;border-radius:999px;padding:2px 16px;transition:opacity .3s;white-space:nowrap}
+
+.hint{position:absolute;left:50%;bottom:2%;transform:translateX(-50%);z-index:6;font-family:var(--font-hand);font-weight:700;font-size:18px;background:#fff;border-radius:999px;padding:4px 16px;transition:opacity .3s;white-space:nowrap}
 .arrow{display:none}
 @media (max-width:819px){
   .stage{height:min(100svh,760px)}
   .track{bottom:46px;height:58%}
   .arrow{display:grid;position:absolute;bottom:40%;z-index:6;width:40px;height:40px;border-radius:50%;background:#fff;place-items:center;font-size:20px}
   .arrow.l{left:max(8px,env(safe-area-inset-left,0px))}.arrow.r{right:max(8px,env(safe-area-inset-right,0px))}
-  .say{left:50%!important;bottom:12px!important;top:auto!important;transform:translate(-50%,20px)}
+  .say{left:50%!important;bottom:12px!important;top:auto!important;transform:translate(-50%,20px);transform-origin:50% 100%!important}
   .say.show{transform:translate(-50%,0)}
-  .say .tail{display:none}
 }
 
 /* ---------- 2. 세계관 ---------- */
@@ -205,7 +222,7 @@ h1,h2,h3{font-family:var(--font-hand);font-weight:700;line-height:1.2;text-wrap:
 .post img{position:absolute;left:12%;top:10%;width:76%;height:82%;object-fit:contain;object-position:50% 100%}
 .ex{position:absolute;left:10px;top:8px;font-size:11px;background:#fff;border-radius:4px;padding:0 6px;color:var(--ink-soft);z-index:2}
 .yt{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
-.short{position:relative;aspect-ratio:9/16;border-radius:18px;background-size:cover;background-position:center;display:flex;align-items:flex-end;text-decoration:none;overflow:hidden}
+.short{position:relative;aspect-ratio:9/16;border-radius:18px;background-size:cover;background-position:center;display:flex;align-items:flex-end;text-decoration:none}
 .short span.t{position:relative;z-index:2;margin:10px;background:#fff;border-radius:10px;padding:2px 10px;font-size:13.5px}
 .short .play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:52px;height:52px;border-radius:50%;background:#fff;display:grid;place-items:center;z-index:2}
 .short .play::after{content:"";border-left:15px solid var(--pink);border-top:10px solid transparent;border-bottom:10px solid transparent;margin-left:5px}
@@ -231,12 +248,19 @@ footer{border-top:2px solid var(--ink);padding-block:26px 34px}
 footer .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:space-between;font-size:14px;color:var(--ink-soft)}
 .mail{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .mail a{color:var(--ink);font-weight:700;text-decoration:none;user-select:all}
-.copy{font-size:14px;padding:2px 12px;border-radius:999px;background:#fff;min-height:32px}
+.copy{font-size:14px;padding:4px 12px;border-radius:999px;background:#fff;min-height:32px}
 
 </style>
 </head>
 <body>
 
+<div class="loader" id="loader" role="status" aria-live="polite" aria-label="솜솜시티를 불러오는 중">
+  <img class="lg" src="img/logo_cloud.png" alt="">
+  <div class="faces" aria-hidden="true"><img src="img/face_kkito.png" alt=""><img src="img/face_boneul.png" alt=""><img src="img/face_migae.png" alt=""><img src="img/face_ramda.png" alt=""><img src="img/face_lachilchin.png" alt=""><img src="img/face_bookgeo.png" alt=""></div>
+  <div class="bar" aria-hidden="true"><i id="ldbar"></i></div>
+  <p>솜솜시티로 가는 중…</p>
+</div>
+<noscript><style>.loader{display:none}</style><p class="nojs">이 페이지는 자바스크립트가 켜져 있어야 이웃들이 움직이고 메뉴가 열려요. 브라우저 설정에서 자바스크립트를 켜 주세요.</p></noscript>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <filter id="wobble"><feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves="2" seed="5"/><feDisplacementMap in="SourceGraphic" scale="3.2"/></filter>
 </svg>
@@ -280,7 +304,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justif
     <button class="arrow l hand" id="prev" type="button" aria-label="이전 이웃">‹</button>
     <button class="arrow r hand" id="next" type="button" aria-label="다음 이웃">›</button>
     <p class="hint hand" id="hint">이웃을 눌러 인사해 보세요</p>
-    <div class="say hand" id="say" role="dialog" aria-live="polite"></div>
+    <div class="say" id="say" role="dialog" aria-live="polite"></div>
   </section>
 
   <section class="wrap world" id="world">
@@ -326,6 +350,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justif
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
 <script>
 const IG="https://www.instagram.com/somsomcity.official/", YT="https://www.youtube.com/@somsomcity.official";
 const igSvg='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-3.3-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8C2.4 3.9 3.9 2.4 7.2 2.3 8.4 2.2 8.8 2.2 12 2.2zm0 4.7a5.1 5.1 0 100 10.2 5.1 5.1 0 000-10.2zm0 8.4a3.3 3.3 0 110-6.6 3.3 3.3 0 010 6.6zm5.3-9.8a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4z"/></svg>';
@@ -385,24 +410,45 @@ function layout(){
   if(mob){track.style.transform=`translateX(${W/2-(Math.max(cur,0)+.5)*SW+dragX}px)`;const room=bg.offsetWidth-W;bg.style.transform=`translateX(${-(Math.max(cur,0)/(P.length-1))*Math.max(0,room)-dragX*.3}px)`;}
   else{track.style.transform=`translateX(${(W-SW*P.length)/2}px)`;bg.style.transform="";}
 }
-function play(i){cancelAnimationFrame(raf);if(idleRaf&&idleI===i){cancelAnimationFrame(idleRaf);idleRaf=null;idleT=setTimeout(idleNext,2800);}const n=ANIM[P[i].id].n;let f=0,last=0;
-  const step=t=>{if(t-last>=83){draw(i,f);f++;last=t;}if(f<n)raf=requestAnimationFrame(step);else{draw(i,0);raf=null;}};raf=requestAnimationFrame(step);}
+function play(i){cancelAnimationFrame(raf);if(typeof idleStopOne==="function"){idleStopOne(i);}const n=ANIM[P[i].id].n;let f=0,last=0;
+  const step=t=>{if(t-last>=83){draw(i,f);f++;last=t;}if(f<n)raf=requestAnimationFrame(step);else{draw(i,0);raf=null;if(typeof idleSched==="function")idleSched(i);}};raf=requestAnimationFrame(step);}
+/* 말풍선 모양: 둥근 몸통과 꼬리를 끊김 없는 선 하나로. 변마다 아주 살짝 휘게 해서 손으로 그린 느낌 */
+function drawBub(tail){const svg=say.querySelector(".bub"),W=say.offsetWidth,H=say.offsetHeight,r=22;
+  let k=0;const J=[.9,-.7,1.1,-.5,.6,-1,.8,-.6];const bend=(x1,y1,x2,y2)=>{const mx=(x1+x2)/2,my=(y1+y2)/2,L=Math.hypot(x2-x1,y2-y1)||1,o=J[k++%J.length]*Math.min(1.6,L/120);return ` Q ${mx+(y2-y1)/L*o} ${my-(x2-x1)/L*o} ${x2} ${y2}`;};
+  const t=tail||{},w=11;let a=t.at;
+  if(t.side==="b")a=Math.min(Math.max(a,r+w+6),W-r-w-6);else if(t.side)a=Math.min(Math.max(a,r+w+4),H-r-w-4);
+  let d=`M ${r} 0`+bend(r,0,W-r,0)+` Q ${W} 0 ${W} ${r}`;
+  if(t.side==="r")d+=bend(W,r,W,a-w)+` Q ${W+5} ${a-2} ${W+17} ${a+3} Q ${W+5} ${a+5} ${W} ${a+w}`+bend(W,a+w,W,H-r);else d+=bend(W,r,W,H-r);
+  d+=` Q ${W} ${H} ${W-r} ${H}`;
+  if(t.side==="b")d+=bend(W-r,H,a+w,H)+` Q ${a+3} ${H+5} ${a-3} ${H+17} Q ${a-4} ${H+5} ${a-w} ${H}`+bend(a-w,H,r,H);else d+=bend(W-r,H,r,H);
+  d+=` Q 0 ${H} 0 ${H-r}`;
+  if(t.side==="l")d+=bend(0,H-r,0,a+w)+` Q -5 ${a+5} -17 ${a+3} Q -5 ${a-2} 0 ${a-w}`+bend(0,a-w,0,r);else d+=bend(0,H-r,0,r);
+  d+=` Q 0 0 ${r} 0 Z`;
+  svg.setAttribute("width",W);svg.setAttribute("height",H);svg.querySelector("path").setAttribute("d",d);
+  if(!isMob())say.style.transformOrigin=t.side==="b"?`${a}px ${H+16}px`:t.side==="l"?`-16px ${a}px`:t.side==="r"?`${W+16}px ${a}px`:"50% 100%";}
 function showSay(i){const p=P[i];
-  say.innerHTML=`<p class="nm">${esc(p.ko)}<small>${modH(p)}</small></p><p class="line">${hiH(p)}</p><a class="btn fill hand" href="#s-${p.id}" data-go>우리 집 놀러 가기 →</a><svg class="tail" viewBox="0 0 24 16" aria-hidden="true"><path d="M2 0 L12 15 L22 0" fill="#fff" stroke="#22231F" stroke-width="2" stroke-linejoin="round"/></svg>`;
+  say.innerHTML=`<svg class="bub" aria-hidden="true"><path/></svg><p class="nm">${esc(p.ko)}<small>${modH(p)}</small></p><p class="line">${hiH(p)}</p><a class="btn fill hand" href="#s-${p.id}" data-go>우리 집 놀러 가기 →</a>`;let tail=null;
   if(!isMob()){const r=slots[i].querySelector(".fig").getBoundingClientRect(),sr=stage.getBoundingClientRect();
     const x=Math.min(Math.max(r.left+r.width/2-sr.left,190),sr.width-190);say.classList.remove("side","flip");say.style.left=(x-170)+"px";say.style.top=Math.max(12,r.top-sr.top-150)+"px";
-    say.querySelector(".tail").style.left=(r.left+r.width/2-sr.left-(x-170)-12)+"px";
+    tail={side:"b",at:r.left+r.width/2-sr.left-(x-170)};
     const lg=stage.querySelector(".logo").getBoundingClientRect(),sy=say.getBoundingClientRect(),top=Math.max(12,r.top-sr.top-150);
     const hit=!(sr.left+x+170<lg.left||sr.left+x-170>lg.right||sr.top+top+sy.height<lg.top||sr.top+top>lg.bottom);
     if(hit){const flip=r.right-sr.left+360>sr.width;say.classList.add("side");say.classList.toggle("flip",flip);
       say.style.left=(flip?r.left-sr.left-340-14:r.right-sr.left+14)+"px";const nb=cvs[i+(flip?-1:1)],nt=nb?nb.getBoundingClientRect().top-sr.top-sy.height-10:1e9;
-      say.style.top=Math.max(lg.bottom-sr.top+8,Math.min(r.top-sr.top+r.height*.08,nt))+"px";}}
+      const tp=Math.max(lg.bottom-sr.top+8,Math.min(r.top-sr.top+r.height*.08,nt));say.style.top=tp+"px";
+      tail={side:flip?"r":"l",at:r.top-sr.top+Math.min(r.height*.16,60)-tp};}}
+  drawBub(tail);
   say.classList.add("show");hint.style.opacity=0;
   say.querySelector("[data-go]").addEventListener("click",e=>{e.preventDefault();visit(p.id);});}
 function pick(i,greet=true){cur=Math.max(0,Math.min(P.length-1,i));stage.classList.add("picked");
   slots.forEach((s,k)=>{s.classList.toggle("on",k===cur);s.setAttribute("aria-selected",String(k===cur));draw(k,0);});
   layout();if(greet){setTimeout(()=>{play(cur);showSay(cur);},isMob()?450:200);}}
-function visit(id){const t=document.getElementById("s-"+id);t.scrollIntoView({behavior:reduce?"auto":"smooth"});}
+function visit(id){goTo(document.getElementById("s-"+id));}
+/* 메뉴·버튼으로 이동할 때: 천천히 출발해 부드럽게 멈추는 스크롤 */
+var lenis=null;
+function goTo(el){if(!el)return;const off=el.id==="contact"?0:-((document.getElementById("top")||{}).offsetHeight||0)+(el.matches("[data-scene]")?0:-8);
+  if(lenis)lenis.scrollTo(el,{offset:off,duration:1.25,easing:t=>t<.5?8*t*t*t*t:1-Math.pow(-2*t+2,4)/2});else el.scrollIntoView({behavior:reduce?"auto":"smooth"});}
+document.addEventListener("click",e=>{const a=e.target.closest('a[href^="#"]');if(!a||a.hasAttribute("data-go"))return;const h=a.getAttribute("href");if(h.length<2)return;const t=document.querySelector(h);if(!t)return;e.preventDefault();goTo(t);});
 /* 끌어서 넘기기 (휴대폰) */
 let sx=null,moved=false;
 stage.addEventListener("pointerdown",e=>{if(!isMob()||e.target.closest(".arrow,.say"))return;sx=e.clientX;moved=false;track.classList.add("drag");bg.style.transition="none";});
@@ -417,21 +463,20 @@ function hitTest(x,y){
     try{if(cv.getContext("2d").getImageData(px,py,1,1).data[3]>30)return i;}catch(e){return i;}}
   let best=-1,bd=1e9;slots.forEach((_,i)=>{const r=cvs[i].getBoundingClientRect();if(y<r.top-24||y>r.bottom+24)return;const d=Math.abs(x-(r.left+r.width/2));if(d<bd&&d<Math.max(30,r.width*.45)){bd=d;best=i;}});
   return best;}
-/* 평소엔 멈춰 있고, 화면에 보이는 이웃 중 한 명씩 돌아가며 인사 (11/3, B안) */
-let idleRaf=null,idleI=-1,idleT=null,stageVis=true,idleN=0;
-const IDLE_ORDER=[2,1,5,3,0,4];
-function idleNext(){clearTimeout(idleT);idleT=null;if(reduce||!stageVis)return;
-  const sr=stage.getBoundingClientRect();
-  const cand=IDLE_ORDER.filter(i=>{const r=cvs[i].getBoundingClientRect();return r.left>=sr.left-4&&r.right<=sr.right+4&&!(raf&&i===cur);});
-  if(!cand.length){idleT=setTimeout(idleNext,2800);return;}
-  let i=cand[idleN++%cand.length];if(i===idleI&&cand.length>1)i=cand[idleN++%cand.length];idleI=i;
+/* 이웃마다 따로, 제각각 다른 때에 손 인사 (11/3: 서로 기다리지 않고 랜덤하게, 쉬는 시간 짧게) */
+const idleRaf={},idleT={};let stageVis=true;
+const rnd=(a,b)=>a+Math.random()*(b-a);
+function idleSched(i,first){clearTimeout(idleT[i]);idleT[i]=setTimeout(()=>idlePlay(i),first?rnd(300,2600):rnd(900,3800));}
+function idlePlay(i){if(reduce||!stageVis)return;
+  const sr=stage.getBoundingClientRect(),r=cvs[i].getBoundingClientRect();
+  if((raf&&i===cur)||r.right<sr.left||r.left>sr.right){idleSched(i);return;}
   const n=ANIM[P[i].id].n;let f=0,last=0;
-  const step=t=>{if(raf&&i===cur){idleRaf=null;idleT=setTimeout(idleNext,2800);return;}
+  const step=t=>{if(raf&&i===cur){idleRaf[i]=null;idleSched(i);return;}
     if(t-last>=83){draw(i,f);f++;last=t;}
-    if(f<n)idleRaf=requestAnimationFrame(step);else{draw(i,0);idleRaf=null;idleT=setTimeout(idleNext,2800);}};
-  idleRaf=requestAnimationFrame(step);}
-function idleStop(){clearTimeout(idleT);idleT=null;if(idleRaf){cancelAnimationFrame(idleRaf);idleRaf=null;if(idleI>=0)draw(idleI,0);}}
-new IntersectionObserver(es=>es.forEach(e=>{stageVis=e.isIntersecting;if(stageVis){if(!idleRaf&&!idleT)idleT=setTimeout(idleNext,1500);}else idleStop();}),{threshold:.3}).observe(stage);
+    if(f<n)idleRaf[i]=requestAnimationFrame(step);else{draw(i,0);idleRaf[i]=null;idleSched(i);}};
+  idleRaf[i]=requestAnimationFrame(step);}
+function idleStopOne(i){clearTimeout(idleT[i]);if(idleRaf[i]){cancelAnimationFrame(idleRaf[i]);idleRaf[i]=null;}}
+new IntersectionObserver(es=>es.forEach(e=>{stageVis=e.isIntersecting;P.forEach((_,i)=>{if(stageVis){if(!idleRaf[i])idleSched(i,true);}else{idleStopOne(i);draw(i,0);}});}),{threshold:.3}).observe(stage);
 function choose(i){if(i<0)return;if(i===cur){play(i);showSay(i);}else pick(i);}
 stage.addEventListener("click",e=>{if(moved||e.target.closest(".say,.arrow,.float-menu,a"))return;choose(hitTest(e.clientX,e.clientY));});
 slots.forEach((s,i)=>s.addEventListener("keydown",ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();choose(i);}}));
@@ -513,8 +558,8 @@ const whoBtn=document.getElementById("whoBtn"),drop=document.getElementById("dro
 whoBtn.addEventListener("click",e=>{e.stopPropagation();const o=drop.classList.toggle("open");whoBtn.setAttribute("aria-expanded",String(o));});
 drop.addEventListener("click",()=>{drop.classList.remove("open");whoBtn.setAttribute("aria-expanded","false");});
 document.addEventListener("click",e=>{if(!e.target.closest("#drop,#whoBtn")){drop.classList.remove("open");whoBtn.setAttribute("aria-expanded","false");}});
-function openSheet(){sheet.classList.add("open");document.body.style.overflow="hidden";document.querySelectorAll("[data-open-sheet]").forEach(b=>b.setAttribute("aria-expanded","true"));document.getElementById("closeSheet").focus();}
-function closeSheet(){sheet.classList.remove("open");document.body.style.overflow="";document.querySelectorAll("[data-open-sheet]").forEach(b=>b.setAttribute("aria-expanded","false"));}
+function openSheet(){sheet.classList.add("open");document.body.style.overflow="hidden";if(lenis)lenis.stop();document.querySelectorAll("[data-open-sheet]").forEach(b=>b.setAttribute("aria-expanded","true"));document.getElementById("closeSheet").focus();}
+function closeSheet(){sheet.classList.remove("open");document.body.style.overflow="";if(lenis)lenis.start();document.querySelectorAll("[data-open-sheet]").forEach(b=>b.setAttribute("aria-expanded","false"));}
 document.querySelectorAll("[data-open-sheet]").forEach(b=>b.addEventListener("click",e=>{e.stopPropagation();openSheet();}));
 document.getElementById("closeSheet").addEventListener("click",closeSheet);
 sheet.addEventListener("click",e=>{if(e.target.closest("[data-close]"))closeSheet();});
@@ -523,6 +568,7 @@ addEventListener("keydown",e=>{if(e.key==="Escape"){closeSheet();drop.classList.
 function markSec(sec){document.querySelectorAll("#menu .m").forEach(m=>m.setAttribute("aria-current",String(m.dataset.sec===sec)));}
 
 /* ---------- 스크롤 연출: 머리·탭 나타남, 장면 배경 패럴렉스, 지금 보는 이웃 표시 ---------- */
+if(window.gsap&&window.ScrollTrigger){
 gsap.registerPlugin(ScrollTrigger);
 const topBar=document.getElementById("top"),tabBar=document.getElementById("tabbar");
 ScrollTrigger.create({trigger:stage,start:"bottom 80px",onEnter:()=>topBar.classList.add("show"),onLeaveBack:()=>topBar.classList.remove("show")});
@@ -531,14 +577,38 @@ ScrollTrigger.create({trigger:scenesWrap,start:"top 70%",end:"bottom 40%",onTogg
 [["world","#world"],["who","[data-scenes]"],["news","#news"],["goods","#goods"],["contact","#contact"]].forEach(([k,sel])=>ScrollTrigger.create({trigger:sel,start:"top 50%",end:"bottom 50%",onToggle:t=>{if(t.isActive)markSec(k);}}));
 
 if(!reduce){
+  /* 휠 스크롤을 부드럽게 (휴대폰 터치는 원래 그대로) */
+  if(window.Lenis){lenis=new Lenis({lerp:.1,smoothWheel:true});lenis.on("scroll",ScrollTrigger.update);gsap.ticker.add(t=>lenis.raf(t*1000));gsap.ticker.lagSmoothing(0);}
+  /* 첫 화면에서 내려갈 때 로고가 천천히 올라가며 옅어짐 */
+  gsap.set(".stage .logo",{xPercent:-50,x:0});
+  gsap.to(".stage .logo",{y:-70,autoAlpha:.15,ease:"none",scrollTrigger:{trigger:stage,start:"top top",end:"bottom top",scrub:true}});
+  /* 글·그림이 화면에 들어올 때 아래에서 살짝 올라오며 나타남 (한 번만) */
+  const rise=(els,o={})=>{els=gsap.utils.toArray(els);if(!els.length)return;gsap.set(els,{autoAlpha:0,y:o.y??28});
+    ScrollTrigger.batch(els,{start:"top 88%",once:true,onEnter:b=>gsap.to(b,{autoAlpha:1,y:0,x:0,duration:o.d??.9,ease:"power3.out",stagger:o.s??.09,overwrite:true})});};
+  rise(".world .intro > *");rise(".rel-map",{y:40,d:1.1});rise(".rel > div:last-child > *");rise(".rel-list .item",{y:18,s:.05,d:.6});
+  rise(".news .head2");rise(".post",{y:22,s:.06,d:.7});rise(".short",{y:22,s:.06,d:.7});rise(".news .how");
+  rise(".goods .box",{y:40,d:1});rise(".goods .soon > div",{y:20,s:.12});
+  rise(".closing > *",{s:.12});rise("footer .wrap > *",{y:14});
   document.querySelectorAll("[data-scene]").forEach(sc=>{
-    gsap.fromTo(sc.querySelector(".bg"),{yPercent:-5},{yPercent:5,ease:"none",scrollTrigger:{trigger:sc,start:"top bottom",end:"bottom top",scrub:true}});
+    /* 장면 그림이 그림책 펼치듯 가장자리에서 열림 */
+    gsap.fromTo(sc.querySelector(".pic"),{clipPath:"inset(7% 5% 7% 5% round 28px)"},{clipPath:"inset(0% 0% 0% 0% round 0px)",ease:"none",scrollTrigger:{trigger:sc,start:"top bottom",end:"top 25%",scrub:true}});
+    const card=sc.querySelector(".card");gsap.set(card,{autoAlpha:0,x:sc.classList.contains("L")?-40:40});
+    ScrollTrigger.create({trigger:sc,start:"top 60%",once:true,onEnter:()=>gsap.to(card,{autoAlpha:1,x:0,duration:1,ease:"power3.out"})});
+    gsap.fromTo(sc.querySelector(".bg"),{yPercent:-5,scale:1.08},{yPercent:5,scale:1,ease:"none",scrollTrigger:{trigger:sc,start:"top bottom",end:"bottom top",scrub:true}});
     gsap.from(sc.querySelector(".actor canvas"),{x:sc.classList.contains("L")?60:-60,ease:"none",scrollTrigger:{trigger:sc,start:"top 85%",end:"top 35%",scrub:true}});
   });
 }
 document.querySelectorAll("[data-scene]").forEach(sc=>ScrollTrigger.create({trigger:sc,start:"top 55%",end:"bottom 55%",onToggle:s=>{if(s.isActive)document.querySelectorAll("[data-face]").forEach(f=>f.setAttribute("aria-current",String(f.dataset.face===sc.dataset.scene)));}}));
+}else{const tb=document.getElementById("top");addEventListener("scroll",()=>tb.classList.toggle("show",scrollY>stage.offsetHeight-80),{passive:true});}
+/* 로딩: 첫 화면 배경과 이웃 그림 7장이 다 오면(또는 8초가 지나면) 닫힘 */
+(function(){const ld=document.getElementById("loader"),bar=document.getElementById("ldbar");if(!ld)return;
+  const ims=[bg,...P.map(p=>sprite[p.id])];let n=0,closed=false;
+  const close=()=>{if(closed)return;closed=true;bar.style.width="100%";setTimeout(()=>{ld.classList.add("done");ld.setAttribute("aria-hidden","true");},250);};
+  const tick=()=>{n++;bar.style.width=Math.max(8,n/ims.length*100)+"%";if(n>=ims.length)close();};
+  ims.forEach(im=>{if(im.complete&&im.naturalWidth)tick();else{im.addEventListener("load",tick,{once:true});im.addEventListener("error",tick,{once:true});}});
+  setTimeout(close,8000);})();
 function init(){layout();P.forEach((p,i)=>draw(i,0));if(isMob())pick(2,false);}
-addEventListener("load",()=>{init();ScrollTrigger.refresh();});
+addEventListener("load",()=>{init();if(window.ScrollTrigger)ScrollTrigger.refresh();});
 init();
 </script>
 </body>
