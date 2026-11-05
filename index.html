@@ -220,6 +220,9 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
 .world .intro{display:grid;gap:14px;max-width:62ch}
 .world .intro p{color:var(--ink-soft)}
 .slogan{font-family:var(--font-hand);font-weight:700;font-size:clamp(26px,4vw,34px);color:var(--purple)}
+/* 은녕 손글씨 (11/5) */
+.slogan .hw{width:min(260px,64vw);height:auto;margin:0 0 2px -6px}
+.closing .ko .hw{width:min(440px,84vw);height:auto;margin:0 auto}
 .slogan span{display:block;font-family:var(--font-body);font-weight:400;font-size:14px;color:var(--ink-soft)}
 /* 관계도: 얼굴 동그라미 + 손그림 선. 누르면 그 이웃의 관계만 또렷하게 */
 .rel{display:grid;grid-template-columns:minmax(0,1fr);gap:22px;align-items:start}
@@ -400,7 +403,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justif
       <div class="secsay" data-secsay="kkito" data-line="솜솜시티에 온 걸 환영해!"></div>
       <h2>동물들이 사람처럼 모여 사는 도시, 솜솜시티</h2>
       <p>겉보기엔 평범한 도시지만 종족마다 사는 방식이 조금씩 달라요. 나무늘보는 먹방을 해도 천천히 씹고, 다람쥐는 뭐든 주머니에 줍고, 거북이는 터틀넥을 입어요. 당근빌라와 대나무숲 빌라 이웃들의 소소한 다툼과 화해를 그립니다.</p>
-      <p class="slogan">그런 너라서 좋아<span>Because you're you.</span></p>
+      <p class="slogan"><img class="hw" src="img/hand_slogan.webp" alt="그런 너라서 좋아" width="1200" height="275"><span>Because you're you.</span></p>
     </div>
     <div class="rel">
       <div class="rel-map" id="relmap"><svg viewBox="0 0 1000 660" role="img" aria-label="솜솜시티 이웃 관계도" id="relsvg"></svg></div>
@@ -424,7 +427,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justif
   <section class="wrap closing">
     <div class="secsay" data-secsay="lachilchin" data-line="또 놀러 오렴~"></div>
     <img src="img/logo_cloud.webp" alt="솜솜시티 로고">
-    <p class="ko">그래서 우리가 널 좋아해</p>
+    <p class="ko"><img class="hw" src="img/hand_closing.webp" alt="그래서 우리가 널 좋아해" width="1200" height="171"></p>
     <p class="en">That's why we love you.</p>
     <div class="btns" style="justify-content:center" data-sns-btns></div>
   </section>
