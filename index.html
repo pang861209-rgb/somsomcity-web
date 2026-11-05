@@ -43,6 +43,7 @@
   color-scheme:light;
 }
 *{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 body{background:var(--paper) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .38 0 0 0 0 .28 0 0 0 .06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.75;word-break:keep-all;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:90;background:var(--paper)}
 img{max-width:100%;display:block}
@@ -93,7 +94,7 @@ html:not(.review) .temp,html:not(.review) .ex,html:not(.review) .how{display:non
   /* 메뉴 막대 자리만큼 로고·소개 문구를 내림 */
   .stage img.logo{top:calc(64px + 2%);width:min(430px,80vw,40vh)}
   .stage p.lead,.stage .lead.lead{top:calc(64px + 3% + min(430px,80vw,40vh) * .37)}}
-.burger{display:inline-block;width:16px;height:12px;margin-right:6px;vertical-align:-1px;background:linear-gradient(currentColor 0 0) 0 0/100% 2px no-repeat,linear-gradient(currentColor 0 0) 0 50%/100% 2px no-repeat,linear-gradient(currentColor 0 0) 0 100%/100% 2px no-repeat}
+.burger{display:block;flex:none;width:16px;height:12px;background:linear-gradient(currentColor 0 0) 0 0/100% 2px no-repeat,linear-gradient(currentColor 0 0) 0 50%/100% 2px no-repeat,linear-gradient(currentColor 0 0) 0 100%/100% 2px no-repeat}
 .top .wrap{display:flex;align-items:center;gap:18px;padding-block:6px}
 .top .mark{height:36px;width:auto}
 .menu{display:flex;align-items:center;gap:4px;margin-left:auto;list-style:none}
@@ -110,26 +111,26 @@ html:not(.review) .temp,html:not(.review) .ex,html:not(.review) .how{display:non
 .top .sns{display:flex;gap:6px}
 .ico{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;text-decoration:none}
 .ico svg{width:18px;height:18px}
-.menu-btn{display:none;margin-left:auto;font-family:var(--font-hand);font-weight:700;font-size:19px;border-radius:999px;padding:6px 16px;background:#fff;min-height:44px}
+.menu-btn{display:none;align-items:center;gap:7px;margin-left:8px;font-family:var(--font-hand);font-weight:700;font-size:18px;line-height:1;border-radius:999px;padding:0 15px;background:#fff;height:42px;white-space:nowrap}
 /* 첫 화면에서도 메뉴를 열 수 있게 (머리가 숨어 있을 때) */
-.float-menu{position:absolute;top:max(14px,env(safe-area-inset-top,0px));right:max(14px,env(safe-area-inset-right,0px));z-index:8;font-family:var(--font-hand);font-weight:700;font-size:19px;border-radius:999px;padding:6px 16px;background:#fff;min-height:44px}
+.float-menu{position:absolute;top:max(14px,env(safe-area-inset-top,0px));right:max(14px,env(safe-area-inset-right,0px));z-index:8;display:inline-flex;align-items:center;gap:7px;font-family:var(--font-hand);font-weight:700;font-size:18px;line-height:1;border-radius:999px;padding:0 15px;background:#fff;height:42px;white-space:nowrap}
 .face{width:40px;height:40px;border-radius:50%;padding:0;transition:transform .2s}
 .face img{width:100%;height:100%;border-radius:50%;border:2px solid transparent}
 .face[aria-current="true"] img{border-color:var(--ink)}
 .face:hover{transform:translateY(-2px)}
 /* 전체 화면 메뉴 */
-.sheet{position:fixed;inset:0;z-index:95;background:var(--paper);display:none;overflow-y:auto;padding:calc(18px + env(safe-area-inset-top,0px)) max(22px,env(safe-area-inset-right,0px)) calc(28px + env(safe-area-inset-bottom,0px)) max(22px,env(safe-area-inset-left,0px))}
+.sheet{position:fixed;left:0;right:0;top:0;height:100vh;height:100dvh;z-index:95;background:var(--paper);display:none;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:calc(14px + env(safe-area-inset-top,0px)) max(20px,env(safe-area-inset-right,0px)) calc(60px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px))}
 .sheet.open{display:block}
-.sheet-in{max-width:520px;margin:0 auto;display:grid;gap:22px}
+.sheet-in{max-width:520px;margin:0 auto;display:grid;gap:16px}
 .sheet-head{display:flex;align-items:center;justify-content:space-between}
 .sheet-head img{height:42px;width:auto}
 .close{font-family:var(--font-hand);font-weight:700;font-size:19px;border-radius:999px;padding:6px 16px;background:#fff;min-height:44px}
 .sheet nav ol{list-style:none;display:grid;gap:4px}
-.sheet nav a{display:flex;align-items:baseline;gap:10px;font-family:var(--font-hand);font-weight:700;font-size:34px;text-decoration:none;padding:4px 0}
+.sheet nav a{display:flex;align-items:baseline;gap:10px;font-family:var(--font-hand);font-weight:700;font-size:clamp(26px,8vw,32px);text-decoration:none;padding:2px 0}
 .sheet nav a small{font-family:var(--font-body);font-weight:400;font-size:14px;color:var(--ink-soft)}
 .sheet .who6{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.sheet .who6 a{display:grid;justify-items:center;gap:4px;text-decoration:none;font-family:var(--font-hand);font-weight:700;font-size:17px;border-radius:16px;background:#fff;padding:10px 4px}
-.sheet .who6 img{width:64px;height:64px;border-radius:50%}
+.sheet .who6 a{display:grid;justify-items:center;gap:2px;text-decoration:none;font-family:var(--font-hand);font-weight:700;font-size:16px;border-radius:16px;background:#fff;padding:8px 4px}
+.sheet .who6 img{width:52px;height:52px;border-radius:50%}
 .sheet .row{display:flex;flex-wrap:wrap;gap:10px}
 .sheet .mailline{font-size:14px;color:var(--ink-soft)}
 /* 휴대폰: 얼굴 탭은 이웃 장면 구간에서만 아래에 */
@@ -190,7 +191,7 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
 .stage-music{position:absolute;top:max(14px,env(safe-area-inset-top,0px));left:max(14px,env(safe-area-inset-left,0px));z-index:8}
 .top .music{margin-left:6px}
 .sheet-music{justify-self:center}
-@media (max-width:819px){.top .music .tx,.stage-music .tx{display:none}.top .music,.stage-music{padding:5px 11px}}
+@media (max-width:819px){.top .music .tx,.stage-music .tx{display:none}.top .music,.stage-music{padding:0;width:42px;height:42px;min-height:0;justify-content:center}.top .music{margin-left:auto}.stage-music{top:max(14px,env(safe-area-inset-top,0px))}}
 .bub{position:absolute;left:0;top:0;overflow:visible;z-index:-1;pointer-events:none}
 .bub path{fill:#fff;stroke:var(--ink);stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round}
 .stage .lead{transition:opacity .25s}
@@ -312,7 +313,7 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
 .short .play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:52px;height:52px;border-radius:50%;background:#fff;display:grid;place-items:center;z-index:2}
 .short .play::after{content:"";border-left:15px solid var(--pink);border-top:10px solid transparent;border-bottom:10px solid transparent;margin-left:5px}
 .how{font-size:13px;color:var(--ink-soft)}
-@media (max-width:819px){.ig{gap:6px}.post{border-radius:10px}.yt{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin-inline:calc(-1 * max(18px,env(safe-area-inset-left,0px)));padding:4px max(18px,env(safe-area-inset-left,0px)) 10px;scrollbar-width:none}.short{flex:0 0 46%;scroll-snap-align:start}}
+@media (max-width:819px){.ig{gap:6px}.post{border-radius:10px}.yt{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}}
 
 /* ---------- 5. 굿즈 ---------- */
 .goods{padding-block:56px}
@@ -345,7 +346,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justif
   <div class="bar" aria-hidden="true"><i id="ldbar"></i></div>
   <p>솜솜시티로 가는 중…</p>
 </div>
-<dialog class="detail" id="detail" aria-labelledby="dtNm"><div class="dt-in"><button class="dt-x hand" type="button" data-dclose aria-label="닫기">✕</button><div class="dt hand" id="dtBody"></div></div></dialog>
+<dialog class="detail" id="detail" data-lenis-prevent aria-labelledby="dtNm"><div class="dt-in"><button class="dt-x hand" type="button" data-dclose aria-label="닫기">✕</button><div class="dt hand" id="dtBody"></div></div></dialog>
 <noscript><style>.loader{display:none}</style><p class="nojs">이 페이지는 자바스크립트가 켜져 있어야 이웃들이 움직이고 메뉴가 열려요. 브라우저 설정에서 자바스크립트를 켜 주세요.</p></noscript>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <filter id="wobble"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="1" seed="5"/><feDisplacementMap in="SourceGraphic" scale="3"/></filter>
@@ -364,7 +365,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justif
   <button class="menu-btn hand" type="button" data-open-sheet aria-controls="sheet" aria-expanded="false"><span class="burger" aria-hidden="true"></span>메뉴</button>
 </div></header>
 <nav class="tabbar" id="tabbar" aria-label="이웃 바로 가기" data-faces></nav>
-<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="메뉴">
+<div class="sheet" id="sheet" data-lenis-prevent role="dialog" aria-modal="true" aria-label="메뉴">
   <div class="sheet-in">
     <div class="sheet-head"><img src="img/logo_cloud.webp" alt="솜솜시티"><button class="close hand" type="button" id="closeSheet">닫기 ✕</button></div>
     <nav aria-label="주 메뉴"><ol>
