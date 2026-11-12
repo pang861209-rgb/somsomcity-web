@@ -38,6 +38,8 @@
   --purple:#8B6BB8;
   --pink:#F28B8E;
   --star:#F6D365;
+  /* 선 굵기 한 가지로 (11/12): 테두리·말풍선·관계도·구분선 모두 화면에서 2.5px */
+  --stroke:2.5px;
   --font-hand:"Gaegu","Gowun Dodum",sans-serif;
   --font-body:"Gowun Dodum","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
   color-scheme:light;
@@ -56,7 +58,7 @@ h1,h2,h3{font-family:var(--font-hand);font-weight:700;line-height:1.2;text-wrap:
 .empty{color:#a7a59c}
 .divider{height:46px;margin-block:8px}
 .divider svg{width:100%;height:100%;display:block;overflow:visible}
-.divider path{fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.divider path{fill:none;stroke:var(--ink);stroke-width:var(--stroke);vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}
 .divider path.g{stroke:#7FA36A}
 /* 구간마다 이웃 한 명이 한마디 (말풍선 = 솜솜시티 대표 모양) */
 .secsay{display:flex;align-items:center;gap:14px;margin-bottom:6px}
@@ -71,7 +73,7 @@ html:not(.review) .temp,html:not(.review) .ex,html:not(.review) .how{display:non
    요소마다 손으로 그은 듯한 선을 직접 그리고 바탕도 그 선 모양대로 잘라 냄 → 선 밖으로 아무것도 안 나옴 */
 .hand{position:relative}
 .hand>svg.hl{position:absolute;left:0;top:0;width:100%!important;height:100%!important;pointer-events:none;overflow:visible;z-index:1}
-.hl path{fill:none;stroke:var(--ink);stroke-width:4.6;stroke-linejoin:round}
+.hl path{fill:none;stroke:var(--ink);stroke-width:calc(var(--stroke) * 2);stroke-linejoin:round}
 .soon .hand .hl path{stroke-dasharray:7 8;stroke:#9a968a}
 .hand:focus-visible{outline:none}.hand:focus-visible .hl path{stroke:var(--purple);stroke-width:6}
 .btn{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:10px 20px;font-family:var(--font-hand);font-weight:700;font-size:19px;text-decoration:none;background:#fff;color:var(--ink);min-height:44px}
@@ -82,7 +84,7 @@ html:not(.review) .temp,html:not(.review) .ex,html:not(.review) .how{display:non
 .btn:hover{transform:translateY(-1px)}
 
 /* 메뉴: PC는 위쪽 막대(글자 메뉴 + 이웃 펼침), 휴대폰은 메뉴 버튼 → 전체 화면 메뉴. 얼굴 탭은 이웃 장면 구간에서만 */
-.top{position:fixed;left:0;right:0;top:env(safe-area-inset-top,0px);z-index:80;background:rgba(255,255,255,.96);border-bottom:2px solid var(--ink);transform:translateY(-110%);transition:transform .35s}
+.top{position:fixed;left:0;right:0;top:env(safe-area-inset-top,0px);z-index:80;background:rgba(255,255,255,.96);border-bottom:var(--stroke) solid var(--ink);transform:translateY(-110%);transition:transform .35s}
 .top.show{transform:none}
 /* PC 첫 화면: 메뉴가 처음부터 보이게, 하늘 위에 투명하게 얹음 (11/3) */
 .top{transition:transform .35s,background .3s,border-color .3s}
@@ -138,7 +140,7 @@ html:not(.review) .temp,html:not(.review) .ex,html:not(.review) .how{display:non
 @media (max-width:819px){
   .menu,.top .sns{display:none}
   .menu-btn{display:inline-flex}
-  .tabbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:80;justify-content:space-around;background:rgba(255,255,255,.96);border-top:2px solid var(--ink);padding:6px max(10px,env(safe-area-inset-left,0px)) calc(6px + env(safe-area-inset-bottom,0px));transform:translateY(110%);transition:transform .35s}
+  .tabbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:80;justify-content:space-around;background:rgba(255,255,255,.96);border-top:var(--stroke) solid var(--ink);padding:6px max(10px,env(safe-area-inset-left,0px)) calc(6px + env(safe-area-inset-bottom,0px));transform:translateY(110%);transition:transform .35s}
   .tabbar.show{transform:none}
   .tabbar .face{width:42px;height:42px}
 }
@@ -170,9 +172,9 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
 .loader.done{opacity:0!important;visibility:hidden;animation:none}
 .loader img.lg{width:min(260px,62vw);height:auto}
 .loader .faces{display:flex;gap:10px}
-.loader .faces img{width:38px;height:38px;border-radius:50%;background:#fff;box-shadow:0 0 0 2px var(--ink);animation:ld-hop 1.5s ease-in-out infinite}
+.loader .faces img{width:38px;height:38px;border-radius:50%;background:#fff;box-shadow:0 0 0 var(--stroke) var(--ink);animation:ld-hop 1.5s ease-in-out infinite}
 .loader .faces img:nth-child(2){animation-delay:.12s}.loader .faces img:nth-child(3){animation-delay:.24s}.loader .faces img:nth-child(4){animation-delay:.36s}.loader .faces img:nth-child(5){animation-delay:.48s}.loader .faces img:nth-child(6){animation-delay:.6s}
-.loader .bar{width:min(220px,56vw);height:8px;border-radius:99px;box-shadow:inset 0 0 0 2px var(--ink);overflow:hidden;background:#fff}
+.loader .bar{width:min(220px,56vw);height:8px;border-radius:99px;box-shadow:inset 0 0 0 var(--stroke) var(--ink);overflow:hidden;background:#fff}
 .loader .bar i{display:block;height:100%;width:8%;background:var(--purple);border-radius:99px;transition:width .35s ease-out}
 .loader p{font-family:var(--font-hand);font-weight:700;font-size:20px;margin:0}
 @keyframes ld-in{to{opacity:1}}
@@ -193,7 +195,7 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
 .sheet-music{justify-self:center}
 @media (max-width:819px){.top .music .tx,.stage-music .tx{display:none}.top .music,.stage-music{padding:0;width:42px;height:42px;min-height:0;justify-content:center}.top .music{margin-left:auto}.stage-music{top:max(14px,env(safe-area-inset-top,0px))}}
 .bub{position:absolute;left:0;top:0;overflow:visible;z-index:-1;pointer-events:none}
-.bub path{fill:#fff;stroke:var(--ink);stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round}
+.bub path{fill:#fff;stroke:var(--ink);stroke-width:var(--stroke);stroke-linejoin:round;stroke-linecap:round}
 .stage .lead{transition:opacity .25s}
 .stage:has(.say.show) .lead{opacity:0}
 .say .nm{font-family:var(--font-hand);font-weight:700;font-size:24px;line-height:1.1}
@@ -229,12 +231,12 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
 .rel-map{max-width:920px;width:100%;justify-self:center}
 .rel-map{border-radius:24px;background:var(--paper-2);padding:10px}
 .rel-map svg{width:100%;height:auto;display:block}
-.rel-map .edge path{fill:none;stroke:var(--ink);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;transition:opacity .25s,stroke .25s}
+.rel-map .edge path{fill:none;stroke:var(--ink);stroke-width:var(--stroke);vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round;transition:opacity .25s,stroke .25s}
 .rel-map .edge.sug path{stroke-dasharray:8 9}
 .rel-map .edge text{font-family:var(--font-hand);font-weight:700;font-size:21px;fill:var(--ink)}
-.rel-map .edge path.lab{fill:#fff;stroke:var(--ink);stroke-width:2.2;filter:none;stroke-dasharray:none}
+.rel-map .edge path.lab{fill:#fff;stroke:var(--ink);stroke-width:var(--stroke);vector-effect:non-scaling-stroke;filter:none;stroke-dasharray:none}
 .rel-map .node{cursor:pointer}
-.rel-map .node .ring{fill:#fff;stroke:var(--ink);stroke-width:3;stroke-linejoin:round}
+.rel-map .node .ring{fill:#fff;stroke:var(--ink);stroke-width:var(--stroke);vector-effect:non-scaling-stroke;stroke-linejoin:round}
 .rel-map .node text{font-family:var(--font-hand);font-weight:700;font-size:24px;fill:var(--ink);text-anchor:middle}
 .rel-map .node:focus-visible .ring{stroke:var(--purple);stroke-width:5}
 .rel-map.focus .edge:not(.hot){opacity:.15}
@@ -275,7 +277,7 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
 @keyframes dt-out{to{opacity:0;transform:translateY(12px) scale(.96)}}
 @keyframes fade{from{opacity:0}}
 .dt-top{display:flex;align-items:center;gap:14px}
-.dt-top .face{width:64px;height:64px;border-radius:50%;flex:none;box-shadow:0 0 0 2.4px var(--ink);background:#fff}
+.dt-top .face{width:64px;height:64px;border-radius:50%;flex:none;box-shadow:0 0 0 var(--stroke) var(--ink);background:#fff}
 .dt .where{font-size:13px;color:var(--ink-soft);margin:0}
 .dt .nm{font-family:var(--font-hand);font-weight:700;font-size:36px;line-height:1;margin:2px 0 0}
 .dt .nm small{font-family:var(--font-body);font-weight:400;font-size:14px;color:var(--purple);margin-left:8px;vertical-align:middle}
@@ -333,7 +335,7 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
 .closing img{width:min(300px,70vw)}
 .closing .ko{font-family:var(--font-hand);font-weight:700;font-size:clamp(28px,4.4vw,38px)}
 .closing .en{color:var(--ink-soft);margin-top:-10px}
-footer{border-top:2px solid var(--ink);padding-block:26px 34px}
+footer{border-top:var(--stroke) solid var(--ink);padding-block:26px 34px}
 footer .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:space-between;font-size:14px;color:var(--ink-soft)}
 .mail{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .mail a{color:var(--ink);font-weight:700;text-decoration:none;user-select:all}
